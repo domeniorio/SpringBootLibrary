@@ -8,9 +8,9 @@ public interface CategoriaService {
 
     Categoria getCategoriaById(int id);
 
-    void saveCategoria(Categoria Categoria);
+    void saveCategoria(Categoria categoria);
 
-    void updateCategoria(Categoria Categoria, int id);
+    void updateCategoria(Categoria categoria);
 
     void deleteCategoria(int id);
 

@@ -8,9 +8,9 @@ public interface CorsoService {
 
     Corso getCorsoById(int id);
 
-    void saveCorso(Corso Corse);
+    void saveCorso(Corso corso);
 
-    void updateCorso(Corso Corse, int id);
+    void updateCorso(Corso corso);
 
     void deleteCorso(int id);
 

@@ -26,10 +26,9 @@ public class CategoriaServiceImpl implements CategoriaService {
     }
 
     @Override
-    public void updateCategoria(Categoria nuovaCategoria, int id) {
-        Categoria vecchiaCategoria = repo.findById(id).orElseThrow(() -> new EntityNotFoundException("Valore non presente all'interno del database!"));
-        if(nuovaCategoria.getNome() != null) vecchiaCategoria.setNome(nuovaCategoria.getNome());
-        repo.save(vecchiaCategoria);
+    public void updateCategoria(Categoria nuovaCategoria) {
+        Categoria vecchiaCategoria = repo.findById(nuovaCategoria.getCodiceCategoria()).orElseThrow(() -> new EntityNotFoundException("Valore non presente all'interno del database!"));
+        repo.save(nuovaCategoria);
     }
 
     @Override

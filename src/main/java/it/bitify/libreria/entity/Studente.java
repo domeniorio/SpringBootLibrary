@@ -12,7 +12,7 @@ public class Studente {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "codiceStudente")
-    private int codiceStudente;
+    private Long codiceStudente;
 
     @Column(name = "nome", nullable = false, length = 30)
     private String nome;
@@ -38,11 +38,11 @@ public class Studente {
             inverseJoinColumns = @JoinColumn(name = "codiceCorso"))
     private Set<Corso> corsi;
 
-    public int getCodiceStudente() {
+    public Long getCodiceStudente() {
         return codiceStudente;
     }
 
-    public void setCodiceStudente(int codiceStudente) {
+    public void setCodiceStudente(Long codiceStudente) {
         this.codiceStudente = codiceStudente;
     }
 

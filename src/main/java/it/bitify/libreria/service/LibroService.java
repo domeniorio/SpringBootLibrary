@@ -6,13 +6,13 @@ import java.util.List;
 
 public interface LibroService {
 
-    Libro getLibroById(int id);
+    Libro getLibroById(Long id);
 
     void saveLibro(Libro libro);
 
-    void updateLibro(Libro libro, int id);
+    void updateLibro(Libro libro);
 
-    void deleteLibro(int id);
+    void deleteLibro(Long id);
 
     List<Libro> getAllLibri();
 }

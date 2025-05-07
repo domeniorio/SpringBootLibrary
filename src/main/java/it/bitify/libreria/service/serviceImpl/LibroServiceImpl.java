@@ -16,7 +16,7 @@ public class LibroServiceImpl implements LibroService {
     private LibroRepo repo;
 
     @Override
-    public Libro getLibroById(int id) {
+    public Libro getLibroById(Long id) {
         return repo.findById(id).orElseThrow(() -> new EntityNotFoundException("Valore non presente all'interno del database!"));
     }
 
@@ -26,18 +26,19 @@ public class LibroServiceImpl implements LibroService {
     }
 
     @Override
-    public void updateLibro(Libro libro, int id) {
-        Libro vecchioLibro = repo.findById(id).orElseThrow(() -> new EntityNotFoundException("Valore non presente all'interno del database!"));
-        if(libro.getTitle() != null) vecchioLibro.setTitle(libro.getTitle());
-        if(libro.getAuthor() != null) vecchioLibro.setAuthor(libro.getAuthor());
-        if(libro.getAnno() != null) vecchioLibro.setAnno(libro.getAnno());
-        if(libro.getCategoria() != null) vecchioLibro.setCategoria(libro.getCategoria());
-        repo.save(vecchioLibro);
+    public void updateLibro(Libro nuovoLibro) {
+        if(repo.existsById(nuovoLibro.getCodiceLibro())){
+            repo.save(nuovoLibro);
+        }
+        else throw  new EntityNotFoundException("Valore non presente all'interno del database!");
+
     }
 
     @Override
-    public void deleteLibro(int id) {
-        if(repo.existsById(id))  repo.deleteById(id);
+    public void deleteLibro(Long id) {
+        if(repo.existsById(id)) {
+            repo.deleteById(id);
+        }
         else throw new EntityNotFoundException("Valore non presente all'interno del database!");
     }
 

@@ -11,7 +11,7 @@ public class Prestito {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "codicePrestito")
-    private int codicePrestito;
+    private Long codicePrestito;
 
     @Column(name = "dataInizio", nullable = false)
     private LocalDate dataInizio;
@@ -28,11 +28,11 @@ public class Prestito {
     private Libro libro;
 
 
-    public int getCodicePrestito() {
+    public Long getCodicePrestito() {
         return codicePrestito;
     }
 
-    public void setCodicePrestito(int codicePrestito) {
+    public void setCodicePrestito(Long codicePrestito) {
         this.codicePrestito = codicePrestito;
     }
 

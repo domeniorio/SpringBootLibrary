@@ -26,12 +26,9 @@ public class CorsoServiceImpl implements CorsoService {
     }
 
     @Override
-    public void updateCorso(Corso nuovoCorso, int id) {
-        Corso vecchioCorso = repo.findById(id).orElseThrow(() -> new EntityNotFoundException("Valore non presente all'interno del database!"));
-        if(nuovoCorso.getNome() != null) vecchioCorso.setNome(nuovoCorso.getNome());
-        if(nuovoCorso.getDescrizione() != null) vecchioCorso.setDescrizione(nuovoCorso.getDescrizione());
-        if(nuovoCorso.getStudenti() != null) vecchioCorso.setStudenti(nuovoCorso.getStudenti());
-        repo.save(vecchioCorso);
+    public void updateCorso(Corso nuovoCorso) {
+        Corso vecchioCorso = repo.findById(nuovoCorso.getCodiceCorso()).orElseThrow(() -> new EntityNotFoundException("Valore non presente all'interno del database!"));
+        repo.save(nuovoCorso);
     }
 
     @Override

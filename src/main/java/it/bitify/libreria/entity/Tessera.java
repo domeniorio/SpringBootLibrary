@@ -11,7 +11,7 @@ public class Tessera {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "codiceTessera")
-    private int codiceTessera;
+    private Long codiceTessera;
 
     @Column(name = "dataRilascio", nullable = false)
     private LocalDate dataRilascio;
@@ -23,14 +23,15 @@ public class Tessera {
         this.dataRilascio = dataRilascio;
     }
 
-    public void setCodiceTessera(int codiceTessera) {this.codiceTessera = codiceTessera;
+    public void setCodiceTessera(Long codiceTessera) {
+        this.codiceTessera = codiceTessera;
     }
 
     public LocalDate getDataRilascio() {
         return dataRilascio;
     }
 
-    public int getCodiceTessera() {
+    public Long getCodiceTessera() {
         return codiceTessera;
     }
 }

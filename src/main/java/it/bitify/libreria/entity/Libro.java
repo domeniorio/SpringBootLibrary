@@ -11,7 +11,7 @@ public class Libro {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "codiceLibro")
-    private int codiceLibro;
+    private Long codiceLibro;
 
     @Column(name = "titolo", nullable = false, unique = true)
     private String titolo;
@@ -30,7 +30,7 @@ public class Libro {
     @OneToMany(mappedBy = "libro", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
     private List<Prestito> prestiti;
 
-    public long getCodiceLibro() {
+    public Long getCodiceLibro() {
         return this.codiceLibro;
     }
 
@@ -46,7 +46,7 @@ public class Libro {
         this.autore = author;
     }
 
-    public void setCodiceLibro(int id) {
+    public void setCodiceLibro(Long id) {
         this.codiceLibro = id;
     }
 

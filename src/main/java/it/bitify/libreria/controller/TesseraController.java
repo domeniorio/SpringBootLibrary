@@ -8,33 +8,33 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/tessera")
+@RequestMapping("/api/v1/tessera")
 public class TesseraController {
 
     @Autowired
     private TesseraService service;
 
     @GetMapping("/{id}")
-    Tessera getTesseraById(@PathVariable int id){
+    Tessera getTesseraById(@PathVariable Long id){
         return service.getTesseraById(id);
     }
 
-    @PostMapping("/aggiungi")
+    @PostMapping
     void aggiungiTessera(@RequestBody Tessera tessera){
         service.saveTessera(tessera);
     }
 
-    @PutMapping("/modifica/{id}")
-    void modificaTessera(@RequestBody Tessera tessera, @PathVariable int id){
-        service.updateTessera(tessera,id);
+    @PutMapping
+    void modificaTessera(@RequestBody Tessera tessera){
+        service.updateTessera(tessera);
     }
 
     @DeleteMapping("/{id}")
-    void rimuoviTessera(@PathVariable int id){
+    void rimuoviTessera(@PathVariable Long id){
         service.deletetessera(id);
     }
 
-    @GetMapping("/")
+    @GetMapping
     List<Tessera> getAllTessere(){
         return service.getAllTessere();
     }

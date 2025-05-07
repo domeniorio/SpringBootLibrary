@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/categoria")
+@RequestMapping("/api/v1/categoria")
 public class CategoriaController {
     
     @Autowired
@@ -19,14 +19,14 @@ public class CategoriaController {
         return service.getCategoriaById(id);
     }
 
-    @PostMapping("/aggiungi")
+    @PostMapping
     void aggiungiCategoria(@RequestBody Categoria Categoria){
         service.saveCategoria(Categoria);
     }
 
-    @PutMapping("/modifica/{id}")
-    void modificaCategoria(@RequestBody Categoria Categoria, @PathVariable int id){
-        service.updateCategoria(Categoria,id);
+    @PutMapping
+    void modificaCategoria(@RequestBody Categoria categoria){
+        service.updateCategoria(categoria);
     }
 
     @DeleteMapping("/{id}")
@@ -34,7 +34,7 @@ public class CategoriaController {
         service.deleteCategoria(id);
     }
 
-    @GetMapping("/")
+    @GetMapping
     List<Categoria> getAllCategorie(){
         return service.getAllCategorie();
     }
