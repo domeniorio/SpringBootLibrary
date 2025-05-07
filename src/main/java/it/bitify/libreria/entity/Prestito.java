@@ -9,7 +9,7 @@ import java.time.LocalDate;
 public class Prestito {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "codicePrestito")
     private int codicePrestito;
 

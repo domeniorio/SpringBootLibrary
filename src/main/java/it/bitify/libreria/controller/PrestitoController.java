@@ -25,9 +25,7 @@ public class PrestitoController {
     }
 
     @PutMapping("/modifica/{id}")
-    public void modificaPrestito(@RequestBody Prestito Prestito, @PathVariable int id){
-        service.updatePrestito(Prestito, id);
-    }
+    public void modificaPrestito(@RequestBody Prestito Prestito, @PathVariable int id) { service.updatePrestito(Prestito, id); }
 
     @GetMapping("/")
     public List<Prestito> getAll(){
