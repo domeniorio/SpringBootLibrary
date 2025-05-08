@@ -16,7 +16,7 @@ public class StudenteServiceImpl implements StudenteService {
     private StudenteRepo repo;
 
     @Override
-    public Studente getStudenteById(int id) {
+    public Studente getStudenteById(Long id) {
         return repo.findById(id).orElseThrow(() -> new EntityNotFoundException("Valore non presente all'interno del database!"));
     }
 
@@ -26,18 +26,18 @@ public class StudenteServiceImpl implements StudenteService {
     }
 
     @Override
-    public void updateStudente(Studente nuovoStudente, int id) {
-        Studente vecchioStudente = repo.findById(id).orElseThrow(() -> new EntityNotFoundException("Valore non presente all'interno del database!"));
-        if(nuovoStudente.getNome() != null) vecchioStudente.setNome(nuovoStudente.getNome());
-        if(nuovoStudente.getCognome() != null) vecchioStudente.setCognome(nuovoStudente.getCognome());
-        if(nuovoStudente.getClasse() != null) vecchioStudente.setClasse(nuovoStudente.getClasse());
-        if(nuovoStudente.getEmail() != null) vecchioStudente.setEmail(nuovoStudente.getEmail());
-        repo.save(vecchioStudente);
+    public void updateStudente(Studente nuovoStudente) {
+        if(repo.existsById(nuovoStudente.getCodiceStudente())) {
+            repo.save(nuovoStudente);
+        }
+        else throw new EntityNotFoundException("Valore non presente all'interno del database!");
     }
 
     @Override
-    public void deleteStudente(int id) {
-        if(repo.existsById(id))  repo.deleteById(id);
+    public void deleteStudente(Long id) {
+        if(repo.existsById(id)) {
+            repo.deleteById(id);
+        }
         else throw new EntityNotFoundException("Valore non presente all'interno del database!");
     }
 

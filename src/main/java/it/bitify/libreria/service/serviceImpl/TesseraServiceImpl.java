@@ -16,7 +16,7 @@ public class TesseraServiceImpl implements TesseraService {
     private TesseraRepo repo;
 
     @Override
-    public Tessera getTesseraById(int id) {
+    public Tessera getTesseraById(Long id) {
         return repo.findById(id).orElseThrow(() -> new EntityNotFoundException("Valore non presente all'interno del database!"));
     }
 
@@ -26,15 +26,18 @@ public class TesseraServiceImpl implements TesseraService {
     }
 
     @Override
-    public void updateTessera(Tessera nuovaTessera, int id) {
-        Tessera vecchiaTessera = repo.findById(id).orElseThrow(() -> new EntityNotFoundException("Valore non presente all'interno del database!"));
-        if(nuovaTessera.getDataRilascio() != null) vecchiaTessera.setDataRilascio(nuovaTessera.getDataRilascio());
-        repo.save(vecchiaTessera);
+    public void updateTessera(Tessera nuovaTessera) {
+        if (repo.existsById(nuovaTessera.getCodiceTessera())){
+            repo.save(nuovaTessera);
+        }
+        else throw new EntityNotFoundException("Valore non presente all'interno del database!");
     }
 
     @Override
-    public void deletetessera(int id) {
-        if(repo.existsById(id))  repo.deleteById(id);
+    public void deletetessera(Long id) {
+        if(repo.existsById(id)){
+            repo.deleteById(id);
+        }
         else throw new EntityNotFoundException("Valore non presente all'interno del database!");
     }
 

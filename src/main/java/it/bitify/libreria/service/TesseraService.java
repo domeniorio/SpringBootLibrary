@@ -7,13 +7,13 @@ import java.util.List;
 
 public interface TesseraService {
 
-    Tessera getTesseraById(int id);
+    Tessera getTesseraById(Long id);
 
     void saveTessera(Tessera tessera);
 
-    void updateTessera(Tessera tessera, int id);
+    void updateTessera(Tessera tessera);
 
-    void deletetessera(int id);
+    void deletetessera(Long id);
 
     List<Tessera> getAllTessere();
 

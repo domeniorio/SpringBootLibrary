@@ -8,34 +8,34 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/corso")
+@RequestMapping("/api/v1/corso")
 public class CorsoController {
 
     @Autowired
     CorsoService service;
 
     @GetMapping("/{id}")
-    public Corso getCorsoById(@PathVariable int id){
+    public Corso getCorsoById(@PathVariable Long id){
         return service.getCorsoById(id);
     }
 
-    @PostMapping("/aggiungi")
+    @PostMapping
     public void aggiungiCorso(@RequestBody Corso corso){
         service.saveCorso(corso);
     }
 
-    @PutMapping("/modifica/{id}")
-    public void modificaCorso(@RequestBody Corso corso, @PathVariable int id){
-        service.updateCorso(corso, id);
+    @PutMapping
+    public void modificaCorso(@RequestBody Corso corso){
+        service.updateCorso(corso);
     }
 
-    @GetMapping("/")
+    @GetMapping
     public List<Corso> getAll(){
         return service.getAllCorsi();
     }
 
     @DeleteMapping("/{id}")
-    public void deleteCorso(@PathVariable int id){
+    public void deleteCorso(@PathVariable Long id){
         service.deleteCorso(id);
     }
 }

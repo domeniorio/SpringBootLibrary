@@ -10,9 +10,9 @@ import java.util.List;
 public class Categoria {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "codiceCategoria")
-    private int codiceCategoria;
+    private Long codiceCategoria;
 
     @Column(name = "nome", nullable = false)
     private String nome;
@@ -22,7 +22,7 @@ public class Categoria {
     private List<Libro> libri;
 
 
-    public int getCodiceCategoria() {
+    public Long getCodiceCategoria() {
         return codiceCategoria;
     }
 
@@ -30,7 +30,7 @@ public class Categoria {
         return nome;
     }
 
-    public void setCodiceCategoria(int codiceCategoria) {
+    public void setCodiceCategoria(Long codiceCategoria) {
         this.codiceCategoria = codiceCategoria;
     }
 

@@ -9,9 +9,9 @@ import java.time.LocalDate;
 public class Prestito {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "codicePrestito")
-    private int codicePrestito;
+    private Long codicePrestito;
 
     @Column(name = "dataInizio", nullable = false)
     private LocalDate dataInizio;
@@ -28,17 +28,17 @@ public class Prestito {
     private Libro libro;
 
 
-    public int getCodicePrestito() {
+    public Long getCodicePrestito() {
         return codicePrestito;
     }
 
-    public void setCodicePrestito(int codicePrestito) {
+    public void setCodicePrestito(Long codicePrestito) {
         this.codicePrestito = codicePrestito;
     }
 
     public Libro getLibro() { return libro; }
 
-    public void setLibro(Libro Libro) {
+    public void setLibro(Libro libro) {
         this.libro = libro;
     }
 

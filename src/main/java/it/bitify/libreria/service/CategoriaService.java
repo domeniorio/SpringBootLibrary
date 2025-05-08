@@ -6,13 +6,13 @@ import java.util.List;
 
 public interface CategoriaService {
 
-    Categoria getCategoriaById(int id);
+    Categoria getCategoriaById(Long id);
 
-    void saveCategoria(Categoria Categoria);
+    void saveCategoria(Categoria categoria);
 
-    void updateCategoria(Categoria Categoria, int id);
+    void updateCategoria(Categoria categoria);
 
-    void deleteCategoria(int id);
+    void deleteCategoria(Long id);
 
     List<Categoria> getAllCategorie();
 }

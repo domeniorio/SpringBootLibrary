@@ -8,34 +8,34 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/studente")
+@RequestMapping("/api/v1/studente")
 public class StudenteController {
 
     @Autowired
     StudenteService service;
 
     @GetMapping("/{id}")
-    public Studente getStudenteById(@PathVariable int id){
+    public Studente getStudenteById(@PathVariable Long id){
         return service.getStudenteById(id);
     }
 
-    @PostMapping("/aggiungi")
+    @PostMapping
     public void aggiungiStudente(@RequestBody Studente studente){
         service.saveStudente(studente);
     }
 
-    @PutMapping("/modifica/{id}")
-    public void modificaStudente(@RequestBody Studente studente, @PathVariable int id){
-        service.updateStudente(studente, id);
+    @PutMapping
+    public void modificaStudente(@RequestBody Studente studente){
+        service.updateStudente(studente);
     }
 
-    @GetMapping("/")
+    @GetMapping
     public List<Studente> getAll(){
         return service.getAllStudenti();
     }
 
     @DeleteMapping("/{id}")
-    public void deleteStudente(@PathVariable int id){
+    public void deleteStudente(@PathVariable Long id){
         service.deleteStudente(id);
     }
 }

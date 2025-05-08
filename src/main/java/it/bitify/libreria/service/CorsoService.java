@@ -6,13 +6,13 @@ import java.util.List;
 
 public interface CorsoService {
 
-    Corso getCorsoById(int id);
+    Corso getCorsoById(Long id);
 
-    void saveCorso(Corso Corse);
+    void saveCorso(Corso corso);
 
-    void updateCorso(Corso Corse, int id);
+    void updateCorso(Corso corso);
 
-    void deleteCorso(int id);
+    void deleteCorso(Long id);
 
     List<Corso> getAllCorsi();
 }

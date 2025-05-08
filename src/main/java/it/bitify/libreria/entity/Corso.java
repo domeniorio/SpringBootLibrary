@@ -9,9 +9,9 @@ import java.util.Set;
 public class Corso {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "codiceCorso")
-    private int codiceCorso;
+    private Long codiceCorso;
 
     @Column(name = "nome", nullable = false, unique = true)
     private String nome;
@@ -22,11 +22,11 @@ public class Corso {
     @ManyToMany(mappedBy = "corsi", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
     private Set<Studente> studenti;
 
-    public int getCodiceCorso() {
+    public Long getCodiceCorso() {
         return codiceCorso;
     }
 
-    public void setCodiceCorso(int codiceCorso) {
+    public void setCodiceCorso(Long codiceCorso) {
         this.codiceCorso = codiceCorso;
     }
 

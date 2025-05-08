@@ -8,34 +8,34 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/prestito")
+@RequestMapping("/api/v1/prestito")
 public class PrestitoController {
 
     @Autowired
     PrestitoService service;
 
     @GetMapping("/{id}")
-    public Prestito getPrestitoById(@PathVariable int id){
+    public Prestito getPrestitoById(@PathVariable Long id){
         return service.getPrestitoById(id);
     }
 
-    @PostMapping("/aggiungi")
+    @PostMapping
     public void aggiungiPrestito(@RequestBody Prestito Prestito){
         service.savePrestito(Prestito);
     }
 
-    @PutMapping("/modifica/{id}")
-    public void modificaPrestito(@RequestBody Prestito Prestito, @PathVariable int id){
-        service.updatePrestito(Prestito, id);
+    @PutMapping
+    public void modificaPrestito(@RequestBody Prestito Prestito) {
+        service.updatePrestito(Prestito);
     }
 
-    @GetMapping("/")
+    @GetMapping
     public List<Prestito> getAll(){
         return service.getAllPrestiti();
     }
 
     @DeleteMapping("/{id}")
-    public void deletePrestito(@PathVariable int id){
+    public void deletePrestito(@PathVariable Long id){
         service.deletePrestito(id);
     }
 }

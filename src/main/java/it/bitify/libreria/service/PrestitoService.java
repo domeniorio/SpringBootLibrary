@@ -6,13 +6,13 @@ import java.util.List;
 
 public interface PrestitoService {
 
-    Prestito getPrestitoById(int id);
+    Prestito getPrestitoById(Long id);
 
     void savePrestito(Prestito Prestito);
 
-    void updatePrestito(Prestito Prestito, int id);
+    void updatePrestito(Prestito Prestito);
 
-    void deletePrestito(int id);
+    void deletePrestito(Long id);
 
     List<Prestito> getAllPrestiti();
 }
