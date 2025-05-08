@@ -21,8 +21,8 @@ public class CategoriaServiceImpl implements CategoriaService {
     }
 
     @Override
-    public void saveCategoria(Categoria Categoria) {
-        repo.save(Categoria);
+    public void saveCategoria(Categoria categoria) {
+        repo.save(categoria);
     }
 
     @Override

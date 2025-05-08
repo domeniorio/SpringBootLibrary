@@ -32,8 +32,8 @@ public class StudenteController {
         @ApiResponse(responseCode = "200", description = "Found the student", 
             content = { @Content(mediaType = "application/json", 
             schema = @Schema(implementation = Studente.class)) }),
-        @ApiResponse(responseCode = "404", description = "Student not found", 
-            content = @Content) }
+        @ApiResponse(responseCode = "400", description = "Id type mismatch", content = @Content),
+        @ApiResponse(responseCode = "404", description = "Student not found", content = @Content) }
     )
     @GetMapping("/{id}")
     public Studente getStudenteById(@PathVariable Long id){
@@ -50,13 +50,13 @@ public class StudenteController {
         @ApiResponse(responseCode = "200", description = "Student added to the database", 
             content = { @Content(mediaType = "application/json", 
             schema = @Schema(implementation = Studente.class)) }),
-        @ApiResponse(responseCode = "400", description = "Data integrity violation", 
-            content = @Content)}
+        @ApiResponse(responseCode = "500", description = "Data integrity violation", content = @Content)}
     )
     @PostMapping
     public void aggiungiStudente(@RequestBody Studente studente){
         service.saveStudente(studente);
     }
+
 
     @Operation(
         summary = "Modify student",
@@ -64,13 +64,12 @@ public class StudenteController {
         tags = "put"
     )
     @ApiResponses(value = { 
-        @ApiResponse(responseCode = "200", description = "Student modifyied", 
+        @ApiResponse(responseCode = "200", description = "Student modified", 
             content = { @Content(mediaType = "application/json", 
-            schema = @Schema(implementation = Studente.class)) }),
-        @ApiResponse(responseCode = "400", description = "Data integrity violation", 
-            content = @Content), 
-        @ApiResponse(responseCode = "404", description = "Student not found", 
-            content = @Content) }
+            schema = @Schema(implementation = Studente.class)) }), 
+        @ApiResponse(responseCode = "400", description = "Id type mismatch", content = @Content),
+        @ApiResponse(responseCode = "404", description = "Student not found", content = @Content),
+        @ApiResponse(responseCode = "500", description = "Data integrity violation", content = @Content) }
     )
     @PutMapping
     public void modificaStudente(@RequestBody Studente studente){
@@ -93,6 +92,7 @@ public class StudenteController {
         return service.getAllStudenti();
     }
 
+
     @Operation(
         summary = "Delete student by id",
         description = "Delete a student object by specifying its id",
@@ -102,8 +102,9 @@ public class StudenteController {
         @ApiResponse(responseCode = "200", description = "student deleted", 
             content = { @Content(mediaType = "application/json", 
             schema = @Schema(implementation = Studente.class)) }),
-        @ApiResponse(responseCode = "404", description = "Student not found", 
-            content = @Content) }
+        @ApiResponse(responseCode = "400", description = "Id type mismatch", content = @Content),
+        @ApiResponse(responseCode = "404", description = "Student not found", content = @Content),
+        @ApiResponse(responseCode = "500", description = "Data integrity violation", content = @Content) }
     )
     @DeleteMapping("/{id}")
     public void deleteStudente(@PathVariable Long id){

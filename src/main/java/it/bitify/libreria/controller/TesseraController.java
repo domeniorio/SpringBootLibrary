@@ -1,3 +1,4 @@
+
 package it.bitify.libreria.controller;
 
 import it.bitify.libreria.entity.Tessera;
@@ -33,13 +34,14 @@ public class TesseraController {
         @ApiResponse(responseCode = "200", description = "Found the card", 
             content = { @Content(mediaType = "application/json", 
             schema = @Schema(implementation = Tessera.class)) }),
-        @ApiResponse(responseCode = "404", description = "Card not found", 
-            content = @Content) }
+        @ApiResponse(responseCode = "400", description = "Id type mismatch", content = @Content),
+        @ApiResponse(responseCode = "404", description = "Card not found", content = @Content) }
     )
     @GetMapping("/{id}")
     Tessera getTesseraById(@PathVariable Long id){
         return service.getTesseraById(id);
     }
+
 
     @Operation(
         summary = "Add card",
@@ -50,7 +52,7 @@ public class TesseraController {
         @ApiResponse(responseCode = "200", description = "Card added to the database", 
             content = { @Content(mediaType = "application/json", 
             schema = @Schema(implementation = Tessera.class)) }),
-        @ApiResponse(responseCode = "400", description = "Data integrity violation", 
+        @ApiResponse(responseCode = "500", description = "Data integrity violation", 
             content = @Content)}
     )
     @PostMapping
@@ -58,24 +60,26 @@ public class TesseraController {
         service.saveTessera(tessera);
     }
 
+
     @Operation(
         summary = "Modify card",
         description = "Modify a card object by specifying its id",
         tags = "put"
     )
     @ApiResponses(value = { 
-        @ApiResponse(responseCode = "200", description = "Card modifyied", 
+        @ApiResponse(responseCode = "200", description = "Card modified", 
             content = { @Content(mediaType = "application/json", 
             schema = @Schema(implementation = Tessera.class)) }),
-        @ApiResponse(responseCode = "400", description = "Data integrity violation", 
-            content = @Content), 
-        @ApiResponse(responseCode = "404", description = "Card not found", 
-            content = @Content) }
+
+        @ApiResponse(responseCode = "400", description = "Id type mismatch", content = @Content),
+        @ApiResponse(responseCode = "404", description = "Card not found", content = @Content),
+        @ApiResponse(responseCode = "500", description = "Data integrity violation", content = @Content) }
     )
     @PutMapping
     void modificaTessera(@RequestBody Tessera tessera){
         service.updateTessera(tessera);
     }
+
 
     @Operation(
         summary = "Delete by id",
@@ -86,13 +90,15 @@ public class TesseraController {
         @ApiResponse(responseCode = "200", description = "Card deleted", 
             content = { @Content(mediaType = "application/json", 
             schema = @Schema(implementation = Tessera.class)) }),
-        @ApiResponse(responseCode = "404", description = "card not found", 
-            content = @Content) }
+        @ApiResponse(responseCode = "400", description = "Id type mismatch", content = @Content),
+        @ApiResponse(responseCode = "404", description = "card not found", content = @Content),
+        @ApiResponse(responseCode = "500", description = "Data integrity violation", content = @Content) }
     )
     @DeleteMapping("/{id}")
     void rimuoviTessera(@PathVariable Long id){
         service.deletetessera(id);
     }
+
 
     @Operation(
         summary = "Retrieve all cards",

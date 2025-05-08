@@ -3,42 +3,48 @@ package it.bitify.libreria.exception;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
-import java.util.HashMap;
-import java.util.Map;
 
-@ControllerAdvice
+@RestControllerAdvice
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(EntityNotFoundException.class)
-    public ResponseEntity<Object> handleEntityNotFound(RuntimeException exception){
-        Map<String, Object> body = new HashMap<>();
-        body.put("message", exception.getMessage());
-        return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
+    public ResponseEntity<ErrorResponse> handleEntityNotFound(RuntimeException ex){
+        String message = "Entità non trovata";
+        String details = ex.getMessage();
+        ErrorResponse errorResponse = new ErrorResponse(HttpStatus.NOT_FOUND.value(), message, details);
+        return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
     }
 
 
     @ExceptionHandler(DataIntegrityViolationException.class)
-    public ResponseEntity<String> handleConstraintViolation(DataIntegrityViolationException ex) {
-        if (ex.getCause() != null){
-            if(ex.getCause().getMessage().contains("FOREIGN KEY")) {
-                return ResponseEntity.badRequest().body("Violazione di chiave esterna.");
-            } else if(ex.getCause().getMessage().contains("PRIMARY KEY")) {
-                return ResponseEntity.badRequest().body("Violazione di chiave primaria.");
-            } else if(ex.getCause().getMessage().contains("CONSTRAINT")){
-                return ResponseEntity.badRequest().body("Violazione di vincolo sui dati.");
+    public ResponseEntity<ErrorResponse> handleConstraintViolation(DataIntegrityViolationException ex) {
+        String message = "Violazione di integrità dei dati.";
+        String details = ex.getMessage();
+        
+        if (ex.getCause() != null) {
+            if (ex.getCause().getMessage().contains("FOREIGN KEY")) {
+                message = "Violazione di chiave esterna.";
+            } else if (ex.getCause().getMessage().contains("PRIMARY KEY")) {
+                message = "Violazione di chiave primaria.";
+            } else if (ex.getCause().getMessage().contains("CONSTRAINT")) {
+                message = "Violazione di vincolo sui dati.";
             }
         }
-        return ResponseEntity.badRequest().body("Violazione di integrità dei dati.");
+
+        ErrorResponse errorResponse = new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(), message, details);
+        return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
-    public ResponseEntity<String> handleTypeMismatch(MethodArgumentTypeMismatchException ex){
-        String error = "The IDENTIFIER you entered is invalid, as it should contain only numbers.";
-        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+    public ResponseEntity<ErrorResponse> handleTypeMismatch(MethodArgumentTypeMismatchException ex){
+        String message = "Il codice inserito non è valido poichè dovrebbe contenere solo dei numeri.";
+        String details = ex.getMessage();
+        ErrorResponse errorResponse = new ErrorResponse(HttpStatus.BAD_REQUEST.value(), message, details);
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 
 }
