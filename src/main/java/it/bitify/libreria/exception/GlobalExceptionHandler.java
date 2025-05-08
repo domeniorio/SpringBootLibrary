@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -32,6 +33,12 @@ public class GlobalExceptionHandler {
             }
         }
         return ResponseEntity.badRequest().body("Violazione di integrità dei dati.");
+    }
+
+    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+    public ResponseEntity<String> handleTypeMismatch(MethodArgumentTypeMismatchException ex){
+        String error = "The IDENTIFIER you entered is invalid, as it should contain only numbers.";
+        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
 
 }

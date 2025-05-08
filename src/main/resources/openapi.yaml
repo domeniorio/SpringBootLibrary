@@ -1,0 +1,609 @@
+openapi: 3.1.0
+info:
+  title: OpenAPI definition
+  version: v0
+servers:
+- url: http://localhost:8080
+  description: Generated server url
+tags:
+- name: Student
+  description: Student management APIs
+- name: Card
+  description: Card management APIs
+paths:
+  /api/v1/tessera:
+    get:
+      tags:
+      - get-all
+      - Card
+      summary: Retrieve all cards
+      description: Retrieve all card objects. The response is a list of card objects
+      operationId: getAllTessere
+      responses:
+        "200":
+          description: Retrieved all cards
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Tessera"
+    put:
+      tags:
+      - put
+      - Card
+      summary: Modify card
+      description: Modify a card object by specifying its id
+      operationId: modificaTessera
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Tessera"
+        required: true
+      responses:
+        "200":
+          description: Card modifyied
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Tessera"
+        "400":
+          description: Data integrity violation
+        "404":
+          description: Card not found
+    post:
+      tags:
+      - post
+      - Card
+      summary: Add card
+      description: Add a card object to the database
+      operationId: aggiungiTessera
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Tessera"
+        required: true
+      responses:
+        "200":
+          description: Card added to the database
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Tessera"
+        "400":
+          description: Data integrity violation
+  /api/v1/studente:
+    get:
+      tags:
+      - get-all
+      - Student
+      summary: Retrieve all students
+      description: Retrieve all student objects. The response is a list of student
+        objects
+      operationId: getAll
+      responses:
+        "200":
+          description: Retrieved all student
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Studente"
+    put:
+      tags:
+      - Student
+      - put
+      summary: Modify student
+      description: Modify a student object by specifying its id
+      operationId: modificaStudente
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Studente"
+        required: true
+      responses:
+        "200":
+          description: Student modifyied
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Studente"
+        "400":
+          description: Data integrity violation
+        "404":
+          description: Student not found
+    post:
+      tags:
+      - post
+      - Student
+      summary: Add student
+      description: Add a student object to the database
+      operationId: aggiungiStudente
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Studente"
+        required: true
+      responses:
+        "200":
+          description: Student added to the database
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Studente"
+        "400":
+          description: Data integrity violation
+  /api/v1/prestito:
+    get:
+      tags:
+      - prestito-controller
+      operationId: getAll_1
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Prestito"
+    put:
+      tags:
+      - prestito-controller
+      operationId: modificaPrestito
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Prestito"
+        required: true
+      responses:
+        "200":
+          description: OK
+    post:
+      tags:
+      - prestito-controller
+      operationId: aggiungiPrestito
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Prestito"
+        required: true
+      responses:
+        "200":
+          description: OK
+  /api/v1/libro:
+    get:
+      tags:
+      - libro-controller
+      operationId: getAll_2
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Libro"
+    put:
+      tags:
+      - libro-controller
+      operationId: modificaLibro
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Libro"
+        required: true
+      responses:
+        "200":
+          description: OK
+    post:
+      tags:
+      - libro-controller
+      operationId: aggiungiLibro
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Libro"
+        required: true
+      responses:
+        "200":
+          description: OK
+  /api/v1/corso:
+    get:
+      tags:
+      - corso-controller
+      operationId: getAll_3
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Corso"
+    put:
+      tags:
+      - corso-controller
+      operationId: modificaCorso
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Corso"
+        required: true
+      responses:
+        "200":
+          description: OK
+    post:
+      tags:
+      - corso-controller
+      operationId: aggiungiCorso
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Corso"
+        required: true
+      responses:
+        "200":
+          description: OK
+  /api/v1/categoria:
+    get:
+      tags:
+      - categoria-controller
+      operationId: getAllCategorie
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Categoria"
+    put:
+      tags:
+      - categoria-controller
+      operationId: modificaCategoria
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Categoria"
+        required: true
+      responses:
+        "200":
+          description: OK
+    post:
+      tags:
+      - categoria-controller
+      operationId: aggiungiCategoria
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Categoria"
+        required: true
+      responses:
+        "200":
+          description: OK
+  /api/v1/tessera/{id}:
+    get:
+      tags:
+      - get
+      - Card
+      summary: Retrieve card by id
+      description: Retrieve a card object by specifying its id. The response is a
+        card object
+      operationId: getTesseraById
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: Found the card
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Tessera"
+        "404":
+          description: Card not found
+    delete:
+      tags:
+      - delete
+      - Card
+      summary: Delete by id
+      description: Delete a card object by specifying its id
+      operationId: rimuoviTessera
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: Card deleted
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Tessera"
+        "404":
+          description: card not found
+  /api/v1/studente/{id}:
+    get:
+      tags:
+      - get
+      - Student
+      summary: Retrieve student by id
+      description: Retrieve a student object by specifying its id. The response is
+        a student object
+      operationId: getStudenteById
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: Found the student
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Studente"
+        "404":
+          description: Student not found
+    delete:
+      tags:
+      - Student
+      - delete
+      summary: Delete student by id
+      description: Delete a student object by specifying its id
+      operationId: deleteStudente
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: student deleted
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Studente"
+        "404":
+          description: Student not found
+  /api/v1/prestito/{id}:
+    get:
+      tags:
+      - prestito-controller
+      operationId: getPrestitoById
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Prestito"
+    delete:
+      tags:
+      - prestito-controller
+      operationId: deletePrestito
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: OK
+  /api/v1/libro/{id}:
+    get:
+      tags:
+      - libro-controller
+      operationId: getLibroById
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Libro"
+    delete:
+      tags:
+      - libro-controller
+      operationId: deleteLibro
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: OK
+  /api/v1/corso/{id}:
+    get:
+      tags:
+      - corso-controller
+      operationId: getCorsoById
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Corso"
+    delete:
+      tags:
+      - corso-controller
+      operationId: deleteCorso
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: OK
+  /api/v1/categoria/{id}:
+    get:
+      tags:
+      - categoria-controller
+      operationId: getCategoriaById
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Categoria"
+    delete:
+      tags:
+      - categoria-controller
+      operationId: rimuoviCategoria
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: OK
+components:
+  schemas:
+    Tessera:
+      type: object
+      properties:
+        codiceTessera:
+          type: integer
+          format: int64
+        dataRilascio:
+          type: string
+          format: date
+    Studente:
+      type: object
+      properties:
+        codiceStudente:
+          type: integer
+          format: int64
+        nome:
+          type: string
+        cognome:
+          type: string
+        classe:
+          type: string
+        email:
+          type: string
+        tessera:
+          $ref: "#/components/schemas/Tessera"
+    Categoria:
+      type: object
+      properties:
+        codiceCategoria:
+          type: integer
+          format: int64
+        nome:
+          type: string
+        libri:
+          type: array
+          items:
+            $ref: "#/components/schemas/Libro"
+    Libro:
+      type: object
+      properties:
+        codiceLibro:
+          type: integer
+          format: int64
+        anno:
+          type: integer
+          format: int32
+        categoria:
+          $ref: "#/components/schemas/Categoria"
+        title:
+          type: string
+        author:
+          type: string
+    Prestito:
+      type: object
+      properties:
+        codicePrestito:
+          type: integer
+          format: int64
+        dataInizio:
+          type: string
+          format: date
+        dataFine:
+          type: string
+          format: date
+        studente:
+          $ref: "#/components/schemas/Studente"
+        libro:
+          $ref: "#/components/schemas/Libro"
+    Corso:
+      type: object
+      properties:
+        codiceCorso:
+          type: integer
+          format: int64
+        nome:
+          type: string
+        descrizione:
+          type: string
+        studenti:
+          type: array
+          items:
+            $ref: "#/components/schemas/Studente"
+          uniqueItems: true
