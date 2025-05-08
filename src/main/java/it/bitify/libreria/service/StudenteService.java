@@ -4,6 +4,9 @@ import it.bitify.libreria.entity.Studente;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
 public interface StudenteService {
 
     Studente getStudenteById(Long id);
@@ -14,5 +17,5 @@ public interface StudenteService {
 
     void deleteStudente(Long id);
 
-    List<Studente> getAllStudenti();
+    Page<Studente> getAllStudenti(Pageable pageable);
 }

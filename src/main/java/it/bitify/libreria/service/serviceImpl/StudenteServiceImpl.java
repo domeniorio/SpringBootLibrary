@@ -5,6 +5,8 @@ import it.bitify.libreria.exception.EntityNotFoundException;
 import it.bitify.libreria.repository.StudenteRepo;
 import it.bitify.libreria.service.StudenteService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -42,7 +44,7 @@ public class StudenteServiceImpl implements StudenteService {
     }
 
     @Override
-    public List<Studente> getAllStudenti() {
-        return repo.findAll();
+    public Page<Studente> getAllStudenti(Pageable pageable) {
+        return repo.findAll(pageable);
     }
 }
