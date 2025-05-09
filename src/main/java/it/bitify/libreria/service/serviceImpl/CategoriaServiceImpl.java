@@ -31,7 +31,6 @@ public class CategoriaServiceImpl implements CategoriaService {
             repo.save(nuovaCategoria);
         }
         else new EntityNotFoundException("Valore non presente all'interno del database!");
-
     }
 
     @Override

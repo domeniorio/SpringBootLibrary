@@ -21,12 +21,10 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
     }
 
-
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ResponseEntity<ErrorResponse> handleConstraintViolation(DataIntegrityViolationException ex) {
         String message = "Violazione di integrità dei dati.";
-        String details = ex.getMessage();
-        
+        String details = ex.getMessage();  
         if (ex.getCause() != null) {
             if (ex.getCause().getMessage().contains("FOREIGN KEY")) {
                 message = "Violazione di chiave esterna.";
@@ -36,7 +34,6 @@ public class GlobalExceptionHandler {
                 message = "Violazione di vincolo sui dati.";
             }
         }
-
         ErrorResponse errorResponse = new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(), message, details);
         return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
     }
@@ -72,6 +69,5 @@ public class GlobalExceptionHandler {
         ErrorResponse errorResponse = new ErrorResponse(HttpStatus.BAD_REQUEST.value(), message, details);
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
-    
-  
+
 }

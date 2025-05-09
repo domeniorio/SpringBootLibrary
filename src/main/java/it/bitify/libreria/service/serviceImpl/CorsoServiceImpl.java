@@ -32,7 +32,6 @@ public class CorsoServiceImpl implements CorsoService {
             repo.save(nuovoCorso);
         }
         else new EntityNotFoundException("Valore non presente all'interno del database!");
-
     }
 
     @Override
