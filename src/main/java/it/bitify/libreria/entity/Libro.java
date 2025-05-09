@@ -1,0 +1,72 @@
+package it.bitify.libreria.entity;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import jakarta.persistence.*;
+import java.util.List;
+
+@Entity
+@Table(name = "Libro")
+public class Libro {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private Long id;
+
+    @Column(name = "titolo", nullable = false, unique = true)
+    private String titolo;
+
+    @Column(name = "autore", nullable = false)
+    private String autore;
+
+    @Column(name = "anno")
+    private Integer anno;
+
+    @ManyToOne
+    @JoinColumn(name="idCategoria")
+    @JsonBackReference
+    private Categoria categoria;
+
+    @OneToMany(mappedBy = "libro", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
+    private List<Prestito> prestiti;
+
+    public Long getCodiceLibro() {
+        return this.id;
+    }
+
+    public String getAuthor() {
+        return autore;
+    }
+
+    public String getTitle() {
+        return titolo;
+    }
+
+    public void setAuthor(String author) {
+        this.autore = author;
+    }
+
+    public void setCodiceLibro(Long id) {
+        this.id = id;
+    }
+
+    public void setTitle(String title) {
+        this.titolo = title;
+    }
+
+    public void setCategoria(Categoria categoria) {
+        this.categoria = categoria;
+    }
+
+    public Categoria getCategoria() {
+        return this.categoria;
+    }
+
+    public Integer getAnno() {
+        return anno;
+    }
+
+    public void setAnno(int anno) {
+        this.anno = anno;
+    }
+}
