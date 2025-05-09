@@ -1,13 +1,16 @@
 package it.bitify.libreria.service.serviceImpl;
 
+import it.bitify.libreria.entity.Libro;
 import it.bitify.libreria.entity.Prestito;
+import it.bitify.libreria.entity.Studente;
 import it.bitify.libreria.exception.EntityNotFoundException;
 import it.bitify.libreria.repository.PrestitoRepo;
 import it.bitify.libreria.service.PrestitoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 
 @Service
 public class PrestitoServiceImpl implements PrestitoService {
@@ -41,7 +44,12 @@ public class PrestitoServiceImpl implements PrestitoService {
     }
 
     @Override
-    public List<Prestito> getAllPrestiti() {
-        return repo.findAll();
+    public Page<Prestito> getAllPrestiti(Pageable pageable) {
+        return repo.findAll(pageable);
+    }
+
+    @Override
+    public Page<Prestito> findByStudenteOrLibro(Studente studente, Libro libro, Pageable pageable) {
+        return repo.findByStudenteOrLibro(studente, libro, pageable);
     }
 }

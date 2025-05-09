@@ -2,8 +2,6 @@ package it.bitify.libreria.service;
 
 import it.bitify.libreria.entity.Studente;
 
-import java.util.List;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -18,4 +16,6 @@ public interface StudenteService {
     void deleteStudente(Long id);
 
     Page<Studente> getAllStudenti(Pageable pageable);
+
+    Page<Studente> getStudenteByNomeAndCognome(String nome, String cognome, Pageable pageable);
 }

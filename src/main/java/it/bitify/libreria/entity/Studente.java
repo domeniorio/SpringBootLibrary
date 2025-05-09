@@ -11,8 +11,8 @@ public class Studente {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "codiceStudente")
-    private Long codiceStudente;
+    @Column(name = "id")
+    private Long id;
 
     @Column(name = "nome", nullable = false, length = 30)
     private String nome;
@@ -30,20 +30,20 @@ public class Studente {
     private List<Prestito> prestiti;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name="codiceTessera")
+    @JoinColumn(name="idTessera")
     private Tessera tessera;
 
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
-    @JoinTable(name = "ISCRIZIONE", joinColumns = @JoinColumn(name = "codiceStudente"),
-            inverseJoinColumns = @JoinColumn(name = "codiceCorso"))
+    @JoinTable(name = "ISCRIZIONE", joinColumns = @JoinColumn(name = "idStudente"),
+            inverseJoinColumns = @JoinColumn(name = "idCorso"))
     private Set<Corso> corsi;
 
     public Long getCodiceStudente() {
-        return codiceStudente;
+        return id;
     }
 
-    public void setCodiceStudente(Long codiceStudente) {
-        this.codiceStudente = codiceStudente;
+    public void setCodiceStudente(Long id) {
+        this.id = id;
     }
 
     public String getCognome() {

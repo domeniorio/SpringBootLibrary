@@ -27,6 +27,11 @@ paths:
       summary: Retrieve all cards
       description: Retrieve all card objects. The response is a list of card objects.
       operationId: getAllTessere
+      parameters:
+        - $ref: '#/components/parameters/PageParam'
+        - $ref: '#/components/parameters/SizeParam'
+        - $ref: '#/components/parameters/AscParam'
+        - $ref: '#/components/parameters/SortByParam'
       responses:
         "200":
           description: Retrieved all cards
@@ -91,6 +96,11 @@ paths:
       description: Retrieve all student objects. The response is a list of student
         objects
       operationId: getAll
+      parameters:
+        - $ref: '#/components/parameters/PageParam'
+        - $ref: '#/components/parameters/SizeParam'
+        - $ref: '#/components/parameters/AscParam'
+        - $ref: '#/components/parameters/SortByParam'
       responses:
         "200":
           description: Retrieved all student
@@ -154,6 +164,11 @@ paths:
       summary: Retrieve all students
       description: Retrieve all Loan objects. The response is a list of Loan objects
       operationId: getAll_1
+      parameters:
+        - $ref: '#/components/parameters/PageParam'
+        - $ref: '#/components/parameters/SizeParam'
+        - $ref: '#/components/parameters/AscParam'
+        - $ref: '#/components/parameters/SortByParam'
       responses:
         "200":
           description: Retrieved all Loan
@@ -217,6 +232,11 @@ paths:
       summary: Retrieve all students
       description: Retrieve all Book objects. The response is a list of Book objects
       operationId: getAll_2
+      parameters:
+        - $ref: '#/components/parameters/PageParam'
+        - $ref: '#/components/parameters/SizeParam'
+        - $ref: '#/components/parameters/AscParam'
+        - $ref: '#/components/parameters/SortByParam'
       responses:
         "200":
           description: Retrieved all Book
@@ -280,6 +300,11 @@ paths:
       summary: Retrieve all students
       description: Retrieve all Course objects. The response is a list of Course objects
       operationId: getAll_3
+      parameters:
+        - $ref: '#/components/parameters/PageParam'
+        - $ref: '#/components/parameters/SizeParam'
+        - $ref: '#/components/parameters/AscParam'
+        - $ref: '#/components/parameters/SortByParam'
       responses:
         "200":
           description: Retrieved all Course
@@ -344,6 +369,11 @@ paths:
       description: Retrieve all Category objects. The response is a list of Category
         objects
       operationId: getAllCategorie
+      parameters:
+        - $ref: '#/components/parameters/PageParam'
+        - $ref: '#/components/parameters/SizeParam'
+        - $ref: '#/components/parameters/AscParam'
+        - $ref: '#/components/parameters/SortByParam'
       responses:
         "200":
           description: Retrieved all Category
@@ -728,7 +758,7 @@ components:
     Tessera:
       type: object
       properties:
-        codiceTessera:
+        id:
           type: integer
           format: int64
         dataRilascio:
@@ -737,7 +767,7 @@ components:
     Studente:
       type: object
       properties:
-        codiceStudente:
+        id:
           type: integer
           format: int64
         nome:
@@ -753,7 +783,7 @@ components:
     Categoria:
       type: object
       properties:
-        codiceCategoria:
+        id:
           type: integer
           format: int64
         nome:
@@ -765,7 +795,7 @@ components:
     Libro:
       type: object
       properties:
-        codiceLibro:
+        id:
           type: integer
           format: int64
         anno:
@@ -780,7 +810,7 @@ components:
     Prestito:
       type: object
       properties:
-        codicePrestito:
+        id:
           type: integer
           format: int64
         dataInizio:
@@ -796,7 +826,7 @@ components:
     Corso:
       type: object
       properties:
-        codiceCorso:
+        id:
           type: integer
           format: int64
         nome:
@@ -808,3 +838,33 @@ components:
           items:
             $ref: "#/components/schemas/Studente"
           uniqueItems: true
+  parameters:
+    PageParam:
+      name: page
+      in: query
+      required: false
+      schema:
+        type: integer
+        default: 0
+    SizeParam:
+      name: size
+      in: query
+      required: false
+      schema:
+        type: integer
+        default: 5
+    AscParam:
+      name: ascending
+      in: query
+      required: false
+      schema:
+        type: boolean
+        default: true
+    SortByParam:
+      name: sortBy
+      in: query
+      required: false
+      schema:
+        type: string
+        default: id
+

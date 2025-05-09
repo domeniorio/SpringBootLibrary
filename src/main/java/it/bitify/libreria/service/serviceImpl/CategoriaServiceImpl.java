@@ -5,9 +5,9 @@ import it.bitify.libreria.exception.EntityNotFoundException;
 import it.bitify.libreria.repository.CategoriaRepo;
 import it.bitify.libreria.service.CategoriaService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class CategoriaServiceImpl implements CategoriaService {
@@ -41,7 +41,7 @@ public class CategoriaServiceImpl implements CategoriaService {
     }
 
     @Override
-    public List<Categoria> getAllCategorie() {
-        return repo.findAll();
+    public Page<Categoria> getAllCategorie(Pageable pageable) {
+        return repo.findAll(pageable);
     }
 }

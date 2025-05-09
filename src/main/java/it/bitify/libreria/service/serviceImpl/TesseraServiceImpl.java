@@ -5,9 +5,10 @@ import it.bitify.libreria.exception.EntityNotFoundException;
 import it.bitify.libreria.repository.TesseraRepo;
 import it.bitify.libreria.service.TesseraService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 
 @Service
 public class TesseraServiceImpl implements TesseraService {
@@ -42,7 +43,7 @@ public class TesseraServiceImpl implements TesseraService {
     }
 
     @Override
-    public List<Tessera> getAllTessere() {
-        return repo.findAll();
+    public Page<Tessera> getAllTessere(Pageable pageable) {
+        return repo.findAll(pageable);
     }
 }

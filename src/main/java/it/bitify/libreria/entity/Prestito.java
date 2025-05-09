@@ -10,8 +10,8 @@ public class Prestito {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "codicePrestito")
-    private Long codicePrestito;
+    @Column(name = "id")
+    private Long id;
 
     @Column(name = "dataInizio", nullable = false)
     private LocalDate dataInizio;
@@ -20,20 +20,20 @@ public class Prestito {
     private LocalDate dataFine;
 
     @ManyToOne
-    @JoinColumn(name="codiceStudente")
+    @JoinColumn(name="idStudente")
     private Studente studente;
 
     @ManyToOne
-    @JoinColumn(name="codiceLibro")
+    @JoinColumn(name="idLibro")
     private Libro libro;
 
 
     public Long getCodicePrestito() {
-        return codicePrestito;
+        return id;
     }
 
-    public void setCodicePrestito(Long codicePrestito) {
-        this.codicePrestito = codicePrestito;
+    public void setCodicePrestito(Long id) {
+        this.id = id;
     }
 
     public Libro getLibro() { return libro; }

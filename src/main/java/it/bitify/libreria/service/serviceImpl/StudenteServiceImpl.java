@@ -9,7 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+
 
 @Service
 public class StudenteServiceImpl implements StudenteService {
@@ -46,5 +46,10 @@ public class StudenteServiceImpl implements StudenteService {
     @Override
     public Page<Studente> getAllStudenti(Pageable pageable) {
         return repo.findAll(pageable);
+    }
+
+    @Override
+    public Page<Studente> getStudenteByNomeAndCognome(String nome, String cognome, Pageable pageable) {
+       return repo.findByNomeAndCognome(nome, cognome, pageable);
     }
 }

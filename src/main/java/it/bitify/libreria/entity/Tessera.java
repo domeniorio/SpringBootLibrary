@@ -10,8 +10,8 @@ public class Tessera {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "codiceTessera")
-    private Long codiceTessera;
+    @Column(name = "id")
+    private Long id;
 
     @Column(name = "dataRilascio", nullable = false)
     private LocalDate dataRilascio;
@@ -23,8 +23,8 @@ public class Tessera {
         this.dataRilascio = dataRilascio;
     }
 
-    public void setCodiceTessera(Long codiceTessera) {
-        this.codiceTessera = codiceTessera;
+    public void setCodiceTessera(Long id) {
+        this.id = id;
     }
 
     public LocalDate getDataRilascio() {
@@ -32,6 +32,6 @@ public class Tessera {
     }
 
     public Long getCodiceTessera() {
-        return codiceTessera;
+        return id;
     }
 }

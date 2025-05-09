@@ -7,10 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.domain.jaxb.PageAdapter;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 
 @RestController
@@ -38,7 +35,7 @@ public class StudenteController {
     @GetMapping
     public Page<Studente> getAll(@RequestParam(defaultValue = "0") int page,
     @RequestParam(defaultValue = "5") int size,
-    @RequestParam(defaultValue = "codiceStudente") String sortBy,
+    @RequestParam(defaultValue = "id") String sortBy,
     @RequestParam(defaultValue = "true") boolean ascending){
         Sort sort = ascending ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
         Pageable pageable = PageRequest.of(page, size, sort);
@@ -49,4 +46,17 @@ public class StudenteController {
     public void deleteStudente(@PathVariable Long id){
         service.deleteStudente(id);
     }
+
+    @GetMapping("/find")
+    public Page<Studente> getByNomeAndCognome(@RequestParam String nome,
+    @RequestParam String cognome,
+    @RequestParam(defaultValue = "0") int page,
+    @RequestParam(defaultValue = "5") int size,
+    @RequestParam(defaultValue = "id") String sortBy,
+    @RequestParam(defaultValue = "true") boolean ascending){
+        Sort sort = ascending ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
+        Pageable pageable = PageRequest.of(page, size, sort);
+        return service.getStudenteByNomeAndCognome(nome,cognome,pageable);
+    }
+
 }

@@ -1,5 +1,5 @@
 -- Insert per Tessera
-INSERT INTO Tessera (codice_tessera, data_rilascio) VALUES
+INSERT INTO Tessera (id, data_rilascio) VALUES
 (1, '2023-09-01'),
 (2, '2023-09-02'),
 (3, '2023-09-03'),
@@ -20,11 +20,11 @@ INSERT INTO Tessera (codice_tessera, data_rilascio) VALUES
 (18, '2023-09-18'),
 (19, '2023-09-19'),
 (20, '2023-09-20');
-ALTER TABLE Tessera ALTER COLUMN codice_tessera RESTART WITH 21;
+ALTER TABLE Tessera ALTER COLUMN id RESTART WITH 21;
 
 
 -- Insert per Studente
-INSERT INTO Studente (codice_studente, nome, cognome, classe, email, codice_tessera) VALUES
+INSERT INTO Studente (id, nome, cognome, classe, email, id_tessera) VALUES
 (1, 'Luca', 'Rossi', '3A', 'luca.rossi@example.com', 1),
 (2, 'Marco', 'Verdi', '3A', 'marco.verdi@example.com', 2),
 (3, 'Anna', 'Bianchi', '3B', 'anna.bianchi@example.com', 3),
@@ -45,21 +45,21 @@ INSERT INTO Studente (codice_studente, nome, cognome, classe, email, codice_tess
 (18, 'Federico', 'Santoro', '5C', 'federico.santoro@example.com', 18),
 (19, 'Laura', 'Esposito', '3A', 'laura.esposito@example.com', 19),
 (20, 'Nicola', 'Moretti', '4A', 'nicola.moretti@example.com', 20);
-ALTER TABLE Studente ALTER COLUMN codice_studente RESTART WITH 21;
+ALTER TABLE Studente ALTER COLUMN id RESTART WITH 21;
 
 
 --Insert per Categoria
-INSERT INTO Categoria (codice_categoria, nome) VALUES
+INSERT INTO Categoria (id, nome) VALUES
 (1, 'Narrativa'),
 (2, 'Saggistica'),
 (3, 'Fantascienza'),
 (4, 'Biografia'),
 (5, 'Storico');
-ALTER TABLE Categoria ALTER COLUMN codice_categoria RESTART WITH 6;
+ALTER TABLE Categoria ALTER COLUMN id RESTART WITH 6;
 
 
 --Insert per Libro
-INSERT INTO Libro (codice_libro, titolo, autore, anno, codice_categoria) VALUES
+INSERT INTO Libro (id, titolo, autore, anno, id_categoria) VALUES
 (1, 'Il mondo nuovo', 'Aldous Huxley', 1932, 3),
 (2, '1984', 'George Orwell', 1949, 3),
 (3, 'Breve storia del tempo', 'Stephen Hawking', 1988, 2),
@@ -80,11 +80,11 @@ INSERT INTO Libro (codice_libro, titolo, autore, anno, codice_categoria) VALUES
 (18, 'L’arte della guerra', 'Sun Tzu', -500, 5),
 (19, 'La strada', 'Cormac McCarthy', 2006, 1),
 (20, 'Nel mare ci sono i coccodrilli', 'Fabio Geda', 2010, 4);
-ALTER TABLE Libro ALTER COLUMN codice_libro RESTART WITH 21;
+ALTER TABLE Libro ALTER COLUMN id RESTART WITH 21;
 
 
 --Insert per Prestito
-INSERT INTO Prestito (codice_prestito, data_inizio, data_fine, codice_studente, codice_libro) VALUES
+INSERT INTO Prestito (id, data_inizio, data_fine, id_studente, id_libro) VALUES
 (1, '2023-01-10', '2023-01-24', 1, 5),
 (2, '2023-01-15', NULL, 2, 12),
 (3, '2023-02-01', '2023-02-15', 3, 7),
@@ -105,11 +105,11 @@ INSERT INTO Prestito (codice_prestito, data_inizio, data_fine, codice_studente, 
 (18, '2023-11-01', '2023-11-15', 18, 16),
 (19, '2023-11-20', '2023-12-04', 1, 11),
 (20, '2023-12-10', '2023-12-24', 20, 18);
-ALTER TABLE Prestito ALTER COLUMN codice_prestito RESTART WITH 21;
+ALTER TABLE Prestito ALTER COLUMN id RESTART WITH 21;
 
 
 --Insert per Corso
-INSERT INTO Corso (codice_corso, nome, descrizione) VALUES
+INSERT INTO Corso (id, nome, descrizione) VALUES
 (1, 'Programmazione I', 'Introduzione alla programmazione con linguaggi imperativi.'),
 (2, 'Analisi Matematica I', 'Studio delle funzioni, limiti, derivate e integrali.'),
 (3, 'Fisica Generale', 'Fondamenti di meccanica, termodinamica ed elettromagnetismo.'),
@@ -120,9 +120,11 @@ INSERT INTO Corso (codice_corso, nome, descrizione) VALUES
 (8, 'Reti di Calcolatori', 'Architetture, protocolli e sicurezza nelle reti informatiche.'),
 (9, 'Algoritmi e Strutture Dati', 'Analisi, progettazione e implementazione di algoritmi efficienti.'),
 (10, 'Intelligenza Artificiale', 'Introduzione a tecniche e applicazioni dell’AI, tra cui machine learning.');
+ALTER TABLE Corso ALTER COLUMN id RESTART WITH 11;
+
 
 --Insert per iscrizione
-INSERT INTO Iscrizione (codice_studente, codice_corso) VALUES
+INSERT INTO Iscrizione (id_studente,id_corso) VALUES
 (1, 1),
 (1, 2),
 (2, 3),

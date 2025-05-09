@@ -2,7 +2,8 @@ package it.bitify.libreria.service;
 
 import it.bitify.libreria.entity.Categoria;
 
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface CategoriaService {
 
@@ -14,5 +15,5 @@ public interface CategoriaService {
 
     void deleteCategoria(Long id);
 
-    List<Categoria> getAllCategorie();
+    Page<Categoria> getAllCategorie(Pageable pageable);
 }

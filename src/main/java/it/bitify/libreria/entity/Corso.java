@@ -10,8 +10,8 @@ public class Corso {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "codiceCorso")
-    private Long codiceCorso;
+    @Column(name = "id")
+    private Long id;
 
     @Column(name = "nome", nullable = false, unique = true)
     private String nome;
@@ -23,11 +23,11 @@ public class Corso {
     private Set<Studente> studenti;
 
     public Long getCodiceCorso() {
-        return codiceCorso;
+        return id;
     }
 
-    public void setCodiceCorso(Long codiceCorso) {
-        this.codiceCorso = codiceCorso;
+    public void setCodiceCorso(Long id) {
+        this.id = id;
     }
 
     public String getNome() {

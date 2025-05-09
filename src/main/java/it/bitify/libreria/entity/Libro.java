@@ -10,8 +10,8 @@ public class Libro {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "codiceLibro")
-    private Long codiceLibro;
+    @Column(name = "id")
+    private Long id;
 
     @Column(name = "titolo", nullable = false, unique = true)
     private String titolo;
@@ -23,7 +23,7 @@ public class Libro {
     private Integer anno;
 
     @ManyToOne
-    @JoinColumn(name="codiceCategoria")
+    @JoinColumn(name="idCategoria")
     @JsonBackReference
     private Categoria categoria;
 
@@ -31,7 +31,7 @@ public class Libro {
     private List<Prestito> prestiti;
 
     public Long getCodiceLibro() {
-        return this.codiceLibro;
+        return this.id;
     }
 
     public String getAuthor() {
@@ -47,7 +47,7 @@ public class Libro {
     }
 
     public void setCodiceLibro(Long id) {
-        this.codiceLibro = id;
+        this.id = id;
     }
 
     public void setTitle(String title) {

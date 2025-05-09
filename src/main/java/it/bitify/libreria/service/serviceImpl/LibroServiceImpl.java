@@ -4,10 +4,12 @@ import it.bitify.libreria.entity.Libro;
 import it.bitify.libreria.exception.EntityNotFoundException;
 import it.bitify.libreria.repository.LibroRepo;
 import it.bitify.libreria.service.LibroService;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 
 @Service
 public class LibroServiceImpl implements LibroService {
@@ -43,7 +45,19 @@ public class LibroServiceImpl implements LibroService {
     }
 
     @Override
-    public List<Libro> getAllLibri() {
-        return repo.findAll();
+    public Page<Libro> getAllLibri(Pageable pageable) {
+        return repo.findAll(pageable);
     }
+
+    @Override
+    public Page<Libro> findByTitleContaining(String infix, Pageable pageable) {
+        return repo.findByTitoloContaining(infix, pageable);
+    }
+
+    @Override
+    public Page<Libro> findByAnnoBetween(Integer startYear, Integer endYear, Pageable pageable) {
+        return repo.findByAnnoBetween(startYear, endYear, pageable);
+    }
+
+
 }

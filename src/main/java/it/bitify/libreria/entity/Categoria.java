@@ -11,8 +11,8 @@ public class Categoria {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "codiceCategoria")
-    private Long codiceCategoria;
+    @Column(name = "id")
+    private Long id;
 
     @Column(name = "nome", nullable = false)
     private String nome;
@@ -23,15 +23,15 @@ public class Categoria {
 
 
     public Long getCodiceCategoria() {
-        return codiceCategoria;
+        return id;
     }
 
     public String getNome() {
         return nome;
     }
 
-    public void setCodiceCategoria(Long codiceCategoria) {
-        this.codiceCategoria = codiceCategoria;
+    public void setCodiceCategoria(Long id) {
+        this.id = id;
     }
 
     public void setNome(String nome) {

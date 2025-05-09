@@ -2,7 +2,9 @@ package it.bitify.libreria.service;
 
 import it.bitify.libreria.entity.Libro;
 
-import java.util.List;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface LibroService {
 
@@ -14,5 +16,9 @@ public interface LibroService {
 
     void deleteLibro(Long id);
 
-    List<Libro> getAllLibri();
+    Page<Libro> getAllLibri(Pageable pageable);
+
+    Page<Libro> findByTitleContaining(String infix, Pageable pageable);
+    Page<Libro> findByAnnoBetween(Integer startYear, Integer endYear, Pageable pageable);
+
 }
