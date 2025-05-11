@@ -19,7 +19,7 @@ tags:
 - name: Card
   description: Card management APIs
 paths:
-  /api/v1/tessera:
+  /api/v1/card:
     get:
       tags:
       - get-all
@@ -38,19 +38,19 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Tessera"
+                $ref: "#/components/schemas/Card"
     put:
       tags:
       - put
       - Card
       summary: Modify card
       description: Modify a card object by specifying its id
-      operationId: modificaTessera
+      operationId: editCard
       requestBody:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/Tessera"
+              $ref: "#/components/schemas/Card"
         required: true
       responses:
         "200":
@@ -58,7 +58,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Tessera"
+                $ref: "#/components/schemas/Card"
         "400":
           description: Id type mismatch
         "404":
@@ -71,12 +71,12 @@ paths:
       - Card
       summary: Add card
       description: Add a card object to the database
-      operationId: aggiungiTessera
+      operationId: addCard
       requestBody:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/Tessera"
+              $ref: "#/components/schemas/Card"
         required: true
       responses:
         "200":
@@ -84,10 +84,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Tessera"
+                $ref: "#/components/schemas/Card"
         "500":
           description: Data integrity violation
-  /api/v1/studente:
+  /api/v1/student:
     get:
       tags:
       - get-all
@@ -107,19 +107,19 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Studente"
+                $ref: "#/components/schemas/Student"
     put:
       tags:
       - Student
       - put
       summary: Modify student
       description: Modify a student object by specifying its id
-      operationId: modificaStudente
+      operationId: editstudent
       requestBody:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/Studente"
+              $ref: "#/components/schemas/Student"
         required: true
       responses:
         "200":
@@ -127,7 +127,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Studente"
+                $ref: "#/components/schemas/Student"
         "400":
           description: Id type mismatch
         "404":
@@ -140,12 +140,12 @@ paths:
       - Student
       summary: Add student
       description: Add a student object to the database
-      operationId: aggiungiStudente
+      operationId: addstudent
       requestBody:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/Studente"
+              $ref: "#/components/schemas/Student"
         required: true
       responses:
         "200":
@@ -153,15 +153,15 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Studente"
+                $ref: "#/components/schemas/Student"
         "500":
           description: Data integrity violation
-  /api/v1/prestito:
+  /api/v1/loan:
     get:
       tags:
       - Loan
       - get-all
-      summary: Retrieve all students
+      summary: Retrieve all loans
       description: Retrieve all Loan objects. The response is a list of Loan objects
       operationId: getAll_1
       parameters:
@@ -175,19 +175,19 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Studente"
+                $ref: "#/components/schemas/Student"
     put:
       tags:
       - Loan
       - put
       summary: Modify Loan
       description: Modify a Loan object by specifying its id
-      operationId: modificaPrestito
+      operationId: editPrestito
       requestBody:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/Prestito"
+              $ref: "#/components/schemas/Loan"
         required: true
       responses:
         "200":
@@ -195,7 +195,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Studente"
+                $ref: "#/components/schemas/Student"
         "400":
           description: Id type mismatch
         "404":
@@ -208,12 +208,12 @@ paths:
       - Loan
       summary: Add Loan
       description: Add a Loan object to the database
-      operationId: aggiungiPrestito
+      operationId: addPrestito
       requestBody:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/Prestito"
+              $ref: "#/components/schemas/Loan"
         required: true
       responses:
         "200":
@@ -221,15 +221,15 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Studente"
+                $ref: "#/components/schemas/Student"
         "500":
           description: Data integrity violation
-  /api/v1/libro:
+  /api/v1/book:
     get:
       tags:
       - Book
       - get-all
-      summary: Retrieve all students
+      summary: Retrieve all books
       description: Retrieve all Book objects. The response is a list of Book objects
       operationId: getAll_2
       parameters:
@@ -243,19 +243,19 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Studente"
+                $ref: "#/components/schemas/Student"
     put:
       tags:
       - Book
       - put
       summary: Modify Book
       description: Modify a Book object by specifying its id
-      operationId: modificaLibro
+      operationId: editLibro
       requestBody:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/Libro"
+              $ref: "#/components/schemas/Book"
         required: true
       responses:
         "200":
@@ -263,7 +263,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Studente"
+                $ref: "#/components/schemas/Student"
         "400":
           description: Id type mismatch
         "404":
@@ -276,12 +276,12 @@ paths:
       - Book
       summary: Add Book
       description: Add a Book object to the database
-      operationId: aggiungiLibro
+      operationId: addLibro
       requestBody:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/Libro"
+              $ref: "#/components/schemas/Book"
         required: true
       responses:
         "200":
@@ -289,15 +289,15 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Studente"
+                $ref: "#/components/schemas/Student"
         "500":
           description: Data integrity violation
-  /api/v1/corso:
+  /api/v1/course:
     get:
       tags:
       - get-all
       - Course
-      summary: Retrieve all students
+      summary: Retrieve all courses
       description: Retrieve all Course objects. The response is a list of Course objects
       operationId: getAll_3
       parameters:
@@ -311,19 +311,19 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Studente"
+                $ref: "#/components/schemas/Student"
     put:
       tags:
       - Course
       - put
       summary: Modify Course
       description: Modify a Course object by specifying its id
-      operationId: modificaCorso
+      operationId: editCourse
       requestBody:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/Corso"
+              $ref: "#/components/schemas/Course"
         required: true
       responses:
         "200":
@@ -331,7 +331,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Studente"
+                $ref: "#/components/schemas/Student"
         "400":
           description: Id type mismatch
         "404":
@@ -344,12 +344,12 @@ paths:
       - Course
       summary: Add Course
       description: Add a Course object to the database
-      operationId: aggiungiCorso
+      operationId: addCourse
       requestBody:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/Corso"
+              $ref: "#/components/schemas/Course"
         required: true
       responses:
         "200":
@@ -357,15 +357,15 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Studente"
+                $ref: "#/components/schemas/Student"
         "500":
           description: Data integrity violation
-  /api/v1/categoria:
+  /api/v1/category:
     get:
       tags:
       - Category
       - get-all
-      summary: Retrieve all students
+      summary: Retrieve all categories
       description: Retrieve all Category objects. The response is a list of Category
         objects
       operationId: getAllCategorie
@@ -380,19 +380,19 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Studente"
+                $ref: "#/components/schemas/Student"
     put:
       tags:
       - Category
       - put
       summary: Modify Category
       description: Modify a Category object by specifying its id
-      operationId: modificaCategoria
+      operationId: editCategory
       requestBody:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/Categoria"
+              $ref: "#/components/schemas/Category"
         required: true
       responses:
         "200":
@@ -400,7 +400,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Studente"
+                $ref: "#/components/schemas/Student"
         "400":
           description: Id type mismatch
         "404":
@@ -413,12 +413,12 @@ paths:
       - post
       summary: Add Category
       description: Add a Category object to the database
-      operationId: aggiungiCategoria
+      operationId: addCategory
       requestBody:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/Categoria"
+              $ref: "#/components/schemas/Category"
         required: true
       responses:
         "200":
@@ -426,10 +426,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Studente"
+                $ref: "#/components/schemas/Student"
         "500":
           description: Data integrity violation
-  /api/v1/tessera/{id}:
+  /api/v1/card/{id}:
     get:
       tags:
       - get
@@ -437,7 +437,7 @@ paths:
       summary: Retrieve card by id
       description: Retrieve a card object by specifying its id. The response is a
         card object
-      operationId: getTesseraById
+      operationId: getCardById
       parameters:
       - name: id
         in: path
@@ -451,7 +451,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Tessera"
+                $ref: "#/components/schemas/Card"
         "400":
           description: Id type mismatch
         "404":
@@ -462,7 +462,7 @@ paths:
       - Card
       summary: Delete by id
       description: Delete a card object by specifying its id
-      operationId: rimuoviTessera
+      operationId: removeCard
       parameters:
       - name: id
         in: path
@@ -476,14 +476,14 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Tessera"
+                $ref: "#/components/schemas/Card"
         "400":
           description: Id type mismatch
         "404":
           description: card not found
         "500":
           description: Data integrity violation
-  /api/v1/studente/{id}:
+  /api/v1/student/{id}:
     get:
       tags:
       - get
@@ -491,7 +491,7 @@ paths:
       summary: Retrieve student by id
       description: Retrieve a student object by specifying its id. The response is
         a student object
-      operationId: getStudenteById
+      operationId: getstudentById
       parameters:
       - name: id
         in: path
@@ -501,11 +501,11 @@ paths:
           format: int64
       responses:
         "200":
-          description: Found the student
+          description: Student founddent
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Studente"
+                $ref: "#/components/schemas/Student"
         "400":
           description: Id type mismatch
         "404":
@@ -516,7 +516,7 @@ paths:
       - delete
       summary: Delete student by id
       description: Delete a student object by specifying its id
-      operationId: deleteStudente
+      operationId: deletestudent
       parameters:
       - name: id
         in: path
@@ -526,18 +526,18 @@ paths:
           format: int64
       responses:
         "200":
-          description: student deleted
+          description: Student deleted
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Studente"
+                $ref: "#/components/schemas/Student"
         "400":
           description: Id type mismatch
         "404":
           description: Student not found
         "500":
           description: Data integrity violation
-  /api/v1/prestito/{id}:
+  /api/v1/loan/{id}:
     get:
       tags:
       - Loan
@@ -545,7 +545,7 @@ paths:
       summary: Retrieve Loan by id
       description: Retrieve a Loan object by specifying its id. The response is a
         Loan object
-      operationId: getPrestitoById
+      operationId: getLoanById
       parameters:
       - name: id
         in: path
@@ -555,11 +555,11 @@ paths:
           format: int64
       responses:
         "200":
-          description: Found the Loan
+          description: Loan found
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Studente"
+                $ref: "#/components/schemas/Student"
         "400":
           description: Id type mismatch
         "404":
@@ -584,14 +584,14 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Studente"
+                $ref: "#/components/schemas/Student"
         "400":
           description: Id type mismatch
         "404":
           description: Loan not found
         "500":
           description: Data integrity violation
-  /api/v1/libro/{id}:
+  /api/v1/book/{id}:
     get:
       tags:
       - Book
@@ -599,7 +599,7 @@ paths:
       summary: Retrieve Book by id
       description: Retrieve a Book object by specifying its id. The response is a
         Book object
-      operationId: getLibroById
+      operationId: getBookById
       parameters:
       - name: id
         in: path
@@ -609,11 +609,11 @@ paths:
           format: int64
       responses:
         "200":
-          description: Found the Book
+          description: Book found
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Studente"
+                $ref: "#/components/schemas/Student"
         "400":
           description: Id type mismatch
         "404":
@@ -638,14 +638,14 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Studente"
+                $ref: "#/components/schemas/Student"
         "400":
           description: Id type mismatch
         "404":
           description: Book not found
         "500":
           description: Data integrity violation
-  /api/v1/corso/{id}:
+  /api/v1/course/{id}:
     get:
       tags:
       - get
@@ -653,7 +653,7 @@ paths:
       summary: Retrieve Course by id
       description: Retrieve a Course object by specifying its id. The response is
         a Course object
-      operationId: getCorsoById
+      operationId: getCourseById
       parameters:
       - name: id
         in: path
@@ -663,11 +663,11 @@ paths:
           format: int64
       responses:
         "200":
-          description: Found the Course
+          description: Course found
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Studente"
+                $ref: "#/components/schemas/Student"
         "400":
           description: Id type mismatch
         "404":
@@ -678,7 +678,7 @@ paths:
       - delete
       summary: Delete Course by id
       description: Delete a Course object by specifying its id
-      operationId: deleteCorso
+      operationId: deleteCourse
       parameters:
       - name: id
         in: path
@@ -692,14 +692,14 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Studente"
+                $ref: "#/components/schemas/Student"
         "400":
           description: Id type mismatch
         "404":
           description: Course not found
         "500":
           description: Data integrity violation
-  /api/v1/categoria/{id}:
+  /api/v1/category/{id}:
     get:
       tags:
       - Category
@@ -707,7 +707,7 @@ paths:
       summary: Retrieve Category by id
       description: Retrieve a Category object by specifying its id. The response is
         a Category object
-      operationId: getCategoriaById
+      operationId: getCategoryById
       parameters:
       - name: id
         in: path
@@ -717,11 +717,11 @@ paths:
           format: int64
       responses:
         "200":
-          description: Found the Category
+          description: Category found
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Studente"
+                $ref: "#/components/schemas/Student"
         "400":
           description: Id type mismatch
         "404":
@@ -732,7 +732,7 @@ paths:
       - delete
       summary: Delete Category by id
       description: Delete a Category object by specifying its id
-      operationId: rimuoviCategoria
+      operationId: removeCategory
       parameters:
       - name: id
         in: path
@@ -746,7 +746,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Studente"
+                $ref: "#/components/schemas/Student"
         "400":
           description: Id type mismatch
         "404":
@@ -755,88 +755,88 @@ paths:
           description: Data integrity violation
 components:
   schemas:
-    Tessera:
+    Card:
       type: object
       properties:
         id:
           type: integer
           format: int64
-        dataRilascio:
+        releaseDate:
           type: string
           format: date
-    Studente:
+    Student:
       type: object
       properties:
         id:
           type: integer
           format: int64
-        nome:
+        name:
           type: string
-        cognome:
+        surname:
           type: string
         classe:
           type: string
         email:
           type: string
-        tessera:
-          $ref: "#/components/schemas/Tessera"
-    Categoria:
+        Card:
+          $ref: "#/components/schemas/Card"
+    Category:
       type: object
       properties:
         id:
           type: integer
           format: int64
-        nome:
+        name:
           type: string
-        libri:
+        books:
           type: array
           items:
-            $ref: "#/components/schemas/Libro"
-    Libro:
+            $ref: "#/components/schemas/Book"
+    Book:
       type: object
       properties:
         id:
           type: integer
           format: int64
-        anno:
+        year:
           type: integer
           format: int32
-        categoria:
-          $ref: "#/components/schemas/Categoria"
+        category:
+          $ref: "#/components/schemas/Category"
         title:
           type: string
         author:
           type: string
-    Prestito:
+    Loan:
       type: object
       properties:
         id:
           type: integer
           format: int64
-        dataInizio:
+        startDate:
           type: string
           format: date
-        dataFine:
+        endDate:
           type: string
           format: date
-        studente:
-          $ref: "#/components/schemas/Studente"
-        libro:
-          $ref: "#/components/schemas/Libro"
-    Corso:
+        student:
+          $ref: "#/components/schemas/Student"
+        Book:
+          $ref: "#/components/schemas/Book"
+    Course:
       type: object
       properties:
         id:
           type: integer
           format: int64
-        nome:
+        name:
           type: string
         descrizione:
           type: string
         studenti:
           type: array
           items:
-            $ref: "#/components/schemas/Studente"
+            $ref: "#/components/schemas/Student"
           uniqueItems: true
   parameters:
     PageParam:

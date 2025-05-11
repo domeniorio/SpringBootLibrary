@@ -1,7 +1,7 @@
 package it.bitify.libreria.controller;
 
-import it.bitify.libreria.entity.Studente;
-import it.bitify.libreria.service.StudenteService;
+import it.bitify.libreria.entity.Student;
+import it.bitify.libreria.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -11,52 +11,52 @@ import org.springframework.web.bind.annotation.*;
 
 
 @RestController
-@RequestMapping("/api/v1/studente")
-public class StudenteController {
+@RequestMapping("/api/v1/student")
+public class StudentController {
 
     @Autowired
-    StudenteService service;
+    StudentService service;
 
     @GetMapping("/{id}")
-    public Studente getStudenteById(@PathVariable Long id){
-        return service.getStudenteById(id);
+    public Student getStudentById(@PathVariable Long id){
+        return service.getStudentById(id);
     }
 
     @PostMapping
-    public void aggiungiStudente(@RequestBody Studente studente){
-        service.saveStudente(studente);
+    public void addStudent(@RequestBody Student student){
+        service.saveStudent(student);
     }
 
     @PutMapping
-    public void modificaStudente(@RequestBody Studente studente){
-        service.updateStudente(studente);
+    public void editStudent(@RequestBody Student student){
+        service.updateStudent(student);
     }
 
     @GetMapping
-    public Page<Studente> getAll(@RequestParam(defaultValue = "0") int page,
+    public Page<Student> getAllStudents(@RequestParam(defaultValue = "0") int page,
     @RequestParam(defaultValue = "5") int size,
     @RequestParam(defaultValue = "id") String sortBy,
     @RequestParam(defaultValue = "true") boolean ascending){
         Sort sort = ascending ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
         Pageable pageable = PageRequest.of(page, size, sort);
-        return service.getAllStudenti(pageable);
+        return service.getAllStudents(pageable);
     }
 
     @DeleteMapping("/{id}")
-    public void deleteStudente(@PathVariable Long id){
-        service.deleteStudente(id);
+    public void deleteStudent(@PathVariable Long id){
+        service.deleteStudent(id);
     }
 
     @GetMapping("/find")
-    public Page<Studente> getByNomeAndCognome(@RequestParam String nome,
-    @RequestParam String cognome,
+    public Page<Student> getBynameAndsurname(@RequestParam String name,
+    @RequestParam String surname,
     @RequestParam(defaultValue = "0") int page,
     @RequestParam(defaultValue = "5") int size,
     @RequestParam(defaultValue = "id") String sortBy,
     @RequestParam(defaultValue = "true") boolean ascending){
         Sort sort = ascending ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
         Pageable pageable = PageRequest.of(page, size, sort);
-        return service.getStudenteByNomeAndCognome(nome,cognome,pageable);
+        return service.getStudentBynameAndsurname(name,surname,pageable);
     }
 
 }

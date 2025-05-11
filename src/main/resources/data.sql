@@ -1,5 +1,5 @@
--- Insert per Tessera
-INSERT INTO Tessera (id, data_rilascio) VALUES
+-- Insert per Card
+INSERT INTO Card (id, release_date) VALUES
 (1, '2023-09-01'),
 (2, '2023-09-02'),
 (3, '2023-09-03'),
@@ -20,11 +20,11 @@ INSERT INTO Tessera (id, data_rilascio) VALUES
 (18, '2023-09-18'),
 (19, '2023-09-19'),
 (20, '2023-09-20');
-ALTER TABLE Tessera ALTER COLUMN id RESTART WITH 21;
+ALTER TABLE Card ALTER COLUMN id RESTART WITH 21;
 
 
--- Insert per Studente
-INSERT INTO Studente (id, nome, cognome, classe, email, id_tessera) VALUES
+-- Insert per student
+INSERT INTO student (id, name, surname, class, email, id_card) VALUES
 (1, 'Luca', 'Rossi', '3A', 'luca.rossi@example.com', 1),
 (2, 'Marco', 'Verdi', '3A', 'marco.verdi@example.com', 2),
 (3, 'Anna', 'Bianchi', '3B', 'anna.bianchi@example.com', 3),
@@ -45,25 +45,25 @@ INSERT INTO Studente (id, nome, cognome, classe, email, id_tessera) VALUES
 (18, 'Federico', 'Santoro', '5C', 'federico.santoro@example.com', 18),
 (19, 'Laura', 'Esposito', '3A', 'laura.esposito@example.com', 19),
 (20, 'Nicola', 'Moretti', '4A', 'nicola.moretti@example.com', 20);
-ALTER TABLE Studente ALTER COLUMN id RESTART WITH 21;
+ALTER TABLE student ALTER COLUMN id RESTART WITH 21;
 
 
---Insert per Categoria
-INSERT INTO Categoria (id, nome) VALUES
+--Insert per Category
+INSERT INTO Category (id, name) VALUES
 (1, 'Narrativa'),
 (2, 'Saggistica'),
 (3, 'Fantascienza'),
 (4, 'Biografia'),
 (5, 'Storico');
-ALTER TABLE Categoria ALTER COLUMN id RESTART WITH 6;
+ALTER TABLE Category ALTER COLUMN id RESTART WITH 6;
 
 
---Insert per Libro
-INSERT INTO Libro (id, titolo, autore, anno, id_categoria) VALUES
-(1, 'Il mondo nuovo', 'Aldous Huxley', 1932, 3),
+--Insert per Book
+INSERT INTO Book (id, title, author, publish_year, id_category) VALUES
+(1, 'Il mondo new', 'Aldous Huxley', 1932, 3),
 (2, '1984', 'George Orwell', 1949, 3),
 (3, 'Breve storia del tempo', 'Stephen Hawking', 1988, 2),
-(4, 'Il nome della rosa', 'Umberto Eco', 1980, 1),
+(4, 'Il name della rosa', 'Umberto Eco', 1980, 1),
 (5, 'Open', 'Andre Agassi', 2009, 4),
 (6, 'Il cacciatore di aquiloni', 'Khaled Hosseini', 2003, 1),
 (7, 'Sapiens', 'Yuval Noah Harari', 2011, 2),
@@ -80,11 +80,11 @@ INSERT INTO Libro (id, titolo, autore, anno, id_categoria) VALUES
 (18, 'L’arte della guerra', 'Sun Tzu', -500, 5),
 (19, 'La strada', 'Cormac McCarthy', 2006, 1),
 (20, 'Nel mare ci sono i coccodrilli', 'Fabio Geda', 2010, 4);
-ALTER TABLE Libro ALTER COLUMN id RESTART WITH 21;
+ALTER TABLE Book ALTER COLUMN id RESTART WITH 21;
 
 
---Insert per Prestito
-INSERT INTO Prestito (id, data_inizio, data_fine, id_studente, id_libro) VALUES
+--Insert per Loan
+INSERT INTO Loan (id, start_date, end_date, id_student, id_book) VALUES
 (1, '2023-01-10', '2023-01-24', 1, 5),
 (2, '2023-01-15', NULL, 2, 12),
 (3, '2023-02-01', '2023-02-15', 3, 7),
@@ -105,11 +105,11 @@ INSERT INTO Prestito (id, data_inizio, data_fine, id_studente, id_libro) VALUES
 (18, '2023-11-01', '2023-11-15', 18, 16),
 (19, '2023-11-20', '2023-12-04', 1, 11),
 (20, '2023-12-10', '2023-12-24', 20, 18);
-ALTER TABLE Prestito ALTER COLUMN id RESTART WITH 21;
+ALTER TABLE Loan ALTER COLUMN id RESTART WITH 21;
 
 
---Insert per Corso
-INSERT INTO Corso (id, nome, descrizione) VALUES
+--Insert per Course
+INSERT INTO Course (id, name, description) VALUES
 (1, 'Programmazione I', 'Introduzione alla programmazione con linguaggi imperativi.'),
 (2, 'Analisi Matematica I', 'Studio delle funzioni, limiti, derivate e integrali.'),
 (3, 'Fisica Generale', 'Fondamenti di meccanica, termodinamica ed elettromagnetismo.'),
@@ -120,11 +120,11 @@ INSERT INTO Corso (id, nome, descrizione) VALUES
 (8, 'Reti di Calcolatori', 'Architetture, protocolli e sicurezza nelle reti informatiche.'),
 (9, 'Algoritmi e Strutture Dati', 'Analisi, progettazione e implementazione di algoritmi efficienti.'),
 (10, 'Intelligenza Artificiale', 'Introduzione a tecniche e applicazioni dell’AI, tra cui machine learning.');
-ALTER TABLE Corso ALTER COLUMN id RESTART WITH 11;
+ALTER TABLE Course ALTER COLUMN id RESTART WITH 11;
 
 
 --Insert per iscrizione
-INSERT INTO Iscrizione (id_studente,id_corso) VALUES
+INSERT INTO Enrollment (id_student,id_course) VALUES
 (1, 1),
 (1, 2),
 (2, 3),

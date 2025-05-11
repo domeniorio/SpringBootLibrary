@@ -1,8 +1,7 @@
-
 package it.bitify.libreria.controller;
 
-import it.bitify.libreria.entity.Tessera;
-import it.bitify.libreria.service.TesseraService;
+import it.bitify.libreria.entity.Loan;
+import it.bitify.libreria.service.LoanService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -13,39 +12,40 @@ import org.springframework.web.bind.annotation.*;
 
 
 @RestController
-@RequestMapping("/api/v1/tessera")
-public class TesseraController {
+@RequestMapping("/api/v1/loan")
+public class LoanController {
 
     @Autowired
-    private TesseraService service;
+    LoanService service;
 
     @GetMapping("/{id}")
-    Tessera getTesseraById(@PathVariable Long id){
-        return service.getTesseraById(id);
+    public Loan getLoanById(@PathVariable Long id){
+        return service.getLoanById(id);
     }
 
     @PostMapping
-    void aggiungiTessera(@RequestBody Tessera tessera){
-        service.saveTessera(tessera);
+    public void addLoan(@RequestBody Loan Loan){
+        service.saveLoan(Loan);
     }
 
     @PutMapping
-    void modificaTessera(@RequestBody Tessera tessera){
-        service.updateTessera(tessera);
-    }
-
-    @DeleteMapping("/{id}")
-    void rimuoviTessera(@PathVariable Long id){
-        service.deletetessera(id);
+    public void editLoan(@RequestBody Loan Loan) {
+        service.updateLoan(Loan);
     }
 
     @GetMapping
-    Page<Tessera> getAllTessere(@RequestParam(defaultValue = "0") int page,
+    public Page<Loan> getAllLoans(@RequestParam(defaultValue = "0") int page,
     @RequestParam(defaultValue = "5") int size,
     @RequestParam(defaultValue = "id") String sortBy,
     @RequestParam(defaultValue = "true") boolean ascending){
         Sort sort = ascending ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
         Pageable pageable = PageRequest.of(page, size, sort);
-        return service.getAllTessere(pageable);
+        return service.getAllPrestiti(pageable);
     }
+
+    @DeleteMapping("/{id}")
+    public void deleteLoan(@PathVariable Long id){
+        service.deleteLoan(id);
+    }
+
 }

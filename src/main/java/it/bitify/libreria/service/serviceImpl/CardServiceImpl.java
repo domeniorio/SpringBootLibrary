@@ -1,9 +1,9 @@
 package it.bitify.libreria.service.serviceImpl;
 
-import it.bitify.libreria.entity.Tessera;
+import it.bitify.libreria.entity.Card;
 import it.bitify.libreria.exception.EntityNotFoundException;
-import it.bitify.libreria.repository.TesseraRepo;
-import it.bitify.libreria.service.TesseraService;
+import it.bitify.libreria.repository.CardRepo;
+import it.bitify.libreria.service.CardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -11,31 +11,31 @@ import org.springframework.stereotype.Service;
 
 
 @Service
-public class TesseraServiceImpl implements TesseraService {
+public class CardServiceImpl implements CardService {
 
     @Autowired
-    private TesseraRepo repo;
+    private CardRepo repo;
 
     @Override
-    public Tessera getTesseraById(Long id) {
+    public Card getCardById(Long id) {
         return repo.findById(id).orElseThrow(() -> new EntityNotFoundException("Valore non presente all'interno del database!"));
     }
 
     @Override
-    public void saveTessera(Tessera tessera) {
-        repo.save(tessera);
+    public void saveCard(Card Card) {
+        repo.save(Card);
     }
 
     @Override
-    public void updateTessera(Tessera nuovaTessera) {
-        if (repo.existsById(nuovaTessera.getCodiceTessera())){
-            repo.save(nuovaTessera);
+    public void updateCard(Card newCard) {
+        if (repo.existsById(newCard.getIdCard())){
+            repo.save(newCard);
         }
         else throw new EntityNotFoundException("Valore non presente all'interno del database!");
     }
 
     @Override
-    public void deletetessera(Long id) {
+    public void deleteCard(Long id) {
         if(repo.existsById(id)){
             repo.deleteById(id);
         }
@@ -43,7 +43,7 @@ public class TesseraServiceImpl implements TesseraService {
     }
 
     @Override
-    public Page<Tessera> getAllTessere(Pageable pageable) {
+    public Page<Card> getAllCards(Pageable pageable) {
         return repo.findAll(pageable);
     }
 }

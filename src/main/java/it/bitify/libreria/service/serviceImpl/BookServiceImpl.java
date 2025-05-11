@@ -1,42 +1,43 @@
 package it.bitify.libreria.service.serviceImpl;
 
-import it.bitify.libreria.entity.Studente;
+import it.bitify.libreria.entity.Book;
 import it.bitify.libreria.exception.EntityNotFoundException;
-import it.bitify.libreria.repository.StudenteRepo;
-import it.bitify.libreria.service.StudenteService;
+import it.bitify.libreria.repository.BookRepo;
+import it.bitify.libreria.service.BookService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 
-
 @Service
-public class StudenteServiceImpl implements StudenteService {
+public class BookServiceImpl implements BookService {
 
     @Autowired
-    private StudenteRepo repo;
+    private BookRepo repo;
 
     @Override
-    public Studente getStudenteById(Long id) {
+    public Book getBookById(Long id) {
         return repo.findById(id).orElseThrow(() -> new EntityNotFoundException("Valore non presente all'interno del database!"));
     }
 
     @Override
-    public void saveStudente(Studente studente) {
-        repo.save(studente);
+    public void saveBook(Book Book) {
+        repo.save(Book);
     }
 
     @Override
-    public void updateStudente(Studente nuovoStudente) {
-        if(repo.existsById(nuovoStudente.getCodiceStudente())) {
-            repo.save(nuovoStudente);
+    public void updateBook(Book newBook) {
+        if(repo.existsById(newBook.getBookId())){
+            repo.save(newBook);
         }
         else throw new EntityNotFoundException("Valore non presente all'interno del database!");
+
     }
 
     @Override
-    public void deleteStudente(Long id) {
+    public void deleteBook(Long id) {
         if(repo.existsById(id)) {
             repo.deleteById(id);
         }
@@ -44,12 +45,19 @@ public class StudenteServiceImpl implements StudenteService {
     }
 
     @Override
-    public Page<Studente> getAllStudenti(Pageable pageable) {
+    public Page<Book> getAllBooks(Pageable pageable) {
         return repo.findAll(pageable);
     }
 
     @Override
-    public Page<Studente> getStudenteByNomeAndCognome(String nome, String cognome, Pageable pageable) {
-       return repo.findByNomeAndCognome(nome, cognome, pageable);
+    public Page<Book> findByTitleContaining(String infix, Pageable pageable) {
+        return repo.findByTitleContaining(infix, pageable);
     }
+
+    @Override
+    public Page<Book> findByYearBetween(Integer startYear, Integer endYear, Pageable pageable) {
+        return repo.findByYearBetween(startYear, endYear, pageable);
+    }
+
+
 }
