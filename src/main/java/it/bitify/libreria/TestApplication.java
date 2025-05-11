@@ -9,9 +9,9 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @EntityScan
 @SpringBootApplication
 //@EnableSpringDataWebSupport(pageSerializationMode = EnableSpringDataWebSupport.PageSerializationMode.VIA_DTO)
-public class ProvaApplication {
+public class TestApplication {
 	public static void main(String[] args) {
-		SpringApplication.run(ProvaApplication.class, args);
+		SpringApplication.run(TestApplication.class, args);
 	}
 
 }
