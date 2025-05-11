@@ -48,7 +48,7 @@ public class BookController {
         service.deleteBook(id);
     }
 
-    @GetMapping("/findName")
+    @GetMapping("/by-name")
     public Page<Book> findByTitleContaining(@RequestParam String query,
     @RequestParam(defaultValue = "0") int page,
     @RequestParam(defaultValue = "5") int size,
@@ -59,15 +59,26 @@ public class BookController {
         return service.findByTitleContaining(query, pageable);
     }
 
-    @GetMapping("/findYear")
-    public Page<Book> findByAnnoBetween(@RequestParam int start,
-    @RequestParam(defaultValue = "2025") int end,
+    @GetMapping("/by-year-greater-than")
+    public Page<Book> findByPublishYearGreaterThan(@RequestParam(defaultValue = "0") int year,
     @RequestParam(defaultValue = "0") int page,
     @RequestParam(defaultValue = "5") int size,
     @RequestParam(defaultValue = "id") String sortBy,
     @RequestParam(defaultValue = "true") boolean ascending){
         Sort sort = ascending ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
         Pageable pageable = PageRequest.of(page, size, sort);
-        return service.findByYearBetween(start, end, pageable);
+        return service.findByPublishYearGreaterThan(year, pageable);
+    }
+
+    @GetMapping("/by-category-name")
+    public Page<Book> findByCategoryName(@RequestParam String name,
+            @RequestParam(defaultValue = "0") int year,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int size,
+            @RequestParam(defaultValue = "id") String sortBy,
+            @RequestParam(defaultValue = "true") boolean ascending){
+        Sort sort = ascending ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
+        Pageable pageable = PageRequest.of(page, size, sort);
+        return service.findByCategory_Name(name, pageable);
     }
 }

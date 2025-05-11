@@ -9,5 +9,5 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface LoanRepo extends JpaRepository<Loan, Long> {
-    Page<Loan> findByStudentOrBook(Student student, Book book, Pageable pageable);
+    Page<Loan> findByEndDateIsNull(Pageable pageable);
 }

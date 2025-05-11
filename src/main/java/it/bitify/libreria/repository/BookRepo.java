@@ -8,5 +8,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface BookRepo extends JpaRepository<Book, Long> {
     Page<Book> findByTitleContaining(String infix, Pageable pageable);
-    Page<Book> findByYearBetween(Integer startYear, Integer endYear, Pageable pageable);
+    Page<Book> findByYearGreaterThan(Integer year, Pageable pageable);
+    Page<Book> findByCategory_Name(String name, Pageable pageable);
 }

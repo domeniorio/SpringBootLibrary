@@ -46,5 +46,10 @@ public class LoanServiceImpl implements LoanService {
         return repo.findAll(pageable);
     }
 
+    @Override
+    public Page<Loan> findByEndDateIsNull(Pageable pageable) {
+        return repo.findByEndDateIsNull(pageable);
+    }
+
 
 }

@@ -55,8 +55,13 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public Page<Book> findByYearBetween(Integer startYear, Integer endYear, Pageable pageable) {
-        return repo.findByYearBetween(startYear, endYear, pageable);
+    public Page<Book> findByPublishYearGreaterThan(Integer year, Pageable pageable){
+        return repo.findByYearGreaterThan(year, pageable);
+    }
+
+    @Override
+    public Page<Book> findByCategory_Name(String name, Pageable pageable) {
+        return repo.findByCategory_Name(name, pageable);
     }
 
 

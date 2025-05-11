@@ -28,7 +28,7 @@ public class Book {
     private Category category;
 
     @OneToMany(mappedBy = "book", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
-    private List<Loan> prestiti;
+    private List<Loan> loans;
 
     public Long getBookId() {
         return this.id;

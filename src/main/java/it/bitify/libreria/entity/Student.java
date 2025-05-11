@@ -21,7 +21,7 @@ public class Student {
     private String surname;
 
     @Column(name = "class", nullable = false, length = 2)
-    private String classe;
+    private String schoolClass;
 
     @Column(name = "email", nullable = false, length = 30, unique = true)
     private String email;
@@ -55,11 +55,11 @@ public class Student {
     }
 
     public String getClasse() {
-        return classe;
+        return schoolClass;
     }
 
-    public void setClasse(String classe) {
-        this.classe = classe;
+    public void setClasse(String schoolClass) {
+        this.schoolClass = schoolClass;
     }
 
     public String getEmail() {

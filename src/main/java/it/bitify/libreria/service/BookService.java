@@ -14,6 +14,6 @@ public interface BookService {
     void deleteBook(Long id);
     Page<Book> getAllBooks(Pageable pageable);
     Page<Book> findByTitleContaining(String infix, Pageable pageable);
-    Page<Book> findByYearBetween(Integer startYear, Integer endYear, Pageable pageable);
-
+    Page<Book> findByPublishYearGreaterThan(Integer year, Pageable pageable);
+    Page<Book> findByCategory_Name(String name, Pageable pageable);
 }

@@ -9,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 
 
 @Service
@@ -51,5 +52,15 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public Page<Student> getStudentBynameAndsurname(String name, String surname, Pageable pageable) {
        return repo.findByNameAndSurname(name, surname, pageable);
+    }
+
+    @Override
+    public Page<Student> findBySchoolClass(String schoolClass, Pageable pageable) {
+        return repo.findBySchoolClass(schoolClass, pageable);
+    }
+
+    @Override
+    public Page<Student> findByCard_ReleaseDateBetween(LocalDate start, LocalDate end, Pageable pageable) {
+        return repo.findByCard_ReleaseDateBetween(start, end, pageable);
     }
 }

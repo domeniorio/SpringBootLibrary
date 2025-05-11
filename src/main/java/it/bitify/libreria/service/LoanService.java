@@ -17,5 +17,6 @@ public interface LoanService {
 
     Page<Loan> getAllPrestiti(Pageable pageable);
 
+    Page<Loan> findByEndDateIsNull(Pageable pageable);
 
 }

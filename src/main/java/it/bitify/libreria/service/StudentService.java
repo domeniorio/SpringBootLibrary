@@ -5,6 +5,8 @@ import it.bitify.libreria.entity.Student;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.time.LocalDate;
+
 public interface StudentService {
 
     Student getStudentById(Long id);
@@ -18,4 +20,7 @@ public interface StudentService {
     Page<Student> getAllStudents(Pageable pageable);
 
     Page<Student> getStudentBynameAndsurname(String name, String surname, Pageable pageable);
+
+    Page<Student> findBySchoolClass(String schoolClass, Pageable pageable);
+    Page<Student> findByCard_ReleaseDateBetween(LocalDate start, LocalDate end, Pageable pageable);
 }

@@ -250,7 +250,7 @@ paths:
       - put
       summary: Modify Book
       description: Modify a Book object by specifying its id
-      operationId: editLibro
+      operationId: 
       requestBody:
         content:
           application/json:
@@ -276,7 +276,7 @@ paths:
       - Book
       summary: Add Book
       description: Add a Book object to the database
-      operationId: addLibro
+      operationId: addBook
       requestBody:
         content:
           application/json:
@@ -624,7 +624,7 @@ paths:
       - delete
       summary: Delete Book by id
       description: Delete a Book object by specifying its id
-      operationId: deleteLibro
+      operationId: deleteBook
       parameters:
       - name: id
         in: path

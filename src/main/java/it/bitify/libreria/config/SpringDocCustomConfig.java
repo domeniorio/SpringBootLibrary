@@ -9,19 +9,19 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class SpringDocCustomConfig {
 
-@Bean
-SpringDocConfiguration springDocConfiguration(){
-   return new SpringDocConfiguration();
-}
+    @Bean
+    SpringDocConfiguration springDocConfiguration(){
+        return new SpringDocConfiguration();
+    }
 
-@Bean
-SpringDocConfigProperties springDocConfigProperties() {
-   return new SpringDocConfigProperties();
-}
+    @Bean
+    SpringDocConfigProperties springDocConfigProperties() {
+        return new SpringDocConfigProperties();
+    }
 
-@Bean
-ObjectMapperProvider objectMapperProvider(SpringDocConfigProperties springDocConfigProperties){
-    return new ObjectMapperProvider(springDocConfigProperties);
-}
+    @Bean
+    ObjectMapperProvider objectMapperProvider(SpringDocConfigProperties springDocConfigProperties){
+        return new ObjectMapperProvider(springDocConfigProperties);
+    }
 
 }

@@ -7,7 +7,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDate;
 
 
 @RestController
@@ -47,7 +50,7 @@ public class StudentController {
         service.deleteStudent(id);
     }
 
-    @GetMapping("/find")
+    @GetMapping("/by-name-surname")
     public Page<Student> getBynameAndsurname(@RequestParam String name,
     @RequestParam String surname,
     @RequestParam(defaultValue = "0") int page,
@@ -57,6 +60,35 @@ public class StudentController {
         Sort sort = ascending ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
         Pageable pageable = PageRequest.of(page, size, sort);
         return service.getStudentBynameAndsurname(name,surname,pageable);
+    }
+
+    @GetMapping("/by-class")
+    public Page<Student> findStudentBySchoolClass(@RequestParam String schoolClass,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int size,
+            @RequestParam(defaultValue = "id") String sortBy,
+            @RequestParam(defaultValue = "true") boolean ascending){
+        Sort sort = ascending ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
+        Pageable pageable = PageRequest.of(page, size, sort);
+        return service.findBySchoolClass(schoolClass, pageable);
+    }
+
+    @GetMapping("/by-card-release")
+    public Page<Student> findByCard_ReleaseDateBetween(@RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate start,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate end,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int size,
+            @RequestParam(defaultValue = "id") String sortBy,
+            @RequestParam(defaultValue = "true") boolean ascending){
+        Sort sort = ascending ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
+        Pageable pageable = PageRequest.of(page, size, sort);
+        if (start == null) {
+            start = LocalDate.of(1900, 1, 1);
+        }
+        if (end == null){
+            end = LocalDate.of(2100, 1, 1);
+        }
+        return service.findByCard_ReleaseDateBetween(start, end ,pageable);
     }
 
 }
