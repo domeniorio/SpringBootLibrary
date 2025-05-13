@@ -1,7 +1,7 @@
 package it.bitify.libreria.service;
 
 
-import it.bitify.libreria.entity.Card;
+import it.bitify.libreria.model.entity.Card;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 

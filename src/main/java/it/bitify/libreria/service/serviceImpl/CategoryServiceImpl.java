@@ -1,6 +1,7 @@
 package it.bitify.libreria.service.serviceImpl;
 
-import it.bitify.libreria.entity.Category;
+import it.bitify.libreria.model.dto.CategoriesBookCountDTO;
+import it.bitify.libreria.model.entity.Category;
 import it.bitify.libreria.exception.EntityNotFoundException;
 import it.bitify.libreria.repository.CategoryRepo;
 import it.bitify.libreria.service.CategoryService;
@@ -42,5 +43,15 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public Page<Category> getAllCategorie(Pageable pageable) {
         return repo.findAll(pageable);
+    }
+
+    @Override
+    public Page<CategoriesBookCountDTO> findCategoriesWithBookCount(Pageable pageable) {
+        return repo.findCategoriesWithBookCount(pageable);
+    }
+
+    @Override
+    public Page<Category> findCategoriesWithBooksLentOnlyByClass(String targetClass, Pageable pageable) {
+        return repo.findCategoriesWithBooksLentOnlyByClass(targetClass,pageable);
     }
 }

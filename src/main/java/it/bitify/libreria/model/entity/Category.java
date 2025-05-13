@@ -1,4 +1,4 @@
-package it.bitify.libreria.entity;
+package it.bitify.libreria.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;

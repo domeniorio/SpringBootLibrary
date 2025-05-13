@@ -1,6 +1,6 @@
 package it.bitify.libreria.service.serviceImpl;
 
-import it.bitify.libreria.entity.Card;
+import it.bitify.libreria.model.entity.Card;
 import it.bitify.libreria.exception.EntityNotFoundException;
 import it.bitify.libreria.repository.CardRepo;
 import it.bitify.libreria.service.CardService;

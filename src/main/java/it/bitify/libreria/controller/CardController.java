@@ -1,7 +1,7 @@
 
 package it.bitify.libreria.controller;
 
-import it.bitify.libreria.entity.Card;
+import it.bitify.libreria.model.entity.Card;
 import it.bitify.libreria.service.CardService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,7 +40,7 @@ public class CardController {
     }
 
     @GetMapping
-    Page<Card> getAllTessere(@RequestParam(defaultValue = "0") int page,
+    Page<Card> getAllCards(@RequestParam(defaultValue = "0") int page,
     @RequestParam(defaultValue = "5") int size,
     @RequestParam(defaultValue = "id") String sortBy,
     @RequestParam(defaultValue = "true") boolean ascending){

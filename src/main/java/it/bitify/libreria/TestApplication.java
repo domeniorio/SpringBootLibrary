@@ -11,6 +11,7 @@ import org.springframework.data.web.config.EnableSpringDataWebSupport;
 @SpringBootApplication
 @EnableSpringDataWebSupport(pageSerializationMode = EnableSpringDataWebSupport.PageSerializationMode.VIA_DTO)
 public class TestApplication {
+
 	public static void main(String[] args) {
 		SpringApplication.run(TestApplication.class, args);
 	}

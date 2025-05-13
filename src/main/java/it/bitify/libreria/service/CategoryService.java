@@ -1,6 +1,7 @@
 package it.bitify.libreria.service;
 
-import it.bitify.libreria.entity.Category;
+import it.bitify.libreria.model.dto.CategoriesBookCountDTO;
+import it.bitify.libreria.model.entity.Category;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -16,4 +17,9 @@ public interface CategoryService {
     void deleteCategory(Long id);
 
     Page<Category> getAllCategorie(Pageable pageable);
+
+    Page<CategoriesBookCountDTO> findCategoriesWithBookCount(Pageable pageable);
+
+    Page<Category> findCategoriesWithBooksLentOnlyByClass(String targetClass, Pageable pageable);
+
 }

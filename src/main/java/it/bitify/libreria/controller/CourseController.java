@@ -1,6 +1,6 @@
 package it.bitify.libreria.controller;
 
-import it.bitify.libreria.entity.Course;
+import it.bitify.libreria.model.entity.Course;
 import it.bitify.libreria.service.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;

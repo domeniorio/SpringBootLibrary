@@ -21,6 +21,14 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler(BookAlreadyLentException.class)
+    public ResponseEntity<ErrorResponse> handleBookLent(RuntimeException ex){
+        String message = "Libro già prestato";
+        String details = ex.getMessage();
+        ErrorResponse errorResponse = new ErrorResponse(HttpStatus.BAD_REQUEST.value(), message, details);
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+    }
+
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ResponseEntity<ErrorResponse> handleConstraintViolation(DataIntegrityViolationException ex) {
         String message = "Violazione di integrità dei dati.";

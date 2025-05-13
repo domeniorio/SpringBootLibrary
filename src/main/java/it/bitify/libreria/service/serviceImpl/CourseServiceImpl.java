@@ -1,6 +1,6 @@
 package it.bitify.libreria.service.serviceImpl;
 
-import it.bitify.libreria.entity.Course;
+import it.bitify.libreria.model.entity.Course;
 import it.bitify.libreria.exception.EntityNotFoundException;
 import it.bitify.libreria.repository.CourseRepo;
 import it.bitify.libreria.service.CourseService;

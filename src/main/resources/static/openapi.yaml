@@ -2,9 +2,11 @@ openapi: 3.1.0
 info:
   title: Libreria API definition
   version: v1
+
 servers:
 - url: http://localhost:8080
   description: base server url
+
 tags:
 - name: Category
   description: Category management APIs
@@ -18,6 +20,7 @@ tags:
   description: Book management APIs
 - name: Card
   description: Card management APIs
+
 paths:
   /api/v1/card:
     get:
@@ -38,7 +41,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Card"
+                $ref: "#/components/schemas/PageCard"
     put:
       tags:
       - put
@@ -81,12 +84,61 @@ paths:
       responses:
         "200":
           description: Card added to the database
+        "500":
+          description: Data integrity violation
+
+  /api/v1/card/{id}:
+    get:
+      tags:
+        - get
+        - Card
+      summary: Retrieve card by id
+      description: Retrieve a card object by specifying its id. The response is a
+        card object
+      operationId: getCardById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        "200":
+          description: Found the card
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/Card"
+        "400":
+          description: Id type mismatch
+        "404":
+          description: Card not found
+    delete:
+      tags:
+        - delete
+        - Card
+      summary: Delete by id
+      description: Delete a card object by specifying its id
+      operationId: removeCard
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        "200":
+          description: Card deleted
+        "400":
+          description: Id type mismatch
+        "404":
+          description: card not found
         "500":
           description: Data integrity violation
+
+
   /api/v1/student:
     get:
       tags:
@@ -107,14 +159,14 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Student"
+                $ref: "#/components/schemas/PageStudent"
     put:
       tags:
       - Student
       - put
       summary: Modify student
       description: Modify a student object by specifying its id
-      operationId: editstudent
+      operationId: editStudent
       requestBody:
         content:
           application/json:
@@ -124,10 +176,6 @@ paths:
       responses:
         "200":
           description: Student modified
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Student"
         "400":
           description: Id type mismatch
         "404":
@@ -150,12 +198,263 @@ paths:
       responses:
         "200":
           description: Student added to the database
+        "500":
+          description: Data integrity violation
+
+  /api/v1/student/{id}:
+    get:
+      tags:
+        - get
+        - Student
+      summary: Retrieve student by id
+      description: Retrieve a student object by specifying its id. The response is
+        a student object
+      operationId: getstudentById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        "200":
+          description: Student found
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/Student"
+        "400":
+          description: Id type mismatch
+        "404":
+          description: Student not found
+    delete:
+      tags:
+        - Student
+        - delete
+      summary: Delete student by id
+      description: Delete a student object by specifying its id
+      operationId: deleteStudent
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        "200":
+          description: Student deleted
+        "400":
+          description: Id type mismatch
+        "404":
+          description: Student not found
         "500":
           description: Data integrity violation
+
+  /api/v1/student/without-loan:
+    get:
+      tags:
+        - get-all
+        - Student
+      summary: Retrieve students without loans
+      description: Retrieve a list of student objects without loans
+      operationId: getStudentWithoutLoan
+      parameters:
+        - $ref: '#/components/parameters/PageParam'
+        - $ref: '#/components/parameters/SizeParam'
+        - $ref: '#/components/parameters/AscParam'
+        - $ref: '#/components/parameters/SortByParam'
+      responses:
+        "200":
+          description: Student found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PageStudent"
+
+  /api/v1/student/by-class:
+    get:
+      tags:
+        - get-all
+        - Student
+      summary: Retrieve students by class
+      description: Retrieve a list of student objects by specifying a class
+      operationId: getStudentByClass
+      parameters:
+        - name: schoolClass
+          in: query
+          required: true
+          schema:
+            type: string
+        - $ref: '#/components/parameters/PageParam'
+        - $ref: '#/components/parameters/SizeParam'
+        - $ref: '#/components/parameters/AscParam'
+        - $ref: '#/components/parameters/SortByParam'
+      responses:
+        "200":
+          description: Student found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PageStudent"
+
+  /api/v1/student/by-card-release:
+    get:
+      tags:
+        - get-all
+        - Student
+      summary: Retrieve students by card release date
+      description: Retrieve a list of student objects by specifying a card release date
+      operationId: getStudentByCardRelease
+      parameters:
+        - name: start
+          in: query
+          required: false
+          schema:
+            type: string
+            format: date
+        - name: end
+          in: query
+          required: false
+          schema:
+            type: string
+            format: date
+        - $ref: '#/components/parameters/PageParam'
+        - $ref: '#/components/parameters/SizeParam'
+        - $ref: '#/components/parameters/AscParam'
+        - $ref: '#/components/parameters/SortByParam'
+      responses:
+        "200":
+          description: Student found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PageStudent"
+
+  /api/v1/student/min-loan:
+    get:
+      tags:
+        - get-all
+        - Student
+      summary: Retrieve students with more loans then specified
+      description: Retrieve a list of student objects by specifying a minimum number of loans
+      operationId: getStudentByMinLoan
+      parameters:
+        - name: minLoan
+          in: query
+          required: true
+          schema:
+            type: integer
+            format: int32
+        - $ref: '#/components/parameters/PageParam'
+        - $ref: '#/components/parameters/SizeParam'
+        - $ref: '#/components/parameters/AscParam'
+        - $ref: '#/components/parameters/SortByParam'
+      responses:
+        "200":
+          description: Student found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PageNameSurnameLoansDTO"
+
+  /api/v1/student/by-category-name:
+    get:
+      tags:
+        - get-all
+        - Student
+      summary: Retrieve students by specifying a category
+      description: Retrieve a list of student objects by specifying a category
+      operationId: getStudentByCategoryName
+      parameters:
+        - name: categoryName
+          in: query
+          required: true
+          schema:
+            type: string
+        - $ref: '#/components/parameters/PageParam'
+        - $ref: '#/components/parameters/SizeParam'
+        - $ref: '#/components/parameters/AscParam'
+        - $ref: '#/components/parameters/SortByParam'
+      responses:
+        "200":
+          description: Student found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PageStudent"
+
+  /api/v1/student/by-loan-count:
+    get:
+      tags:
+        - get
+        - Student
+      summary: Retrieve students ordered by number of loans
+      description: Retrieve a list of student objects ordered by number of loans
+      operationId: getStudentByLoanCount
+      parameters:
+        - $ref: '#/components/parameters/PageParam'
+        - $ref: '#/components/parameters/SizeParam'
+        - $ref: '#/components/parameters/AscParam'
+        - $ref: '#/components/parameters/SortByParam'
+      responses:
+        "200":
+          description: Student found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PageStudent"
+
+  /api/v1/student/loan-book:
+    post:
+      tags:
+        - Student
+        - Post
+      summary: Loan book
+      description: Loan a book if it isn't already lent
+      operationId: loanBook
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/IdStudentBookDTO"
+      responses:
+        "200":
+          description: Book lent
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Loan"
+        "400":
+          description: Book already lent
+        "404":
+          description: Entity not found
+
+  /api/v1/student/return-book:
+    post:
+      tags:
+        - Student
+        - Post
+      summary: Return book
+      description: Return a book if it is already lent
+      operationId: returnBook
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/IdStudentBookDTO"
+      responses:
+        "200":
+          description: Book returned
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Loan"
+        "404":
+          description: Entity not found
+
+
   /api/v1/loan:
     get:
       tags:
@@ -171,18 +470,18 @@ paths:
         - $ref: '#/components/parameters/SortByParam'
       responses:
         "200":
-          description: Retrieved all Loan
+          description: Retrieved all Loans
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Student"
+                $ref: "#/components/schemas/PageLoan"
     put:
       tags:
       - Loan
       - put
       summary: Modify Loan
       description: Modify a Loan object by specifying its id
-      operationId: editPrestito
+      operationId: editLoan
       requestBody:
         content:
           application/json:
@@ -190,12 +489,6 @@ paths:
               $ref: "#/components/schemas/Loan"
         required: true
       responses:
-        "200":
-          description: Loan modified
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Student"
         "400":
           description: Id type mismatch
         "404":
@@ -208,7 +501,7 @@ paths:
       - Loan
       summary: Add Loan
       description: Add a Loan object to the database
-      operationId: addPrestito
+      operationId: addLoan
       requestBody:
         content:
           application/json:
@@ -218,12 +511,82 @@ paths:
       responses:
         "200":
           description: Loan added to the database
+        "500":
+          description: Data integrity violation
+
+  /api/v1/loan/{id}:
+    get:
+      tags:
+        - Loan
+        - get
+      summary: Retrieve Loan by id
+      description: Retrieve a Loan object by specifying its id. The response is a
+        Loan object
+      operationId: getLoanById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        "200":
+          description: Loan found
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Student"
+                $ref: "#/components/schemas/Loan"
+        "400":
+          description: Id type mismatch
+        "404":
+          description: Loan not found
+    delete:
+      tags:
+        - Loan
+        - delete
+      summary: Delete Loan by id
+      description: Delete a Loan object by specifying its id
+      operationId: deleteLoan
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        "200":
+          description: Loan deleted
+        "400":
+          description: Id type mismatch
+        "404":
+          description: Loan not found
         "500":
           description: Data integrity violation
+
+  /api/v1/loan/ongoing:
+    get:
+      tags:
+        - Loan
+        - get-all
+      summary: Retrieve all ongoing loans
+      description: Retrieve all ongoing Loan objects. The response is a list of Loan objects with null endDate
+      operationId: getOngoing
+      parameters:
+        - $ref: '#/components/parameters/PageParam'
+        - $ref: '#/components/parameters/SizeParam'
+        - $ref: '#/components/parameters/AscParam'
+        - $ref: '#/components/parameters/SortByParam'
+      responses:
+        "200":
+          description: Retrieved all ongoing Loans
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PageLoan"
+
+
   /api/v1/book:
     get:
       tags:
@@ -243,7 +606,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Student"
+                $ref: "#/components/schemas/Book"
     put:
       tags:
       - Book
@@ -260,10 +623,6 @@ paths:
       responses:
         "200":
           description: Book modified
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Student"
         "400":
           description: Id type mismatch
         "404":
@@ -286,12 +645,188 @@ paths:
       responses:
         "200":
           description: Book added to the database
+        "500":
+          description: Data integrity violation
+
+  /api/v1/book/{id}:
+    get:
+      tags:
+        - Book
+        - get
+      summary: Retrieve Book by id
+      description: Retrieve a Book object by specifying its id. The response is a
+        Book object
+      operationId: getBookById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        "200":
+          description: Book found
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Student"
+                $ref: "#/components/schemas/Book"
+        "400":
+          description: Id type mismatch
+        "404":
+          description: Book not found
+    delete:
+      tags:
+        - Book
+        - delete
+      summary: Delete Book by id
+      description: Delete a Book object by specifying its id
+      operationId: deleteBook
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        "200":
+          description: Book deleted
+        "400":
+          description: Id type mismatch
+        "404":
+          description: Book not found
         "500":
           description: Data integrity violation
+
+  /api/v1/book/by-year-greater-than:
+    get:
+      tags:
+        - get-all
+        - Book
+      summary: Retrieve books by specifying a publish year.
+      description: Retrieve a list of book objects published after the specified year
+      operationId: getByPublishYearGreaterThan
+      parameters:
+        - name: year
+          in: query
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - $ref: '#/components/parameters/PageParam'
+        - $ref: '#/components/parameters/SizeParam'
+        - $ref: '#/components/parameters/AscParam'
+        - $ref: '#/components/parameters/SortByParam'
+      responses:
+        "200":
+          description: Book found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PageBook"
+        "400":
+          description: id type mismatch
+
+  /api/v1/book/by-category-name:
+    get:
+      tags:
+        - get-all
+        - Book
+      summary: Retrieve books by specifying a category.
+      description: Retrieve a list of book objects belonging to a category.
+      operationId: getByCategoryName
+      parameters:
+        - name: name
+          in: query
+          required: true
+          schema:
+            type: string
+        - $ref: '#/components/parameters/PageParam'
+        - $ref: '#/components/parameters/SizeParam'
+        - $ref: '#/components/parameters/AscParam'
+        - $ref: '#/components/parameters/SortByParam'
+      responses:
+        "200":
+          description: Book found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PageBook"
+        "400":
+          description: id type mismatch
+
+  /api/v1/book/without-loan:
+    get:
+      tags:
+        - get-all
+        - Book
+      summary: Retrieve non-borrowed books.
+      description: Retrieve a list of non-borrowed book objects
+      operationId: getWithoutLoan
+      parameters:
+        - $ref: '#/components/parameters/PageParam'
+        - $ref: '#/components/parameters/SizeParam'
+        - $ref: '#/components/parameters/AscParam'
+        - $ref: '#/components/parameters/SortByParam'
+      responses:
+        "200":
+          description: Book found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PageBook"
+
+  /api/v1/book/loan-interval:
+    get:
+      tags:
+        - get-all
+        - Book
+      summary: Retrieve books by specifying a loan start date
+      description: Retrieve a list of book objects lent after the specified date
+      operationId: getByLoanInterval
+      parameters:
+        - name: start
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date
+        - $ref: '#/components/parameters/PageParam'
+        - $ref: '#/components/parameters/SizeParam'
+        - $ref: '#/components/parameters/AscParam'
+        - $ref: '#/components/parameters/SortByParam'
+      responses:
+        "200":
+          description: Book found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PageBook"
+        "400":
+          description: id type mismatch
+
+  /api/v1/book/loan-above-avg:
+    get:
+      tags:
+        - get-all
+        - Book
+      summary: Retrieve books with above average number of loans.
+      description: Retrieve a list of book objects with above average number of loans
+      operationId: getByLoanAboveAvg
+      parameters:
+        - $ref: '#/components/parameters/PageParam'
+        - $ref: '#/components/parameters/SizeParam'
+        - $ref: '#/components/parameters/AscParam'
+        - $ref: '#/components/parameters/SortByParam'
+      responses:
+        "200":
+          description: Book found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PageBook"
+
   /api/v1/course:
     get:
       tags:
@@ -311,7 +846,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Student"
+                $ref: "#/components/schemas/PageCourse"
     put:
       tags:
       - Course
@@ -328,10 +863,6 @@ paths:
       responses:
         "200":
           description: Course modified
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Student"
         "400":
           description: Id type mismatch
         "404":
@@ -354,21 +885,70 @@ paths:
       responses:
         "200":
           description: Course added to the database
+        "500":
+          description: Data integrity violation
+
+  /api/v1/course/{id}:
+    get:
+      tags:
+        - get
+        - Course
+      summary: Retrieve Course by id
+      description: Retrieve a Course object by specifying its id. The response is
+        a Course object
+      operationId: getCourseById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        "200":
+          description: Course found
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Student"
+                $ref: "#/components/schemas/Course"
+        "400":
+          description: Id type mismatch
+        "404":
+          description: Course not found
+    delete:
+      tags:
+        - Course
+        - delete
+      summary: Delete Course by id
+      description: Delete a Course object by specifying its id
+      operationId: deleteCourse
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        "200":
+          description: Course deleted
+        "400":
+          description: Id type mismatch
+        "404":
+          description: Course not found
         "500":
           description: Data integrity violation
+
+
   /api/v1/category:
     get:
       tags:
       - Category
       - get-all
       summary: Retrieve all categories
-      description: Retrieve all Category objects. The response is a list of Category
+      description: Retrieve all Category objects. The response is a list of Category objects
         objects
-      operationId: getAllCategorie
+      operationId: getAllCategories
       parameters:
         - $ref: '#/components/parameters/PageParam'
         - $ref: '#/components/parameters/SizeParam'
@@ -380,13 +960,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Student"
+                $ref: "#/components/schemas/PageCategory"
     put:
       tags:
       - Category
       - put
-      summary: Modify Category
-      description: Modify a Category object by specifying its id
+      summary: Edit Category
+      description: Edit a Category object by specifying its id
       operationId: editCategory
       requestBody:
         content:
@@ -397,10 +977,6 @@ paths:
       responses:
         "200":
           description: Category modified
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Student"
         "400":
           description: Id type mismatch
         "404":
@@ -423,290 +999,16 @@ paths:
       responses:
         "200":
           description: Category added to the database
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Student"
         "500":
           description: Data integrity violation
-  /api/v1/card/{id}:
-    get:
-      tags:
-      - get
-      - Card
-      summary: Retrieve card by id
-      description: Retrieve a card object by specifying its id. The response is a
-        card object
-      operationId: getCardById
-      parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: integer
-          format: int64
-      responses:
-        "200":
-          description: Found the card
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Card"
-        "400":
-          description: Id type mismatch
-        "404":
-          description: Card not found
-    delete:
-      tags:
-      - delete
-      - Card
-      summary: Delete by id
-      description: Delete a card object by specifying its id
-      operationId: removeCard
-      parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: integer
-          format: int64
-      responses:
-        "200":
-          description: Card deleted
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Card"
-        "400":
-          description: Id type mismatch
-        "404":
-          description: card not found
-        "500":
-          description: Data integrity violation
-  /api/v1/student/{id}:
-    get:
-      tags:
-      - get
-      - Student
-      summary: Retrieve student by id
-      description: Retrieve a student object by specifying its id. The response is
-        a student object
-      operationId: getstudentById
-      parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: integer
-          format: int64
-      responses:
-        "200":
-          description: Student founddent
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Student"
-        "400":
-          description: Id type mismatch
-        "404":
-          description: Student not found
-    delete:
-      tags:
-      - Student
-      - delete
-      summary: Delete student by id
-      description: Delete a student object by specifying its id
-      operationId: deletestudent
-      parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: integer
-          format: int64
-      responses:
-        "200":
-          description: Student deleted
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Student"
-        "400":
-          description: Id type mismatch
-        "404":
-          description: Student not found
-        "500":
-          description: Data integrity violation
-  /api/v1/loan/{id}:
-    get:
-      tags:
-      - Loan
-      - get
-      summary: Retrieve Loan by id
-      description: Retrieve a Loan object by specifying its id. The response is a
-        Loan object
-      operationId: getLoanById
-      parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: integer
-          format: int64
-      responses:
-        "200":
-          description: Loan found
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Student"
-        "400":
-          description: Id type mismatch
-        "404":
-          description: Loan not found
-    delete:
-      tags:
-      - Loan
-      - delete
-      summary: Delete Loan by id
-      description: Delete a Loan object by specifying its id
-      operationId: deletePrestito
-      parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: integer
-          format: int64
-      responses:
-        "200":
-          description: Loan deleted
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Student"
-        "400":
-          description: Id type mismatch
-        "404":
-          description: Loan not found
-        "500":
-          description: Data integrity violation
-  /api/v1/book/{id}:
-    get:
-      tags:
-      - Book
-      - get
-      summary: Retrieve Book by id
-      description: Retrieve a Book object by specifying its id. The response is a
-        Book object
-      operationId: getBookById
-      parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: integer
-          format: int64
-      responses:
-        "200":
-          description: Book found
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Student"
-        "400":
-          description: Id type mismatch
-        "404":
-          description: Book not found
-    delete:
-      tags:
-      - Book
-      - delete
-      summary: Delete Book by id
-      description: Delete a Book object by specifying its id
-      operationId: deleteBook
-      parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: integer
-          format: int64
-      responses:
-        "200":
-          description: Book deleted
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Student"
-        "400":
-          description: Id type mismatch
-        "404":
-          description: Book not found
-        "500":
-          description: Data integrity violation
-  /api/v1/course/{id}:
-    get:
-      tags:
-      - get
-      - Course
-      summary: Retrieve Course by id
-      description: Retrieve a Course object by specifying its id. The response is
-        a Course object
-      operationId: getCourseById
-      parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: integer
-          format: int64
-      responses:
-        "200":
-          description: Course found
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Student"
-        "400":
-          description: Id type mismatch
-        "404":
-          description: Course not found
-    delete:
-      tags:
-      - Course
-      - delete
-      summary: Delete Course by id
-      description: Delete a Course object by specifying its id
-      operationId: deleteCourse
-      parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: integer
-          format: int64
-      responses:
-        "200":
-          description: Course deleted
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Student"
-        "400":
-          description: Id type mismatch
-        "404":
-          description: Course not found
-        "500":
-          description: Data integrity violation
+
   /api/v1/category/{id}:
     get:
       tags:
       - Category
       - get
       summary: Retrieve Category by id
-      description: Retrieve a Category object by specifying its id. The response is
-        a Category object
+      description: Retrieve a Category object by specifying its id. The response is a Category object
       operationId: getCategoryById
       parameters:
       - name: id
@@ -721,7 +1023,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Student"
+                $ref: "#/components/schemas/Category"
         "400":
           description: Id type mismatch
         "404":
@@ -743,16 +1045,64 @@ paths:
       responses:
         "200":
           description: Category deleted
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Student"
         "400":
           description: Id type mismatch
         "404":
           description: Category not found
         "500":
           description: Data integrity violation
+
+  /api/v1/category/book-count:
+    get:
+      tags:
+        - Category
+        - get-all
+      summary: Retrieve all categories with book count
+      description: Retrieve all Category objects. The response is a list of Category names with the associated book count
+        objects
+      operationId: getAllCategoriesWithBookCount
+      parameters:
+        - $ref: '#/components/parameters/PageParam'
+        - $ref: '#/components/parameters/SizeParam'
+        - $ref: '#/components/parameters/AscParam'
+        - $ref: '#/components/parameters/SortByParam'
+      responses:
+        "200":
+          description: Retrieved all Categories
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PageCategory"
+
+  /api/v1/category/only-class:
+    get:
+      tags:
+        - Category
+        - get-all
+      summary: Retrieve all categories with book lent to students belonging to only one class
+      description: Retrieve all categories with book lent to students belonging to only one class
+      operationId: getCategoriesOnlyClass
+      parameters:
+        - name: targetClass
+          in: query
+          required: true
+          schema:
+            type: string
+        - $ref: '#/components/parameters/PageParam'
+        - $ref: '#/components/parameters/SizeParam'
+        - $ref: '#/components/parameters/AscParam'
+        - $ref: '#/components/parameters/SortByParam'
+      responses:
+        "200":
+          description: Retrieved all Categories
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PageCategory"
+        "400":
+          description: id type mismatch
+
+
 components:
   schemas:
     Card:
@@ -774,7 +1124,7 @@ components:
           type: string
         surname:
           type: string
-        classe:
+        class:
           type: string
         email:
           type: string
@@ -831,13 +1181,160 @@ components:
           format: int64
         name:
           type: string
-        descrizione:
+        description:
           type: string
-        studenti:
+        students:
           type: array
           items:
             $ref: "#/components/schemas/Student"
           uniqueItems: true
+    IdStudentBookDTO:
+      type: object
+      properties:
+        idStudent:
+          type: integer
+          example: 5
+        idBook:
+          type: integer
+          example: 7
+      required:
+        - idStudent
+        - idBook
+    CategoryBookCountDTO:
+      type: object
+      properties:
+        categoryName:
+          type: String
+          example: Romanzo
+        bookCount:
+          type: integer
+          example: 7
+      required:
+        - categoryName
+        - bookCount
+    NameSurnameLoansDTO:
+      type: object
+      properties:
+        name:
+          type: string
+          example: Luca
+        surname:
+          type: string
+          example: rossi
+        loans:
+          type: integer
+          example: 7
+      required:
+        - name
+        - surname
+        - loans
+
+    PageStudent:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/Student'
+        totalElements:
+          type: integer
+        totalPages:
+          type: integer
+        size:
+          type: integer
+        number:
+          type: integer
+    PageBook:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/Book'
+        totalElements:
+          type: integer
+        totalPages:
+          type: integer
+        size:
+          type: integer
+        number:
+          type: integer
+    PageCard:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/Card'
+        totalElements:
+          type: integer
+        totalPages:
+          type: integer
+        size:
+          type: integer
+        number:
+          type: integer
+    PageLoan:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/Loan'
+        totalElements:
+          type: integer
+        totalPages:
+          type: integer
+        size:
+          type: integer
+        number:
+          type: integer
+    PageCourse:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/Course'
+        totalElements:
+          type: integer
+        totalPages:
+          type: integerdate
+        size:
+          type: integer
+        number:
+          type: integer
+    PageCategory:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/Category'
+        totalElements:
+          type: integer
+        totalPages:
+          type: integer
+        size:
+          type: integer
+        number:
+          type: integer
+    PageNameSurnameLoansDTO:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/NameSurnameLoansDTO'
+        totalElements:
+          type: integer
+        totalPages:
+          type: integer
+        size:
+          type: integer
+        number:
+          type: integer
+
   parameters:
     PageParam:
       name: page

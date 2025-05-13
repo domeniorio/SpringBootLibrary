@@ -1,4 +1,4 @@
-package it.bitify.libreria.entity;
+package it.bitify.libreria.model.entity;
 
 import jakarta.persistence.*;
 

@@ -1,6 +1,6 @@
 package it.bitify.libreria.controller;
 
-import it.bitify.libreria.entity.Loan;
+import it.bitify.libreria.model.entity.Loan;
 import it.bitify.libreria.service.LoanService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,9 +35,9 @@ public class LoanController {
 
     @GetMapping
     public Page<Loan> getAllLoans(@RequestParam(defaultValue = "0") int page,
-    @RequestParam(defaultValue = "5") int size,
-    @RequestParam(defaultValue = "id") String sortBy,
-    @RequestParam(defaultValue = "true") boolean ascending){
+        @RequestParam(defaultValue = "5") int size,
+        @RequestParam(defaultValue = "id") String sortBy,
+        @RequestParam(defaultValue = "true") boolean ascending){
         Sort sort = ascending ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
         Pageable pageable = PageRequest.of(page, size, sort);
         return service.getAllPrestiti(pageable);
@@ -50,10 +50,10 @@ public class LoanController {
 
 
     @GetMapping("/ongoing")
-    public Page<Loan> findByEndDateIsNull(@RequestParam(defaultValue = "0") int page,
-                                  @RequestParam(defaultValue = "5") int size,
-                                  @RequestParam(defaultValue = "id") String sortBy,
-                                  @RequestParam(defaultValue = "true") boolean ascending){
+    public Page<Loan> getByEndDateIsNull(@RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int size,
+            @RequestParam(defaultValue = "id") String sortBy,
+            @RequestParam(defaultValue = "true") boolean ascending){
         Sort sort = ascending ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
         Pageable pageable = PageRequest.of(page, size, sort);
         return service.findByEndDateIsNull(pageable);

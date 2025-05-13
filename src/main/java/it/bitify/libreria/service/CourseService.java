@@ -1,6 +1,6 @@
 package it.bitify.libreria.service;
 
-import it.bitify.libreria.entity.Course;
+import it.bitify.libreria.model.entity.Course;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

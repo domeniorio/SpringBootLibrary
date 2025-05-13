@@ -1,6 +1,6 @@
 package it.bitify.libreria.service.serviceImpl;
 
-import it.bitify.libreria.entity.Book;
+import it.bitify.libreria.model.entity.Book;
 import it.bitify.libreria.exception.EntityNotFoundException;
 import it.bitify.libreria.repository.BookRepo;
 import it.bitify.libreria.service.BookService;
@@ -10,6 +10,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+
 
 @Service
 public class BookServiceImpl implements BookService {
@@ -18,7 +20,7 @@ public class BookServiceImpl implements BookService {
     private BookRepo repo;
 
     @Override
-    public Book getBookById(Long id) {
+    public Book findBookById(Long id) {
         return repo.findById(id).orElseThrow(() -> new EntityNotFoundException("Valore non presente all'interno del database!"));
     }
 
@@ -45,7 +47,7 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public Page<Book> getAllBooks(Pageable pageable) {
+    public Page<Book> findAllBooks(Pageable pageable) {
         return repo.findAll(pageable);
     }
 
@@ -62,6 +64,21 @@ public class BookServiceImpl implements BookService {
     @Override
     public Page<Book> findByCategory_Name(String name, Pageable pageable) {
         return repo.findByCategory_Name(name, pageable);
+    }
+
+    @Override
+    public Page<Book> findBookWithoutLoan(Pageable pageable) {
+        return repo.findBookWithoutLoan(pageable);
+    }
+
+    @Override
+    public Page<String> findBookLoanInternval(LocalDate start, Pageable pageable) {
+        return repo.findBookLoanInterval(start, pageable);
+    }
+
+    @Override
+    public Page<Book> findBooksWithLoanAboveAverage(Pageable pageable) {
+        return repo.findBooksWithLoanAboveAverage(pageable);
     }
 
 

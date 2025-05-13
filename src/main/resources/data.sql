@@ -43,8 +43,8 @@ INSERT INTO student (id, name, surname, class, email, id_card) VALUES
 (16, 'Giorgio', 'Costa', '3C', 'giorgio.costa@example.com', 16),
 (17, 'Valentina', 'Barbieri', '4C', 'valentina.barbieri@example.com', 17),
 (18, 'Federico', 'Santoro', '5C', 'federico.santoro@example.com', 18),
-(19, 'Laura', 'Esposito', '3A', 'laura.esposito@example.com', 19),
-(20, 'Nicola', 'Moretti', '4A', 'nicola.moretti@example.com', 20);
+(19, 'Laura', 'Esposito', '3F', 'laura.esposito@example.com', 19),
+(20, 'Nicola', 'Moretti', '6A', 'nicola.moretti@example.com', 20);
 ALTER TABLE student ALTER COLUMN id RESTART WITH 21;
 
 
@@ -54,8 +54,9 @@ INSERT INTO Category (id, name) VALUES
 (2, 'Saggistica'),
 (3, 'Fantascienza'),
 (4, 'Biografia'),
-(5, 'Storico');
-ALTER TABLE Category ALTER COLUMN id RESTART WITH 6;
+(5, 'Storico'),
+(6, 'Manuale');
+ALTER TABLE Category ALTER COLUMN id RESTART WITH 7;
 
 
 --Insert per Book
@@ -79,8 +80,9 @@ INSERT INTO Book (id, title, author, publish_year, id_category) VALUES
 (17, 'La mente nuova dell’imperatore', 'Roger Penrose', 1989, 2),
 (18, 'L’arte della guerra', 'Sun Tzu', -500, 5),
 (19, 'La strada', 'Cormac McCarthy', 2006, 1),
-(20, 'Nel mare ci sono i coccodrilli', 'Fabio Geda', 2010, 4);
-ALTER TABLE Book ALTER COLUMN id RESTART WITH 21;
+(20, 'Nel mare ci sono i coccodrilli', 'Fabio Geda', 2010, 4),
+(21, 'Manuale di prova', 'Domenico', 2024, 6);
+ALTER TABLE Book ALTER COLUMN id RESTART WITH 22;
 
 
 --Insert per Loan
@@ -88,7 +90,7 @@ INSERT INTO Loan (id, start_date, end_date, id_student, id_book) VALUES
 (1, '2023-01-10', '2023-01-24', 1, 5),
 (2, '2023-01-15', NULL, 2, 12),
 (3, '2023-02-01', '2023-02-15', 3, 7),
-(4, '2023-02-10', '2023-02-24', 4, 15),
+(4, '2023-02-10', '2023-02-24', 19, 15),
 (5, '2023-03-05', '2023-03-19', 5, 1),
 (6, '2023-03-20', '2023-04-03', 6, 19),
 (7, '2023-04-01', '2023-04-15', 7, 9),
@@ -104,8 +106,9 @@ INSERT INTO Loan (id, start_date, end_date, id_student, id_book) VALUES
 (17, '2023-10-05', '2023-10-19', 1, 13),
 (18, '2023-11-01', '2023-11-15', 18, 16),
 (19, '2023-11-20', '2023-12-04', 1, 11),
-(20, '2023-12-10', '2023-12-24', 20, 18);
-ALTER TABLE Loan ALTER COLUMN id RESTART WITH 21;
+(20, '2023-12-10', '2023-12-24', 20, 18),
+(21, '2025-05-01', NULL, 20 ,21);
+ALTER TABLE Loan ALTER COLUMN id RESTART WITH 22;
 
 
 --Insert per Course

@@ -1,6 +1,7 @@
 package it.bitify.libreria.controller;
 
-import it.bitify.libreria.entity.Category;
+import it.bitify.libreria.model.dto.CategoriesBookCountDTO;
+import it.bitify.libreria.model.entity.Category;
 import it.bitify.libreria.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -8,6 +9,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
+import java.util.Map;
 
 
 @RestController
@@ -39,11 +43,37 @@ public class CategoryController {
 
     @GetMapping
     Page<Category> getAllCategories(@RequestParam(defaultValue = "0") int page,
-    @RequestParam(defaultValue = "5") int size,
-    @RequestParam(defaultValue = "id") String sortBy,
-    @RequestParam(defaultValue = "true") boolean ascending){
+        @RequestParam(defaultValue = "5") int size,
+        @RequestParam(defaultValue = "id") String sortBy,
+        @RequestParam(defaultValue = "true") boolean ascending){
         Sort sort = ascending ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
         Pageable pageable = PageRequest.of(page, size, sort);
         return service.getAllCategorie(pageable);
     }
+
+    @GetMapping("/book-count")
+    Page<CategoriesBookCountDTO> getCategoriesWithBookCount(@RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int size,
+            @RequestParam(defaultValue = "id") String sortBy,
+            @RequestParam(defaultValue = "true") boolean ascending) {
+        Sort sort = ascending ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
+        Pageable pageable = PageRequest.of(page, size, sort);
+
+        return service.findCategoriesWithBookCount(pageable);
+
+    }
+
+    @GetMapping("/only-class")
+    Page<Category> getCategoryOnlyClass(@RequestParam String targetClass,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int size,
+            @RequestParam(defaultValue = "id") String sortBy,
+            @RequestParam(defaultValue = "true") boolean ascending){
+        Sort sort = ascending ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
+        Pageable pageable = PageRequest.of(page, size, sort);
+        return service.findCategoriesWithBooksLentOnlyByClass(targetClass,pageable);
+    }
+
+
+
 }

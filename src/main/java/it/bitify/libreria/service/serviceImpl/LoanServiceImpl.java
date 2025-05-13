@@ -1,6 +1,6 @@
 package it.bitify.libreria.service.serviceImpl;
 
-import it.bitify.libreria.entity.Loan;
+import it.bitify.libreria.model.entity.Loan;
 import it.bitify.libreria.exception.EntityNotFoundException;
 import it.bitify.libreria.repository.LoanRepo;
 import it.bitify.libreria.service.LoanService;
