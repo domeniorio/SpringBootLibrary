@@ -1,12 +1,15 @@
 package it.bitify.libreria.service.serviceImpl;
 
 import it.bitify.libreria.model.dto.NameSurnameLoansDTO;
+import it.bitify.libreria.model.dto.StudentStatsDTO;
 import it.bitify.libreria.model.entity.Book;
+import it.bitify.libreria.model.entity.Category;
 import it.bitify.libreria.model.entity.Loan;
 import it.bitify.libreria.model.entity.Student;
 import it.bitify.libreria.exception.BookAlreadyLentException;
 import it.bitify.libreria.exception.EntityNotFoundException;
 import it.bitify.libreria.repository.BookRepo;
+import it.bitify.libreria.repository.CategoryRepo;
 import it.bitify.libreria.repository.LoanRepo;
 import it.bitify.libreria.repository.StudentRepo;
 import it.bitify.libreria.service.StudentService;
@@ -16,6 +19,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 import org.apache.logging.log4j.LogManager;
@@ -34,6 +38,9 @@ public class StudentServiceImpl implements StudentService {
 
     @Autowired
     private BookRepo bookRepo;
+
+    @Autowired
+    private CategoryRepo categoryRepo;
 
     @Override
     public Student getStudentById(Long id) {
@@ -157,5 +164,38 @@ public class StudentServiceImpl implements StudentService {
         loanRepo.save(loan);
         logger.info("libro restituito");
         return loan;
+    }
+
+    @Override
+    public StudentStatsDTO studentStats(Long idStudent) {
+        if(!studentRepo.existsById(idStudent)) {
+            EntityNotFoundException ex = new EntityNotFoundException("Studente non presente all'interno del database!");
+            logger.error("Errore durante il recupero dello studente con ID {}", idStudent, ex);
+            throw ex;
+        }
+        Long numLoans = studentRepo.findNumberLoans(idStudent);
+        logger.debug("ID: {} - TOTAL_LOANS: {}", idStudent, numLoans);
+        Long currLoans = studentRepo.findNumberOngoingLoans(idStudent);
+        logger.debug("ID: {} - ONGOING_LOANS: {}", idStudent, currLoans);
+        LocalDate lastDate = studentRepo.findLastLoanDate(idStudent);
+        logger.debug("ID: {} - LAST_DATE: {}", idStudent, lastDate);
+        List<Category> favourites = studentRepo.findTopCategoryByStudentId(idStudent);
+        Category favouriteCategory = null;
+        if(!favourites.isEmpty())  favouriteCategory = favourites.getFirst();
+        logger.debug("ID: {} - FAVOURITE_CATEGORY: {}", idStudent, favouriteCategory);
+
+        return new StudentStatsDTO(numLoans, currLoans, lastDate, favouriteCategory);
+    }
+
+    @Override
+    public Page<Book> suggestions(Long idStudent, Pageable pageable) {
+        Category favouriteCategory = studentStats(idStudent).getFavouriteCategory();
+        if(favouriteCategory == null) {
+            EntityNotFoundException ex = new EntityNotFoundException("Lo studente non ha una categoria preferita");
+            logger.error("Lo studente con ID {} non ha prestiti", idStudent, ex);
+            throw ex;
+        }
+
+        return loanRepo.findByCategoryOrderedByLoans(favouriteCategory, idStudent, pageable);
     }
 }

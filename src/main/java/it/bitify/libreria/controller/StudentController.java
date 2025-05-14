@@ -2,6 +2,8 @@ package it.bitify.libreria.controller;
 
 import it.bitify.libreria.model.dto.IdStudentBookDTO;
 import it.bitify.libreria.model.dto.NameSurnameLoansDTO;
+import it.bitify.libreria.model.dto.StudentStatsDTO;
+import it.bitify.libreria.model.entity.Book;
 import it.bitify.libreria.model.entity.Loan;
 import it.bitify.libreria.model.entity.Student;
 import it.bitify.libreria.service.StudentService;
@@ -129,5 +131,21 @@ public class StudentController {
     @PostMapping("/return-book")
     public Loan returnBook(@RequestBody IdStudentBookDTO body){
         return service.returnBook(body.getIdStudent(), body.getIdBook());
+    }
+
+    @GetMapping("stats")
+    public StudentStatsDTO studentStats(@RequestParam Long idStudent){
+        return service.studentStats(idStudent);
+    }
+
+    @GetMapping("suggestions")
+    public Page<Book> studentSuggestion(@RequestParam Long idStudent,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int size,
+            @RequestParam(defaultValue = "id") String sortBy,
+            @RequestParam(defaultValue = "true") boolean ascending){
+        Sort sort = ascending ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
+        Pageable pageable = PageRequest.of(page, size, sort);
+        return service.suggestions(idStudent, pageable);
     }
 }

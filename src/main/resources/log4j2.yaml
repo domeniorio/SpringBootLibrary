@@ -1,0 +1,32 @@
+Configuration:
+  Appenders:
+    Console:
+      name: Console
+      target: SYSTEM_OUT
+      PatternLayout:
+        pattern: "%style{%d{yyyy-MM-dd HH:mm:ss}}{bright_white} %highlight{%-5level}{FATAL=bright_red, ERROR=red, WARN=yellow, INFO=blue, DEBUG=green, TRACE=magenta} %style{[%t]}{cyan} %style{%c{1}}{bright_magenta} - %msg%n"
+
+
+    RollingFile:
+      name: RollingFile
+      fileName: "./logs/spring-boot-logger-log4j2.log"
+      filePattern: "./logs/$${date:yyyy-MM}/spring-boot-logger-log4j2-%d{-dd-MMMM-yyyy}-%i.log.gz"
+      PatternLayout:
+        pattern: "%d %p %C{1} [%t] %m%n"
+      Policies:
+        OnStartupTriggeringPolicy: {}
+        SizeBasedTriggeringPolicy:
+          size: "10 MB"
+        TimeBasedTriggeringPolicy: {}
+
+  Loggers:
+    Root:
+      level: info
+      AppenderRef:
+        - ref: Console
+        - ref: RollingFile
+    Logger:
+      - name: it.bitify.libreria.service
+        level: debug
+        AppenderRef:
+          - ref: Console

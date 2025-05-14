@@ -1,6 +1,8 @@
 package it.bitify.libreria.service;
 
 import it.bitify.libreria.model.dto.NameSurnameLoansDTO;
+import it.bitify.libreria.model.dto.StudentStatsDTO;
+import it.bitify.libreria.model.entity.Book;
 import it.bitify.libreria.model.entity.Loan;
 import it.bitify.libreria.model.entity.Student;
 
@@ -36,4 +38,8 @@ public interface StudentService {
     Loan loanBook(Long idStudent, Long idBook);
 
     Loan returnBook(Long idStudent, Long idBook);
+
+    StudentStatsDTO studentStats(Long idStudent);
+
+    Page<Book> suggestions(Long idStudent, Pageable pageable);
 }

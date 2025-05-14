@@ -12,6 +12,8 @@ public interface CategoryRepo extends JpaRepository<Category, Long> {
     @Query("SELECT NEW it.bitify.libreria.model.dto.CategoriesBookCountDTO(c.name, COUNT(b.id)) FROM Category c LEFT JOIN c.books b GROUP BY c.id")
     Page<CategoriesBookCountDTO> findCategoriesWithBookCount(Pageable pageable);
 
+    Category findByName(String name);
+
 
     @Query("SELECT DISTINCT c " +
             "FROM Category c " +

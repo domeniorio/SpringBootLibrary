@@ -1,6 +1,7 @@
 package it.bitify.libreria.repository;
 
 import it.bitify.libreria.model.dto.NameSurnameLoansDTO;
+import it.bitify.libreria.model.entity.Category;
 import it.bitify.libreria.model.entity.Student;
 
 import org.springframework.data.domain.Page;
@@ -10,8 +11,11 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDate;
+import java.util.List;
 
 public interface StudentRepo extends JpaRepository<Student, Long> {
+
+
     Page<Student> findByNameAndSurname(String name, String surname, Pageable pageable);
     Page<Student> findBySchoolClass(String schoolClass, Pageable pageable);
     Page<Student> findByCard_ReleaseDateBetween(LocalDate start, LocalDate end, Pageable pageable);
@@ -27,4 +31,26 @@ public interface StudentRepo extends JpaRepository<Student, Long> {
 
     @Query("SELECT s FROM Student s JOIN s.loans l GROUP BY s.id ORDER BY COUNT(l.id) DESC")
     Page<Student> findStudentsOrderedByLoanCount(Pageable pageable);
+
+    @Query("SELECT COUNT(l.id) FROM Student s LEFT JOIN s.loans l WHERE s.id = :idStudent")
+    Long findNumberLoans(@Param("idStudent") Long idStudent);
+
+    @Query("SELECT COUNT(l.id) FROM Student s LEFT JOIN s.loans l WHERE s.id = :idStudent AND l.endDate IS NULL")
+    Long findNumberOngoingLoans(@Param("idStudent") Long idStudent);
+
+    @Query("SELECT MAX(l.startDate) FROM Student s JOIN s.loans l WHERE s.id = :idStudent")
+    LocalDate findLastLoanDate(@Param("idStudent") Long idStudent);
+
+    @Query("""
+    SELECT c
+    FROM Student s
+    JOIN s.loans l
+    JOIN l.book b
+    JOIN b.category c
+    WHERE s.id = :idStudent
+    GROUP BY c.name
+    ORDER BY COUNT(b.id) DESC
+    """)
+    List<Category> findTopCategoryByStudentId(@Param("idStudent") Long idStudent);
+
 }

@@ -188,7 +188,7 @@ paths:
       - Student
       summary: Add student
       description: Add a student object to the database
-      operationId: addstudent
+      operationId: addStudent
       requestBody:
         content:
           application/json:
@@ -454,6 +454,61 @@ paths:
         "404":
           description: Entity not found
 
+  /api/v1/student/stats:
+    get:
+      tags:
+        - get
+        - Student
+      summary: Retrieve stats for given student
+      description: "Retrieve stats for given student: number of loans, number of ongoing loans, last loan date and favourite category"
+      operationId: getStudentStats
+      parameters:
+        - name: idStudent
+          in: query
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Student found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StudentStatsDTO"
+        "400":
+          description: id type mismatch
+        "404":
+          description: entity not found
+
+  /api/v1/student/suggestions:
+    get:
+      tags:
+        - get-all
+        - Student
+      summary: Retrieve books based on stats
+      description: Retrieve a list of books related to student stats
+      operationId: getSuggestions
+      parameters:
+        - name: idStudent
+          in: query
+          required: true
+          schema:
+            type: integer
+        - $ref: '#/components/parameters/PageParam'
+        - $ref: '#/components/parameters/SizeParam'
+        - $ref: '#/components/parameters/AscParam'
+        - $ref: '#/components/parameters/SortByParam'
+      responses:
+        "200":
+          description: Student found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PageBook"
+        "400":
+          description: id type mismatch
+        "404":
+          description: entity not found
 
   /api/v1/loan:
     get:
@@ -1228,6 +1283,26 @@ components:
         - name
         - surname
         - loans
+    StudentStatsDTO:
+      type: object
+      properties:
+        totalLoans:
+          type: integer
+          example: 7
+        currentLoans:
+          type: integer
+          example: 7
+        lastDate:
+          type: string
+          format: date
+          example: 2024-11-11
+        favouriteCategory:
+          $ref: '#/components/schemas/Category'
+      required:
+        - favouriteCategory
+        - lastDate
+        - totalLoans
+        - currentLoans
 
     PageStudent:
       type: object
