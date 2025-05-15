@@ -15,7 +15,7 @@ public interface LoanService {
 
     void deleteLoan(Long id);
 
-    Page<Loan> getAllPrestiti(Pageable pageable);
+    Page<Loan> getAllLoans(Pageable pageable);
 
     Page<Loan> findByEndDateIsNull(Pageable pageable);
 

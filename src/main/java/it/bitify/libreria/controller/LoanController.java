@@ -40,7 +40,7 @@ public class LoanController {
         @RequestParam(defaultValue = "true") boolean ascending){
         Sort sort = ascending ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
         Pageable pageable = PageRequest.of(page, size, sort);
-        return service.getAllPrestiti(pageable);
+        return service.getAllLoans(pageable);
     }
 
     @DeleteMapping("/{id}")

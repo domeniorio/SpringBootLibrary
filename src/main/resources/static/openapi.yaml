@@ -1179,7 +1179,7 @@ components:
           type: string
         surname:
           type: string
-        class:
+        schoolClass:
           type: string
         email:
           type: string

@@ -6,18 +6,22 @@ import it.bitify.libreria.repository.BookRepo;
 import it.bitify.libreria.service.BookService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 @Service
 public class BookServiceImpl implements BookService {
 
     @Autowired
     private BookRepo repo;
+    Logger logger = LogManager.getLogger(BookServiceImpl.class);
 
     @Override
     public Book findBookById(Long id) {
@@ -25,11 +29,13 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
+    @CacheEvict(value = "books", key = " 'allBooks' ")
     public void saveBook(Book Book) {
         repo.save(Book);
     }
 
     @Override
+    @CacheEvict(value = "books", key = " 'allBooks' ")
     public void updateBook(Book newBook) {
         if(repo.existsById(newBook.getBookId())){
             repo.save(newBook);
@@ -39,6 +45,7 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
+    @CacheEvict(value = "books", key = " 'allBooks' ")
     public void deleteBook(Long id) {
         if(repo.existsById(id)) {
             repo.deleteById(id);
@@ -47,7 +54,9 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
+    @Cacheable(value = "books", key = " 'allBooks' ")
     public Page<Book> findAllBooks(Pageable pageable) {
+        logger.debug("Lista di libri restituita");
         return repo.findAll(pageable);
     }
 

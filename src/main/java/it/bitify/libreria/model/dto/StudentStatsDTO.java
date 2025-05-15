@@ -17,6 +17,13 @@ public class StudentStatsDTO {
         this.favouriteCategory = favouriteCategory;
     }
 
+    public StudentStatsDTO(Long totalLoans, Long currentLoans, LocalDate lastLoanDate) {
+        this.totalLoans = totalLoans;
+        this.currentLoans = currentLoans;
+        this.lastLoanDate = lastLoanDate;
+    }
+
+
     public StudentStatsDTO() {
     }
 
@@ -47,6 +54,7 @@ public class StudentStatsDTO {
     public Category getFavouriteCategory() {
         return favouriteCategory;
     }
+
 
     public void setFavouriteCategory(Category favouriteCategory) {
         this.favouriteCategory = favouriteCategory;

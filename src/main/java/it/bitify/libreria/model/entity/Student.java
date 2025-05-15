@@ -38,27 +38,27 @@ public class Student {
             inverseJoinColumns = @JoinColumn(name = "idCourse"))
     private Set<Course> courses;
 
-    public Long getStudentId() {
+    public Long getId() {
         return id;
     }
 
-    public void setStudentId(Long id) {
+    public void seId(Long id) {
         this.id = id;
     }
 
-    public String getsurname() {
+    public String getSurname() {
         return surname;
     }
 
-    public void setsurname(String surname) {
+    public void setSurname(String surname) {
         this.surname = surname;
     }
 
-    public String getClasse() {
+    public String getSchoolClass() {
         return schoolClass;
     }
 
-    public void setClasse(String schoolClass) {
+    public void setSchoolClass(String schoolClass) {
         this.schoolClass = schoolClass;
     }
 
@@ -78,11 +78,11 @@ public class Student {
         this.card = card;
     }
 
-    public String getname() {
+    public String getName() {
         return name;
     }
 
-    public void setname(String name) {
+    public void setName(String name) {
         this.name = name;
     }
 }

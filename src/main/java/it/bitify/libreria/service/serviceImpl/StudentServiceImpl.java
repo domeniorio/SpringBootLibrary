@@ -1,5 +1,6 @@
 package it.bitify.libreria.service.serviceImpl;
 
+import it.bitify.libreria.model.dto.CategoryOrderingDTO;
 import it.bitify.libreria.model.dto.NameSurnameLoansDTO;
 import it.bitify.libreria.model.dto.StudentStatsDTO;
 import it.bitify.libreria.model.entity.Book;
@@ -14,13 +15,19 @@ import it.bitify.libreria.repository.LoanRepo;
 import it.bitify.libreria.repository.StudentRepo;
 import it.bitify.libreria.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -43,24 +50,39 @@ public class StudentServiceImpl implements StudentService {
     private CategoryRepo categoryRepo;
 
     @Override
+    @Cacheable(value = "students", key = "#id")
     public Student getStudentById(Long id) {
+        logger.debug("Student with id {} found", id);
         return studentRepo.findById(id).orElseThrow(() -> new EntityNotFoundException("Valore non presente all'interno del database!"));
     }
 
     @Override
+    @CacheEvict(value="students", key=" 'allStudents' ")
     public void saveStudent(Student Student) {
         studentRepo.save(Student);
     }
 
     @Override
-    public void updateStudent(Student newStudent) {
-        if(studentRepo.existsById(newStudent.getStudentId())) {
+    @Caching(put = {
+            @CachePut(value="students", key = "#newStudent.id")
+    },
+            evict = {
+            @CacheEvict(value="students", key=" 'allStudents' ")
+            }
+    )
+    public Student updateStudent(Student newStudent) {
+        if(studentRepo.existsById(newStudent.getId())) {
             studentRepo.save(newStudent);
+            return newStudent;
         }
         else throw new EntityNotFoundException("Valore non presente all'interno del database!");
     }
 
     @Override
+    @Caching(evict = {
+            @CacheEvict(value="students", key="#id"),
+            @CacheEvict(value="students", key=" 'allStudents' ")
+    })
     public void deleteStudent(Long id) {
         if(studentRepo.existsById(id)) {
             studentRepo.deleteById(id);
@@ -69,6 +91,7 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
+    @Cacheable(value = "students", key = " 'allStudents' ")
     public Page<Student> getAllStudents(Pageable pageable) {
         return studentRepo.findAll(pageable);
     }
@@ -110,6 +133,7 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
+    @CacheEvict(value = "stats", key = "#idStudent")
     public Loan loanBook(Long idStudent, Long idBook) {
         Student student = studentRepo.findById(idStudent).orElseThrow(() -> {
             EntityNotFoundException ex = new EntityNotFoundException("Studente non presente all'interno del database!");
@@ -141,6 +165,7 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
+    @CacheEvict(value = "stats", key = "#idStudent")
     public Loan returnBook(Long idStudent, Long idBook) {
         Student student = studentRepo.findById(idStudent).orElseThrow(() -> {
             EntityNotFoundException ex = new EntityNotFoundException("Studente non presente all'interno del database!");
@@ -167,24 +192,29 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
+    @Cacheable(value="stats", key="#idStudent")
     public StudentStatsDTO studentStats(Long idStudent) {
         if(!studentRepo.existsById(idStudent)) {
             EntityNotFoundException ex = new EntityNotFoundException("Studente non presente all'interno del database!");
             logger.error("Errore durante il recupero dello studente con ID {}", idStudent, ex);
             throw ex;
         }
-        Long numLoans = studentRepo.findNumberLoans(idStudent);
-        logger.debug("ID: {} - TOTAL_LOANS: {}", idStudent, numLoans);
-        Long currLoans = studentRepo.findNumberOngoingLoans(idStudent);
-        logger.debug("ID: {} - ONGOING_LOANS: {}", idStudent, currLoans);
-        LocalDate lastDate = studentRepo.findLastLoanDate(idStudent);
-        logger.debug("ID: {} - LAST_DATE: {}", idStudent, lastDate);
-        List<Category> favourites = studentRepo.findTopCategoryByStudentId(idStudent);
+
+        StudentStatsDTO studentStats = studentRepo.findLoanStats(idStudent);
+        List<CategoryOrderingDTO> categoryStats = studentRepo.findTopCategoryByStudentId(idStudent);
         Category favouriteCategory = null;
-        if(!favourites.isEmpty())  favouriteCategory = favourites.getFirst();
-        logger.debug("ID: {} - FAVOURITE_CATEGORY: {}", idStudent, favouriteCategory);
-        //provare a implementare questa operazione con una sola query
-        return new StudentStatsDTO(numLoans, currLoans, lastDate, favouriteCategory);
+        if(!categoryStats.isEmpty()){
+            Comparator<LocalDate> lastDateComparator = Comparator.nullsLast(Comparator.<LocalDate>naturalOrder()).reversed();
+            categoryStats = categoryStats.stream()
+                    .sorted(Comparator.comparing(CategoryOrderingDTO::getBookCount).reversed() // Criterio primario: bookCount discendente
+                            .thenComparing(CategoryOrderingDTO::getLastDate, lastDateComparator)) // Criterio secondario: usa il comparatore esplicito per lastDate
+                    .toList();
+            favouriteCategory = categoryStats.getFirst().getCategory();
+        }
+        logger.debug("ID: {} - FAVOURITE_CATEGORY: {}", idStudent, favouriteCategory.getName());
+
+        studentStats.setFavouriteCategory(favouriteCategory);
+        return studentStats;
     }
 
     @Override

@@ -1,6 +1,8 @@
 package it.bitify.libreria.repository;
 
+import it.bitify.libreria.model.dto.CategoryOrderingDTO;
 import it.bitify.libreria.model.dto.NameSurnameLoansDTO;
+import it.bitify.libreria.model.dto.StudentStatsDTO;
 import it.bitify.libreria.model.entity.Category;
 import it.bitify.libreria.model.entity.Student;
 
@@ -41,16 +43,29 @@ public interface StudentRepo extends JpaRepository<Student, Long> {
     @Query("SELECT MAX(l.startDate) FROM Student s JOIN s.loans l WHERE s.id = :idStudent")
     LocalDate findLastLoanDate(@Param("idStudent") Long idStudent);
 
+    @Query("SELECT NEW it.bitify.libreria.model.dto.CategoryOrderingDTO(" +
+            "c, " +
+            "COUNT(b.id), " +
+            "MAX(l.startDate)) " +
+            "FROM Student s " +
+            "JOIN s.loans l " +
+            "JOIN l.book b " +
+            "JOIN b.category c " +
+            "WHERE s.id = :idStudent " +
+            "GROUP BY c.name") //
+    List<CategoryOrderingDTO> findTopCategoryByStudentId(@Param("idStudent") Long idStudent);
+
+
     @Query("""
-    SELECT c
-    FROM Student s
-    JOIN s.loans l
-    JOIN l.book b
-    JOIN b.category c
-    WHERE s.id = :idStudent
-    GROUP BY c.name, l.startDate
-    ORDER BY COUNT(b.id), l.startDate DESC
-    """)
-    List<Category> findTopCategoryByStudentId(@Param("idStudent") Long idStudent);
+            SELECT NEW it.bitify.libreria.model.dto.StudentStatsDTO(
+                COUNT(l.id) AS totalLoans,
+                SUM(CASE WHEN l.endDate IS NULL THEN 1 ELSE 0 END) AS activeLoans,\s
+                MAX(l.startDate) AS lastLoanStartDate
+            )
+            FROM Student s
+            LEFT JOIN s.loans l
+            WHERE s.id = :idStudent
+            GROUP BY s.id""")
+    StudentStatsDTO findLoanStats(@Param("idStudent")Long idStudent);
 
 }
