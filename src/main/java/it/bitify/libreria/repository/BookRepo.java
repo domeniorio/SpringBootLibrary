@@ -2,6 +2,7 @@ package it.bitify.libreria.repository;
 
 import it.bitify.libreria.model.entity.Book;
 
+import it.bitify.libreria.model.entity.Category;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -51,5 +52,20 @@ public interface BookRepo extends JpaRepository<Book, Long> {
     ) AS filtered_books
     """, nativeQuery = true)
     Page<Book> findBooksWithLoanAboveAverage(Pageable pageable);
+
+    @Query("""
+            SELECT b
+            FROM Book b
+            JOIN Loan l ON l.book = b
+            WHERE b.category = :category
+            AND b NOT IN (
+                SELECT l2.book
+                FROM Loan l2
+                WHERE l2.student.id = :studentId OR l2.endDate is NULL
+            )
+            GROUP BY b
+            ORDER BY COUNT(l.id) DESC
+            """)
+    Page<Book> findByCategoryOrderedByLoans(@Param("category") Category category, @Param("studentId") Long studentId, Pageable pageable);
 
 }

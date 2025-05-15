@@ -1,7 +1,10 @@
 package it.bitify.libreria.service.serviceImpl;
 
+import it.bitify.libreria.model.entity.Book;
+import it.bitify.libreria.model.entity.Category;
 import it.bitify.libreria.model.entity.Loan;
 import it.bitify.libreria.exception.EntityNotFoundException;
+import it.bitify.libreria.model.entity.Student;
 import it.bitify.libreria.repository.LoanRepo;
 import it.bitify.libreria.service.LoanService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +13,8 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 
 @Service
@@ -57,5 +62,14 @@ public class LoanServiceImpl implements LoanService {
         return repo.findByEndDateIsNull(pageable);
     }
 
+    @Override
+    public boolean bookAlreadyLent(Book book){
+        return repo.findByBookAndEndDateIsNull(book).isPresent();
+    }
+
+    @Override
+    public Optional<Loan> loanExists(Book book, Student student){
+        return repo.findByStudentAndBookAndEndDateIsNull(student,book);
+    }
 
 }

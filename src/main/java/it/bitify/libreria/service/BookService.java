@@ -3,6 +3,7 @@ package it.bitify.libreria.service;
 import it.bitify.libreria.model.entity.Book;
 
 
+import it.bitify.libreria.model.entity.Category;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -23,4 +24,5 @@ public interface BookService {
     Page<Book> findBooksWithLoanAboveAverage(Pageable pageable);
 
 
+    Page<Book> bookSuggestions(Category category, Long idStudent, Pageable pageable);
 }

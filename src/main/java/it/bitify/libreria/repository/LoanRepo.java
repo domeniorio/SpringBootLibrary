@@ -18,19 +18,4 @@ public interface LoanRepo extends JpaRepository<Loan, Long> {
     Optional<Loan> findByBookAndEndDateIsNull(Book book);
     Optional<Loan> findByStudentAndBookAndEndDateIsNull(Student student, Book book);
 
-    @Query("""
-            SELECT b
-            FROM Book b
-            JOIN Loan l ON l.book = b
-            WHERE b.category = :category
-            AND b NOT IN (
-                SELECT l2.book
-                FROM Loan l2
-                WHERE l2.student.id = :studentId OR l2.endDate is NULL
-            )
-            GROUP BY b
-            ORDER BY COUNT(l.id) DESC
-            """)
-    Page<Book> findByCategoryOrderedByLoans(@Param("category") Category category, @Param("studentId") Long studentId, Pageable pageable);
-
 }

@@ -2,6 +2,7 @@ package it.bitify.libreria.service.serviceImpl;
 
 import it.bitify.libreria.model.entity.Book;
 import it.bitify.libreria.exception.EntityNotFoundException;
+import it.bitify.libreria.model.entity.Category;
 import it.bitify.libreria.repository.BookRepo;
 import it.bitify.libreria.service.BookService;
 
@@ -25,7 +26,11 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public Book findBookById(Long id) {
-        return repo.findById(id).orElseThrow(() -> new EntityNotFoundException("Valore non presente all'interno del database!"));
+        return repo.findById(id).orElseThrow(() -> {
+            EntityNotFoundException ex = new EntityNotFoundException("Libro non presente all'interno del database!");
+            logger.error("Errore durante il recupero del libro con ID {}", id, ex);
+            return ex;
+        });
     }
 
     @Override
@@ -90,5 +95,9 @@ public class BookServiceImpl implements BookService {
         return repo.findBooksWithLoanAboveAverage(pageable);
     }
 
+    @Override
+    public Page<Book> bookSuggestions(Category category, Long idStudent, Pageable pageable){
+        return repo.findByCategoryOrderedByLoans(category, idStudent, pageable);
+    }
 
 }

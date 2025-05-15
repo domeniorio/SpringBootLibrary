@@ -1,5 +1,4 @@
 package it.bitify.libreria.service.serviceImpl;
-
 import it.bitify.libreria.model.dto.CategoryOrderingDTO;
 import it.bitify.libreria.model.dto.NameSurnameLoansDTO;
 import it.bitify.libreria.model.dto.StudentStatsDTO;
@@ -9,10 +8,10 @@ import it.bitify.libreria.model.entity.Loan;
 import it.bitify.libreria.model.entity.Student;
 import it.bitify.libreria.exception.BookAlreadyLentException;
 import it.bitify.libreria.exception.EntityNotFoundException;
-import it.bitify.libreria.repository.BookRepo;
-import it.bitify.libreria.repository.CategoryRepo;
-import it.bitify.libreria.repository.LoanRepo;
 import it.bitify.libreria.repository.StudentRepo;
+import it.bitify.libreria.service.BookService;
+import it.bitify.libreria.service.CategoryService;
+import it.bitify.libreria.service.LoanService;
 import it.bitify.libreria.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
@@ -26,8 +25,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
+
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -41,19 +39,22 @@ public class StudentServiceImpl implements StudentService {
     private StudentRepo studentRepo;
     
     @Autowired
-    private LoanRepo loanRepo;
+    private LoanService loanService;
 
     @Autowired
-    private BookRepo bookRepo;
+    private BookService bookService;
 
     @Autowired
-    private CategoryRepo categoryRepo;
+    private CategoryService categoryService;
 
     @Override
     @Cacheable(value = "students", key = "#id")
     public Student getStudentById(Long id) {
-        logger.debug("Student with id {} found", id);
-        return studentRepo.findById(id).orElseThrow(() -> new EntityNotFoundException("Valore non presente all'interno del database!"));
+        return studentRepo.findById(id).orElseThrow(() -> {
+            EntityNotFoundException ex = new EntityNotFoundException("Studente non presente all'interno del database!");
+            logger.error("Errore durante il recupero dello studente con ID {}", id, ex);
+            return ex;
+        });
     }
 
     @Override
@@ -65,7 +66,7 @@ public class StudentServiceImpl implements StudentService {
     @Override
     @Caching(put = {
             @CachePut(value="students", key = "#newStudent.id")
-    },
+            },
             evict = {
             @CacheEvict(value="students", key=" 'allStudents' ")
             }
@@ -135,21 +136,13 @@ public class StudentServiceImpl implements StudentService {
     @Override
     @CacheEvict(value = "stats", key = "#idStudent")
     public Loan loanBook(Long idStudent, Long idBook) {
-        Student student = studentRepo.findById(idStudent).orElseThrow(() -> {
-            EntityNotFoundException ex = new EntityNotFoundException("Studente non presente all'interno del database!");
-            logger.error("Errore durante il recupero dello studente con ID {}", idStudent, ex);
-            return ex;
-        });
+        Student student = getStudentById(idStudent);
         logger.debug("Studente con ID {} trovato", idStudent);
-        Book book = bookRepo.findById(idBook).orElseThrow(() -> {
-            EntityNotFoundException ex = new EntityNotFoundException("Libro non presente all'interno del database!");
-            logger.error("Errore durante il recupero del libro con ID {}", idBook, ex);
-            return ex;
-        });
+
+        Book book = bookService.findBookById(idBook);
         logger.info("Libro con ID {} trovato", idBook);
 
-        Optional<Loan> queryRes = loanRepo.findByBookAndEndDateIsNull(book);
-        if(queryRes.isPresent()) {
+        if(loanService.bookAlreadyLent(book)) {
             BookAlreadyLentException ex = new BookAlreadyLentException("Il libro selezionato è stato già preso in prestito");
             logger.error("Errore durante il prestito del libro con ID {}", idBook, ex);
             throw ex;
@@ -158,7 +151,7 @@ public class StudentServiceImpl implements StudentService {
             newLoan.setStartDate(LocalDate.now());
             newLoan.setBook(book);
             newLoan.setStudent(student);
-            loanRepo.save(newLoan);
+            loanService.saveLoan(newLoan);
             logger.debug("nuovo prestito istanziato, con ID-LOAN: {}, ID-STUDENT: {}, ID-BOOK: {}", newLoan.getLoanId(), idStudent, idBook);
             return newLoan;
         }
@@ -167,26 +160,18 @@ public class StudentServiceImpl implements StudentService {
     @Override
     @CacheEvict(value = "stats", key = "#idStudent")
     public Loan returnBook(Long idStudent, Long idBook) {
-        Student student = studentRepo.findById(idStudent).orElseThrow(() -> {
-            EntityNotFoundException ex = new EntityNotFoundException("Studente non presente all'interno del database!");
-            logger.error("Errore durante il recupero dello studente con ID {}", idStudent, ex);
-            return ex;
-        });
+        Student student = getStudentById(idStudent);
         logger.debug("Studente con ID {} trovato", idStudent);
-        Book book = bookRepo.findById(idBook).orElseThrow(() -> {
-            EntityNotFoundException ex = new EntityNotFoundException("Libro non presente all'interno del database!");
-            logger.error("Errore durante il recupero del libro con ID {}", idBook, ex);
-            return ex;
-        });
+        Book book = bookService.findBookById(idBook);
         logger.info("Libro con ID {} trovato", idBook);
-        Loan loan = loanRepo.findByStudentAndBookAndEndDateIsNull(student,book).orElseThrow(() -> {
+        Loan loan = loanService.loanExists(book,student).orElseThrow(() -> {
             EntityNotFoundException ex = new EntityNotFoundException("Non esiste un presttito per studente e libro selezionati");
             logger.error("Errore durante la resistuzione del libro con ID {} da parte dello studente con ID {}", idBook, idStudent, ex);
             return ex;
         });
 
         loan.setEndDate(LocalDate.now());
-        loanRepo.save(loan);
+        loanService.saveLoan(loan);
         logger.debug("libro con ID: {} restituito da parte dello studente con ID: {}, prestito con ID: {} modificato", idBook, idStudent, loan.getLoanId());
         return loan;
     }
@@ -206,9 +191,9 @@ public class StudentServiceImpl implements StudentService {
         if(!categoryStats.isEmpty()){
             Comparator<LocalDate> lastDateComparator = Comparator.nullsLast(Comparator.<LocalDate>naturalOrder()).reversed();
             categoryStats = categoryStats.stream()
-                    .sorted(Comparator.comparing(CategoryOrderingDTO::getBookCount).reversed() // Criterio primario: bookCount discendente
-                            .thenComparing(CategoryOrderingDTO::getLastDate, lastDateComparator)) // Criterio secondario: usa il comparatore esplicito per lastDate
-                    .toList();
+                            .sorted(Comparator.comparing(CategoryOrderingDTO::getBookCount).reversed()
+                            .thenComparing(CategoryOrderingDTO::getLastDate, lastDateComparator))
+                            .toList();
             favouriteCategory = categoryStats.getFirst().getCategory();
         }
         logger.debug("ID: {} - FAVOURITE_CATEGORY: {}", idStudent, favouriteCategory.getName());
@@ -226,6 +211,6 @@ public class StudentServiceImpl implements StudentService {
             throw ex;
         }
 
-        return loanRepo.findByCategoryOrderedByLoans(favouriteCategory, idStudent, pageable);
+        return bookService.bookSuggestions(favouriteCategory, idStudent, pageable);
     }
 }
