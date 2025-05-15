@@ -1,6 +1,7 @@
 package it.bitify.libreria.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import java.util.List;
 
@@ -24,7 +25,7 @@ public class Book {
 
     @ManyToOne
     @JoinColumn(name="idCategory")
-    @JsonBackReference
+    @JsonManagedReference
     private Category category;
 
     @OneToMany(mappedBy = "book", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})

@@ -116,13 +116,13 @@ public class StudentServiceImpl implements StudentService {
             logger.error("Errore durante il recupero dello studente con ID {}", idStudent, ex);
             return ex;
         });
-        logger.info("Studente trovato");
+        logger.debug("Studente con ID {} trovato", idStudent);
         Book book = bookRepo.findById(idBook).orElseThrow(() -> {
             EntityNotFoundException ex = new EntityNotFoundException("Libro non presente all'interno del database!");
             logger.error("Errore durante il recupero del libro con ID {}", idBook, ex);
             return ex;
         });
-        logger.info("libro trovato");
+        logger.info("Libro con ID {} trovato", idBook);
 
         Optional<Loan> queryRes = loanRepo.findByBookAndEndDateIsNull(book);
         if(queryRes.isPresent()) {
@@ -135,7 +135,7 @@ public class StudentServiceImpl implements StudentService {
             newLoan.setBook(book);
             newLoan.setStudent(student);
             loanRepo.save(newLoan);
-            logger.info("nuovo prestito istanziato");
+            logger.debug("nuovo prestito istanziato, con ID-LOAN: {}, ID-STUDENT: {}, ID-BOOK: {}", newLoan.getLoanId(), idStudent, idBook);
             return newLoan;
         }
     }
@@ -147,13 +147,13 @@ public class StudentServiceImpl implements StudentService {
             logger.error("Errore durante il recupero dello studente con ID {}", idStudent, ex);
             return ex;
         });
-        logger.info("Studente trovato");
+        logger.debug("Studente con ID {} trovato", idStudent);
         Book book = bookRepo.findById(idBook).orElseThrow(() -> {
             EntityNotFoundException ex = new EntityNotFoundException("Libro non presente all'interno del database!");
             logger.error("Errore durante il recupero del libro con ID {}", idBook, ex);
             return ex;
         });
-        logger.info("libro trovato");
+        logger.info("Libro con ID {} trovato", idBook);
         Loan loan = loanRepo.findByStudentAndBookAndEndDateIsNull(student,book).orElseThrow(() -> {
             EntityNotFoundException ex = new EntityNotFoundException("Non esiste un presttito per studente e libro selezionati");
             logger.error("Errore durante la resistuzione del libro con ID {} da parte dello studente con ID {}", idBook, idStudent, ex);
@@ -162,7 +162,7 @@ public class StudentServiceImpl implements StudentService {
 
         loan.setEndDate(LocalDate.now());
         loanRepo.save(loan);
-        logger.info("libro restituito");
+        logger.debug("libro con ID: {} restituito da parte dello studente con ID: {}, prestito con ID: {} modificato", idBook, idStudent, loan.getLoanId());
         return loan;
     }
 
@@ -183,7 +183,7 @@ public class StudentServiceImpl implements StudentService {
         Category favouriteCategory = null;
         if(!favourites.isEmpty())  favouriteCategory = favourites.getFirst();
         logger.debug("ID: {} - FAVOURITE_CATEGORY: {}", idStudent, favouriteCategory);
-
+        //provare a implementare questa operazione con una sola query
         return new StudentStatsDTO(numLoans, currLoans, lastDate, favouriteCategory);
     }
 

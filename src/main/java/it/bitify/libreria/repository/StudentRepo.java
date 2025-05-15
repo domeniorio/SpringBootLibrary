@@ -48,8 +48,8 @@ public interface StudentRepo extends JpaRepository<Student, Long> {
     JOIN l.book b
     JOIN b.category c
     WHERE s.id = :idStudent
-    GROUP BY c.name
-    ORDER BY COUNT(b.id) DESC
+    GROUP BY c.name, l.startDate
+    ORDER BY COUNT(b.id), l.startDate DESC
     """)
     List<Category> findTopCategoryByStudentId(@Param("idStudent") Long idStudent);
 

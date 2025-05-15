@@ -26,7 +26,7 @@ public interface LoanRepo extends JpaRepository<Loan, Long> {
             AND b NOT IN (
                 SELECT l2.book
                 FROM Loan l2
-                WHERE l2.student.id = :studentId
+                WHERE l2.student.id = :studentId OR l2.endDate is NULL
             )
             GROUP BY b
             ORDER BY COUNT(l.id) DESC
