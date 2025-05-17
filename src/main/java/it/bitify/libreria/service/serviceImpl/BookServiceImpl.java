@@ -9,6 +9,7 @@ import it.bitify.libreria.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -34,28 +35,44 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    @CacheEvict(value = "books", key = " 'allBooks' ")
+    @Caching(evict = {
+            @CacheEvict(value = "books", key = " 'allBooks' "),
+            @CacheEvict(value = "categories", key = " 'categoriesBookCount' ")
+    })
     public void saveBook(Book Book) {
         repo.save(Book);
     }
 
     @Override
-    @CacheEvict(value = "books", key = " 'allBooks' ")
+    @Caching(evict = {
+            @CacheEvict(value = "books", key = " 'allBooks' "),
+            @CacheEvict(value = "categories", key = " 'categoriesBookCount' ")
+    })
     public void updateBook(Book newBook) {
         if(repo.existsById(newBook.getBookId())){
             repo.save(newBook);
         }
-        else throw new EntityNotFoundException("Valore non presente all'interno del database!");
-
+        else { 
+            EntityNotFoundException ex = new EntityNotFoundException("Libro non presente all'interno del database!");
+            logger.error("Errore durante il recupero del libro con ID {}", newBook.getBookId(), ex);
+            throw ex;
+        }
     }
 
     @Override
-    @CacheEvict(value = "books", key = " 'allBooks' ")
+    @Caching(evict = {
+            @CacheEvict(value = "books", key = " 'allBooks' "),
+            @CacheEvict(value = "categories", key = " 'categoriesBookCount' ")
+    })
     public void deleteBook(Long id) {
         if(repo.existsById(id)) {
             repo.deleteById(id);
         }
-        else throw new EntityNotFoundException("Valore non presente all'interno del database!");
+        else { 
+            EntityNotFoundException ex = new EntityNotFoundException("Libro non presente all'interno del database!");
+            logger.error("Errore durante il recupero del libro con ID {}", id, ex);
+            throw ex;
+        }
     }
 
     @Override

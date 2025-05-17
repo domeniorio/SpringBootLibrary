@@ -45,7 +45,7 @@ public class CategoryController {
         @RequestParam(defaultValue = "true") boolean ascending){
         Sort sort = ascending ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
         Pageable pageable = PageRequest.of(page, size, sort);
-        return service.getAllCategorie(pageable);
+        return service.getAllCategories(pageable);
     }
 
     @GetMapping("/book-count")

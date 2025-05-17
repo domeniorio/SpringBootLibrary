@@ -22,7 +22,7 @@ public interface LoanService {
 
     Page<Loan> getAllLoans(Pageable pageable);
 
-    Page<Loan> findByEndDateIsNull(Pageable pageable);
+    Page<Loan> findOngoingLoans(Pageable pageable);
 
     boolean bookAlreadyLent(Book book);
 

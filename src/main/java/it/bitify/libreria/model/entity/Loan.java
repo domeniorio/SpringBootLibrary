@@ -1,5 +1,7 @@
 package it.bitify.libreria.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
@@ -25,6 +27,7 @@ public class Loan{
 
     @ManyToOne
     @JoinColumn(name="idBook")
+    @JsonBackReference("bookLoansRelationship")
     private Book book;
 
 

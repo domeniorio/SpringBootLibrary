@@ -12,11 +12,11 @@ public interface CategoryService {
 
     void saveCategory(Category category);
 
-    void updateCategory(Category category);
+    Category updateCategory(Category category);
 
     void deleteCategory(Long id);
 
-    Page<Category> getAllCategorie(Pageable pageable);
+    Page<Category> getAllCategories(Pageable pageable);
 
     Page<CategoriesBookCountDTO> findCategoriesWithBookCount(Pageable pageable);
 

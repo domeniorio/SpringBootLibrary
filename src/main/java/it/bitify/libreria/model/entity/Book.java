@@ -25,10 +25,11 @@ public class Book {
 
     @ManyToOne
     @JoinColumn(name="idCategory")
-    @JsonManagedReference
+    @JsonBackReference("categoryBooksRelationship")
     private Category category;
 
     @OneToMany(mappedBy = "book", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
+    @JsonManagedReference("bookLoansRelationship")
     private List<Loan> loans;
 
     public Long getBookId() {

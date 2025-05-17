@@ -10,7 +10,6 @@ import it.bitify.libreria.exception.BookAlreadyLentException;
 import it.bitify.libreria.exception.EntityNotFoundException;
 import it.bitify.libreria.repository.StudentRepo;
 import it.bitify.libreria.service.BookService;
-import it.bitify.libreria.service.CategoryService;
 import it.bitify.libreria.service.LoanService;
 import it.bitify.libreria.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +32,7 @@ import org.apache.logging.log4j.Logger;
 @Service
 public class StudentServiceImpl implements StudentService {
 
-    Logger logger = LogManager.getLogger(StudentServiceImpl.class);
+    private Logger logger = LogManager.getLogger(StudentServiceImpl.class);
 
     @Autowired
     private StudentRepo studentRepo;
@@ -44,23 +43,23 @@ public class StudentServiceImpl implements StudentService {
     @Autowired
     private BookService bookService;
 
-    @Autowired
-    private CategoryService categoryService;
-
     @Override
     @Cacheable(value = "students", key = "#id")
     public Student getStudentById(Long id) {
-        return studentRepo.findById(id).orElseThrow(() -> {
+        Student student = studentRepo.findById(id).orElseThrow(() -> {
             EntityNotFoundException ex = new EntityNotFoundException("Studente non presente all'interno del database!");
             logger.error("Errore durante il recupero dello studente con ID {}", id, ex);
             return ex;
         });
+        logger.debug("Studente trovato con ID: {}", id);
+        return student;
     }
 
     @Override
     @CacheEvict(value="students", key=" 'allStudents' ")
-    public void saveStudent(Student Student) {
-        studentRepo.save(Student);
+    public void saveStudent(Student student) {
+        logger.debug("Studente salvato con ID: {}", student.getId());
+        studentRepo.save(student);
     }
 
     @Override
@@ -73,10 +72,15 @@ public class StudentServiceImpl implements StudentService {
     )
     public Student updateStudent(Student newStudent) {
         if(studentRepo.existsById(newStudent.getId())) {
+            logger.debug("Studente modificato con ID: {}", newStudent.getId());
             studentRepo.save(newStudent);
             return newStudent;
         }
-        else throw new EntityNotFoundException("Valore non presente all'interno del database!");
+        else{
+            EntityNotFoundException ex = new EntityNotFoundException("Valore non presente all'interno del database!");
+            logger.error("Errore durante il recupero dello studente con ID {}", newStudent.getId(), ex);
+            throw ex;
+        }
     }
 
     @Override
@@ -86,9 +90,14 @@ public class StudentServiceImpl implements StudentService {
     })
     public void deleteStudent(Long id) {
         if(studentRepo.existsById(id)) {
+            logger.debug("Studente eliminato con ID: {}", id);
             studentRepo.deleteById(id);
         }
-        else throw new EntityNotFoundException("Valore non presente all'interno del database!");
+        else{
+            EntityNotFoundException ex = new EntityNotFoundException("Valore non presente all'interno del database!");
+            logger.error("Errore durante il recupero dello studente con ID {}", id, ex);
+            throw ex;
+        }
     }
 
     @Override
@@ -134,7 +143,11 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    @CacheEvict(value = "stats", key = "#idStudent")
+    @Caching(evict = {
+            @CacheEvict(value = "loans", key = " 'allLoans' "),
+            @CacheEvict(value = "loans", key = " 'ongoing' "),
+            @CacheEvict(value = "stats", key = "#idStudent")
+    })
     public Loan loanBook(Long idStudent, Long idBook) {
         Student student = getStudentById(idStudent);
         logger.debug("Studente con ID {} trovato", idStudent);
@@ -158,7 +171,11 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    @CacheEvict(value = "stats", key = "#idStudent")
+    @Caching(evict = {
+            @CacheEvict(value = "loans", key = " 'allLoans' "),
+            @CacheEvict(value = "loans", key = " 'ongoing' "),
+            @CacheEvict(value = "stats", key = "#idStudent")
+    })
     public Loan returnBook(Long idStudent, Long idBook) {
         Student student = getStudentById(idStudent);
         logger.debug("Studente con ID {} trovato", idStudent);

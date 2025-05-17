@@ -39,8 +39,9 @@ INSERT INTO Card (id, release_date) VALUES
 (37, '2023-10-07'),
 (38, '2023-10-08'),
 (39, '2023-10-09'),
-(40, '2023-10-10');
-ALTER TABLE Card ALTER COLUMN id RESTART WITH 41;
+(40, '2023-10-10'),
+(41, '2025-10-10');
+ALTER TABLE Card ALTER COLUMN id RESTART WITH 42;
 
 
 -- Insert per student
@@ -84,8 +85,9 @@ INSERT INTO student (id, name, surname, class, email, id_card) VALUES
 (37, 'Simone', 'Rizzo', '4A', 'simone.rizzo@example.com', 37),
 (38, 'Chiara', 'Rizzo', '4B', 'chiara.rizzo@example.com', 38),
 (39, 'Francesco', 'Rizzo', '3A', 'francesco.rizzo@example.com', 39),
-(40, 'Alessia', 'Ferrari', '3B', 'alessia.ferrari@example.com', 40);
-ALTER TABLE student ALTER COLUMN id RESTART WITH 41;
+(40, 'Alessia', 'Ferrari', '3B', 'alessia.ferrari@example.com', 40),
+(41, 'Domenico', 'Iorio', '5C', 'domenico.iorio@example.com', 41);
+ALTER TABLE student ALTER COLUMN id RESTART WITH 42;
 
 
 --Insert per Category

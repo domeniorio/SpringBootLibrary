@@ -16,9 +16,6 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
-import java.util.HashMap;
-import java.util.Map;
-
 
 @RestController
 @RequestMapping("/api/v1/student")
@@ -28,32 +25,32 @@ public class StudentController {
     StudentService service;
 
     @GetMapping("/{id}")
-    public Student getStudentById(@PathVariable Long id){
+    public Student getStudentById(@PathVariable Long id) {
         return service.getStudentById(id);
     }
 
     @PostMapping
-    public void addStudent(@RequestBody Student student){
+    public void addStudent(@RequestBody Student student) {
         service.saveStudent(student);
     }
 
     @PutMapping
-    public void editStudent(@RequestBody Student student){
+    public void editStudent(@RequestBody Student student) {
         service.updateStudent(student);
     }
 
     @GetMapping
     public Page<Student> getAllStudents(@RequestParam(defaultValue = "0") int page,
-        @RequestParam(defaultValue = "5") int size,
-        @RequestParam(defaultValue = "id") String sortBy,
-        @RequestParam(defaultValue = "true") boolean ascending){
+            @RequestParam(defaultValue = "5") int size,
+            @RequestParam(defaultValue = "id") String sortBy,
+            @RequestParam(defaultValue = "true") boolean ascending) {
         Sort sort = ascending ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
         Pageable pageable = PageRequest.of(page, size, sort);
         return service.getAllStudents(pageable);
     }
 
     @DeleteMapping("/{id}")
-    public void deleteStudent(@PathVariable Long id){
+    public void deleteStudent(@PathVariable Long id) {
         service.deleteStudent(id);
     }
 
@@ -61,7 +58,7 @@ public class StudentController {
     public Page<Student> getStudentWithoutLoan(@RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "5") int size,
             @RequestParam(defaultValue = "id") String sortBy,
-            @RequestParam(defaultValue = "true") boolean ascending){
+            @RequestParam(defaultValue = "true") boolean ascending) {
         Sort sort = ascending ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
         Pageable pageable = PageRequest.of(page, size, sort);
         return service.findStudentWithoutLoan(pageable);
@@ -72,22 +69,23 @@ public class StudentController {
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "5") int size,
             @RequestParam(defaultValue = "id") String sortBy,
-            @RequestParam(defaultValue = "true") boolean ascending){
+            @RequestParam(defaultValue = "true") boolean ascending) {
         Sort sort = ascending ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
         Pageable pageable = PageRequest.of(page, size, sort);
         return service.findBySchoolClass(schoolClass, pageable);
     }
 
     @GetMapping("/by-card-release")
-    public Page<Student> getByCard_ReleaseDateBetween(@RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate start,
+    public Page<Student> getByCard_ReleaseDateBetween(
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate start,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate end,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "5") int size,
             @RequestParam(defaultValue = "id") String sortBy,
-            @RequestParam(defaultValue = "true") boolean ascending){
+            @RequestParam(defaultValue = "true") boolean ascending) {
         Sort sort = ascending ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
         Pageable pageable = PageRequest.of(page, size, sort);
-        return service.findByCard_ReleaseDateBetween(start, end ,pageable);
+        return service.findByCard_ReleaseDateBetween(start, end, pageable);
     }
 
     @GetMapping("/min-loan")
@@ -107,7 +105,7 @@ public class StudentController {
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "5") int size,
             @RequestParam(defaultValue = "id") String sortBy,
-            @RequestParam(defaultValue = "true") boolean ascending){
+            @RequestParam(defaultValue = "true") boolean ascending) {
         Sort sort = ascending ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
         Pageable pageable = PageRequest.of(page, size, sort);
         return service.findStudentLoanCategory(categoryName, pageable);
@@ -117,24 +115,24 @@ public class StudentController {
     public Page<Student> getStudentByLoanCount(@RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "5") int size,
             @RequestParam(defaultValue = "id") String sortBy,
-            @RequestParam(defaultValue = "true") boolean ascending){
+            @RequestParam(defaultValue = "true") boolean ascending) {
         Sort sort = ascending ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
         Pageable pageable = PageRequest.of(page, size, sort);
         return service.findStudentsOrderedByLoanCount(pageable);
     }
 
     @PostMapping("/loan-book")
-    public Loan loanBook(@RequestBody IdStudentBookDTO body){
+    public Loan loanBook(@RequestBody IdStudentBookDTO body) {
         return service.loanBook(body.getIdStudent(), body.getIdBook());
     }
 
     @PostMapping("/return-book")
-    public Loan returnBook(@RequestBody IdStudentBookDTO body){
+    public Loan returnBook(@RequestBody IdStudentBookDTO body) {
         return service.returnBook(body.getIdStudent(), body.getIdBook());
     }
 
     @GetMapping("stats")
-    public StudentStatsDTO studentStats(@RequestParam Long idStudent){
+    public StudentStatsDTO studentStats(@RequestParam Long idStudent) {
         return service.studentStats(idStudent);
     }
 
@@ -143,7 +141,7 @@ public class StudentController {
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "5") int size,
             @RequestParam(defaultValue = "id") String sortBy,
-            @RequestParam(defaultValue = "true") boolean ascending){
+            @RequestParam(defaultValue = "true") boolean ascending) {
         Sort sort = ascending ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
         Pageable pageable = PageRequest.of(page, size, sort);
         return service.suggestions(idStudent, pageable);

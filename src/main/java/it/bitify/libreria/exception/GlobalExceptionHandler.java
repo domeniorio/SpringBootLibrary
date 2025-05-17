@@ -42,8 +42,8 @@ public class GlobalExceptionHandler {
                 message = "Violazione di vincolo sui dati.";
             }
         }
-        ErrorResponse errorResponse = new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(), message, details);
-        return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+        ErrorResponse errorResponse = new ErrorResponse(HttpStatus.CONFLICT.value(), message, details);
+        return new ResponseEntity<>(errorResponse, HttpStatus.CONFLICT);
     }
 
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
@@ -58,16 +58,16 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponse> handlePropertyNotFound(PropertyReferenceException ex){
         String message = "Proprietà non presente.";
         String details = ex.getMessage();
-        ErrorResponse errorResponse = new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(), message, details);
-        return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+        ErrorResponse errorResponse = new ErrorResponse(HttpStatus.BAD_REQUEST.value(), message, details);
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(IllegalArgumentException.class)
-    public ResponseEntity<ErrorResponse> handlePropertyNotFound(IllegalArgumentException ex){
+    public ResponseEntity<ErrorResponse> handleIllegalArgument(IllegalArgumentException ex){
         String message = "Il valore inserito non è valido.";
         String details = ex.getMessage();
-        ErrorResponse errorResponse = new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(), message, details);
-        return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+        ErrorResponse errorResponse = new ErrorResponse(HttpStatus.BAD_REQUEST.value(), message, details);
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(MissingServletRequestParameterException.class)

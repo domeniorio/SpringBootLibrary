@@ -66,7 +66,7 @@ paths:
           description: Id type mismatch
         "404":
           description: Card not found
-        "500":
+        "409":
           description: Data integrity violation
     post:
       tags:
@@ -84,7 +84,7 @@ paths:
       responses:
         "200":
           description: Card added to the database
-        "500":
+        "409":
           description: Data integrity violation
 
   /api/v1/card/{id}:
@@ -135,7 +135,7 @@ paths:
           description: Id type mismatch
         "404":
           description: card not found
-        "500":
+        "409":
           description: Data integrity violation
 
 
@@ -180,7 +180,7 @@ paths:
           description: Id type mismatch
         "404":
           description: Student not found
-        "500":
+        "409":
           description: Data integrity violation
     post:
       tags:
@@ -198,7 +198,7 @@ paths:
       responses:
         "200":
           description: Student added to the database
-        "500":
+        "409":
           description: Data integrity violation
 
   /api/v1/student/{id}:
@@ -249,7 +249,7 @@ paths:
           description: Id type mismatch
         "404":
           description: Student not found
-        "500":
+        "409":
           description: Data integrity violation
 
   /api/v1/student/without-loan:
@@ -548,7 +548,7 @@ paths:
           description: Id type mismatch
         "404":
           description: Loan not found
-        "500":
+        "409":
           description: Data integrity violation
     post:
       tags:
@@ -566,7 +566,7 @@ paths:
       responses:
         "200":
           description: Loan added to the database
-        "500":
+        "409":
           description: Data integrity violation
 
   /api/v1/loan/{id}:
@@ -617,7 +617,7 @@ paths:
           description: Id type mismatch
         "404":
           description: Loan not found
-        "500":
+        "409":
           description: Data integrity violation
 
   /api/v1/loan/ongoing:
@@ -682,7 +682,7 @@ paths:
           description: Id type mismatch
         "404":
           description: Book not found
-        "500":
+        "409":
           description: Data integrity violation
     post:
       tags:
@@ -700,7 +700,7 @@ paths:
       responses:
         "200":
           description: Book added to the database
-        "500":
+        "409":
           description: Data integrity violation
 
   /api/v1/book/{id}:
@@ -751,7 +751,7 @@ paths:
           description: Id type mismatch
         "404":
           description: Book not found
-        "500":
+        "409":
           description: Data integrity violation
 
   /api/v1/book/by-year-greater-than:
@@ -922,7 +922,7 @@ paths:
           description: Id type mismatch
         "404":
           description: Course not found
-        "500":
+        "409":
           description: Data integrity violation
     post:
       tags:
@@ -940,7 +940,7 @@ paths:
       responses:
         "200":
           description: Course added to the database
-        "500":
+        "409":
           description: Data integrity violation
 
   /api/v1/course/{id}:
@@ -991,7 +991,7 @@ paths:
           description: Id type mismatch
         "404":
           description: Course not found
-        "500":
+        "409":
           description: Data integrity violation
 
 
@@ -1036,7 +1036,7 @@ paths:
           description: Id type mismatch
         "404":
           description: Category not found
-        "500":
+        "409":
           description: Data integrity violation
     post:
       tags:
@@ -1054,7 +1054,7 @@ paths:
       responses:
         "200":
           description: Category added to the database
-        "500":
+        "409":
           description: Data integrity violation
 
   /api/v1/category/{id}:
@@ -1104,7 +1104,7 @@ paths:
           description: Id type mismatch
         "404":
           description: Category not found
-        "500":
+        "409":
           description: Data integrity violation
 
   /api/v1/category/book-count:

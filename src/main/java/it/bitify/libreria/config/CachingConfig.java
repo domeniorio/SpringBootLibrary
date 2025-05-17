@@ -15,14 +15,14 @@ import java.util.concurrent.TimeUnit;
 public class CachingConfig {
     @Bean
     public Caffeine caffeineConfig() {
-        return Caffeine.newBuilder().expireAfterWrite(60, TimeUnit.MINUTES);
+        return Caffeine.newBuilder().expireAfterWrite(1, TimeUnit.MINUTES);
     }
 
     @Bean
     public CacheManager cacheManager(Caffeine caffeine) {
         CaffeineCacheManager caffeineCacheManager = new CaffeineCacheManager();
         caffeineCacheManager.setCaffeine(caffeine);
-        caffeineCacheManager.setCacheNames(Arrays.asList("students", "books", "statistics", "loans"));
+        caffeineCacheManager.setCacheNames(Arrays.asList("students", "books", "stats", "loans", "categories"));
         return caffeineCacheManager;
     }
 }
