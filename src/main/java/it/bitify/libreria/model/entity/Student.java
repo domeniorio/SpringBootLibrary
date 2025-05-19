@@ -38,6 +38,36 @@ public class Student {
             inverseJoinColumns = @JoinColumn(name = "idCourse"))
     private Set<Course> courses;
 
+
+    public Student(Long id, String name, String surname, String schoolClass, String email) {
+        this.id = id;
+        this.name = name;
+        this.surname = surname;
+        this.schoolClass = schoolClass;
+        this.email = email;
+    }
+
+    public Student(String name, String surname, String schoolClass, String email) {
+        this.name = name;
+        this.surname = surname;
+        this.schoolClass = schoolClass;
+        this.email = email;
+    }
+
+    public Student(Set<Course> courses, Card card, List<Loan> loans, String email, String schoolClass, String surname, String name, Long id) {
+        this.courses = courses;
+        this.card = card;
+        this.loans = loans;
+        this.email = email;
+        this.schoolClass = schoolClass;
+        this.surname = surname;
+        this.name = name;
+        this.id = id;
+    }
+
+    public Student() {
+    }
+
     public Long getId() {
         return id;
     }

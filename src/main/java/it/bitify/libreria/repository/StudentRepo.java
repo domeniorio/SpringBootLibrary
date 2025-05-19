@@ -16,6 +16,7 @@ import java.util.List;
 
 public interface StudentRepo extends JpaRepository<Student, Long> {
 
+
     Page<Student> findByNameAndSurname(String name, String surname, Pageable pageable);
 
     Page<Student> findBySchoolClass(String schoolClass, Pageable pageable);
