@@ -212,8 +212,8 @@ public class StudentServiceImpl implements StudentService {
                             .thenComparing(CategoryOrderingDTO::getLastDate, lastDateComparator))
                             .toList();
             favouriteCategory = categoryStats.getFirst().getCategory();
+            logger.debug("ID: {} - FAVOURITE_CATEGORY: {}", idStudent, favouriteCategory.getName());
         }
-        logger.debug("ID: {} - FAVOURITE_CATEGORY: {}", idStudent, favouriteCategory.getName());
 
         studentStats.setFavouriteCategory(favouriteCategory);
         return studentStats;

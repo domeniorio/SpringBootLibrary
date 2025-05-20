@@ -15,7 +15,6 @@ public class Category {
     @Column(name = "id")
     private Long id;
 
-
     @Column(name = "name", nullable = false)
     private String name;
 
@@ -23,6 +22,10 @@ public class Category {
     @JsonManagedReference("categoryBooksRelationship")
     private List<Book> books;
 
+    public Category(Long id, String name) {
+        this.id = id;
+        this.name = name;
+    }
 
     public Long getIdCategory() {
         return id;

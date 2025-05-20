@@ -2,10 +2,11 @@ package it.bitify.libreria.service;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
+import it.bitify.libreria.model.dto.CategoryOrderingDTO;
+import it.bitify.libreria.model.dto.StudentStatsDTO;
+import it.bitify.libreria.model.entity.Category;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -20,7 +21,9 @@ import it.bitify.libreria.model.entity.Student;
 import it.bitify.libreria.repository.StudentRepo;
 import it.bitify.libreria.service.serviceImpl.StudentServiceImpl;
 
+import java.time.LocalDate;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -43,7 +46,6 @@ public class StudentServiceTest {
         when(studentRepo.findById(id)).thenReturn(Optional.of(student));
         // Act
         Student result = studentService.getStudentById(id);
-        // Assert
         assertEquals(student, result);
     }
 
@@ -52,7 +54,6 @@ public class StudentServiceTest {
         // Arrange
         Long id = 1L;
         when(studentRepo.findById(id)).thenReturn(java.util.Optional.empty());
-        // Act and Assert
         EntityNotFoundException ex = assertThrows(EntityNotFoundException.class, () -> studentService.getStudentById(id));
         assertEquals("Studente non presente all'interno del database!", ex.getMessage());
     }
@@ -93,7 +94,6 @@ public class StudentServiceTest {
         // Act
         studentService.saveStudent(newStudent);
 
-        // Assert
         verify(studentRepo, times(1)).save(newStudent);
     }
 
@@ -106,7 +106,6 @@ public class StudentServiceTest {
         // Act
         studentService.deleteStudent(studentId);
 
-        // Assert
         verify(studentRepo, times(1)).existsById(studentId);
         verify(studentRepo, times(1)).deleteById(studentId);
     }
@@ -122,10 +121,75 @@ public class StudentServiceTest {
         // Act
         Student result = studentService.updateStudent(updatedStudent);
 
-        // Assert
         verify(studentRepo, times(1)).existsById(studentId);
         verify(studentRepo, times(1)).save(updatedStudent);
 
+    }
+
+    @Test
+    public void testStudentStats() {
+
+        Student student = new Student(1L, "Domenico", "Iorio", "5c", "domenico.iorio@example.com");
+        StudentStatsDTO studentStats = new StudentStatsDTO();
+
+        studentStats.setTotalLoans(7L);
+        studentStats.setCurrentLoans(5L);
+        studentStats.setLastLoanDate(LocalDate.of(2023, 1, 15));
+        Category cateogoryFantasy = new Category(1L, "Fantasy");
+        Category cateogorySaggistica = new Category(2L, "Saggistica");
+        Category cateogoryFantascienza = new Category(3L, "Fantascienza");
+
+
+        CategoryOrderingDTO catOrder1 = new CategoryOrderingDTO(cateogoryFantasy, 5L, LocalDate.of(2023, 5, 10)); // Top by book count
+        CategoryOrderingDTO catOrder2 = new CategoryOrderingDTO(cateogorySaggistica, 3L, LocalDate.of(2023, 6, 1));
+        CategoryOrderingDTO catOrder3 = new CategoryOrderingDTO(cateogoryFantascienza, 7L, LocalDate.of(2023, 4, 20)); // This should be picked
+
+
+        when(studentRepo.existsById(student.getId())).thenReturn(true);
+        when(studentRepo.findLoanStats(student.getId())).thenReturn(studentStats);
+        when(studentRepo.findTopCategoryByStudentId(student.getId())).thenReturn(Arrays.asList(catOrder1, catOrder2, catOrder3));
+
+        // Act
+        StudentStatsDTO result = studentService.studentStats(student.getId());
+
+        assertNotNull(result);
+        assertNotNull(result.getFavouriteCategory());
+        assertEquals(cateogoryFantascienza.getName(), result.getFavouriteCategory().getName());
+
+    }
+
+
+    @Test
+    void testStudentStats_StudentNotFound() {
+        when(studentRepo.existsById(100L)).thenReturn(false);
+
+        EntityNotFoundException thrown = assertThrows(EntityNotFoundException.class, () -> {
+            studentService.studentStats(100L);
+        });
+
+        assertEquals("Studente non presente all'interno del database!", thrown.getMessage());
+        verify(studentRepo, never()).findLoanStats(anyLong());
+        verify(studentRepo, never()).findTopCategoryByStudentId(anyLong());
+    }
+
+    @Test
+    public void testStudentStats_NoCategory() {
+
+        Student student = new Student(1L, "Domenico", "Iorio", "5c", "domenico.iorio@example.com");
+        StudentStatsDTO studentStats = new StudentStatsDTO();
+
+        when(studentRepo.existsById(student.getId())).thenReturn(true);
+        when(studentRepo.findLoanStats(student.getId())).thenReturn(studentStats);
+        when(studentRepo.findTopCategoryByStudentId(student.getId())).thenReturn(Collections.emptyList());
+
+        // Act
+        StudentStatsDTO result = studentService.studentStats(student.getId());
+
+        assertNotNull(result);
+        assertNull(result.getFavouriteCategory());
+        verify(studentRepo, times(1)).existsById(student.getId());
+        verify(studentRepo, times(1)).findLoanStats(student.getId());
+        verify(studentRepo, times(1)).findTopCategoryByStudentId(student.getId());
     }
 
 }
